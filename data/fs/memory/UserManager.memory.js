@@ -1,5 +1,3 @@
-//Creamos la clase constructora User donde estructuramos la información que vamos a tener de cada usuario.
-
 class User {
     constructor(id, name, lastName, dni, manzanaYLote, phone, email, password, role) {
       this.id = id;
@@ -13,38 +11,81 @@ class User {
       this.role = role;
     }
   }
-  
- 
-  // Creamos el UserManager para gestionar la creación y lectura.
-
-  class UserManager {
-    
+   
+class UserManager {
     static #users = []; 
 
     constructor() {
         this.userIdCounter = 1;
     }
 
+    generateId() {
+      const idBytes = [];
+      for (let i = 0; i < 12; i++) {
+        idBytes.push(Math.floor(Math.random() * 256));
+      }
+      return Buffer.from(idBytes).toString('hex');
+    }
+
     // Nuevo Usuario
     create(data) {
-        const newUser = new User(
-            this.userIdCounter++,
-            data.name,
-            data.lastName,
-            data.dni,
-            data.manzanaYLote,
-            data.phone,
-            data.email,
-            data.password,
-            data.role
-        );
-        UserManager.this.#users.push(newUser); 
-        return newUser;
+        try {
+            const newUser = new User(
+                this.generateId(),
+                data.name,
+                data.lastName,
+                data.dni,
+                data.manzanaYLote,
+                data.phone,
+                data.email,
+                data.password,
+                data.role
+            );
+            UserManager.#users.push(newUser); 
+            return newUser;
+        } catch (error) {
+            console.error('Error al crear el usuario:', error.message);
+            return null;
+        }
     }
     
     // Leer Usuarios
     read() {
-        return UserManager.this.#users; 
+        try {
+            return UserManager.#users; 
+        } catch (error) {
+            console.error('Error al leer los usuarios:', error.message);
+            return [];
+        }
+    }
+
+    // Leer un usuario por su ID
+    readOne(id) {
+        try {
+            const user = UserManager.#users.find((user) => user.id === id);
+            if (!user) {
+                throw new Error(`No se encontró ningún usuario con el ID ${id}.`);
+            }
+            return user;
+        } catch (error) {
+            console.error('Error al leer el usuario:', error.message);
+            return null;
+        }
+    }
+
+    // Eliminar un usuario por su ID
+    destroy(id) {
+        try {
+            const index = UserManager.#users.findIndex((user) => user.id === id);
+            if (index === -1) {
+                throw new Error(`No se encontró ningún usuario con el ID ${id}.`);
+            }
+            const deletedUser = UserManager.#users.splice(index, 1)[0];
+            return deletedUser;
+        } catch (error) {
+            console.error('Error al eliminar el usuario:', error.message);
+            return null;
+        }
     }
 }
 
@@ -55,33 +96,55 @@ class User {
   
   const usersData = [
     {
-      name: "Pedro",
-      lastName: "Chamorro",
-      dni: 32443553,
-      manzanaYLote: 34.1,
-      phone: "+54351667799",
-      email: "usuario1@example.com",
-      password: "contraseña123",
-      role: "cliente",
+        name: 'Juan',
+        lastName: 'Perez',
+        dni: '12345678',
+        manzanaYLote: 'A-15',
+        phone: '123456789',
+        email: 'juan@example.com',
+        password: 'password123',
+        role: 'user'
     },
     {
-      name: "Maria",
-      lastName: "Garcia",
-      dni: 34443773,
-      manzanaYLote: 28.5,
-      phone: "+543514896545",
-      email: "usuario2@example.com",
-      password: "contraseña456",
-      role: "admin",
+        name: 'Maria',
+        lastName: 'Gonzalez',
+        dni: '23456789',
+        manzanaYLote: 'B-20',
+        phone: '987654321',
+        email: 'maria@example.com',
+        password: 'password456',
+        role: 'user'
     },
-  ];
-  
-  usersData.forEach((userData) => userManager.create(userData));
-  
-  //Mostrar los usuarios creados
+    {
+        name: 'Pedro',
+        lastName: 'Lopez',
+        dni: '34567890',
+        manzanaYLote: 'C-5',
+        phone: '55555555',
+        email: 'pedro@example.com',
+        password: 'password789',
+        role: 'user'
+    },
+    {
+        name: 'Admin',
+        lastName: 'Admin',
+        dni: '45678901',
+        manzanaYLote: 'D-10',
+        phone: '11111111',
+        email: 'admin@example.com',
+        password: 'admin123',
+        role: 'admin'
+    }
+];
 
-  console.log("\nUsuarios:");
-  userManager.read().forEach((user) => {
-    console.log(`ID: ${user.id}, Nombre: ${user.name}, Apellido: ${user.lastName}, DNI: ${user.dni}, Email: ${user.email}, Rol: ${user.role}`);
-  });
   
+usersData.forEach(userData => userManager.create(userData));
+
+// Leer todos los usuarios
+console.log(userManager.read());
+
+// Leer un usuario por su ID hexa - en este caso da error porque no lo encuentra
+console.log(userManager.readOne("e6018d264ccb2f3cefafd0d0"));
+
+// Eliminar un usuario por su ID - en este caso da error porque no lo encuentra. 
+console.log(userManager.destroy("2113285b542bbcc55c1f759a"));

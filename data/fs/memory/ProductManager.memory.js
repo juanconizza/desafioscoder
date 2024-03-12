@@ -79,6 +79,7 @@ class Product {
   }
   
   // Ejemplo de uso:
+  
   const productManager = new ProductManager();
   
   // Definir 10 productos
