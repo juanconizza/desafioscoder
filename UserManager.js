@@ -1,9 +1,13 @@
 //Creamos la clase constructora User donde estructuramos la información que vamos a tener de cada usuario.
 
 class User {
-    constructor(id, photo, email, password, role) {
+    constructor(id, name, lastName, dni, manzanaYLote, phone, email, password, role) {
       this.id = id;
-      this.photo = photo;
+      this.name = name;
+      this.lastName = lastName;
+      this.dni = dni;
+      this.manzanaYLote = manzanaYLote;
+      this.phone = phone;
       this.email = email;
       this.password = password;
       this.role = role;
@@ -24,7 +28,11 @@ class User {
     create(data) {
         const newUser = new User(
             this.userIdCounter++,
-            data.photo,
+            data.name,
+            data.lastName,
+            data.dni,
+            data.manzanaYLote,
+            data.phone,
             data.email,
             data.password,
             data.role
@@ -46,13 +54,21 @@ class User {
   
   const usersData = [
     {
-      photo: "ruta_imagen_usuario_1.jpg",
+      name: "Pedro",
+      lastName: "Chamorro",
+      dni: 32443553,
+      manzanaYLote: 34.1,
+      phone: "+54351667799",
       email: "usuario1@example.com",
       password: "contraseña123",
       role: "cliente",
     },
     {
-      photo: "ruta_imagen_usuario_2.jpg",
+      name: "Maria",
+      lastName: "Garcia",
+      dni: 34443773,
+      manzanaYLote: 28.5,
+      phone: "+543514896545",
       email: "usuario2@example.com",
       password: "contraseña456",
       role: "admin",
@@ -65,6 +81,6 @@ class User {
 
   console.log("\nUsuarios:");
   userManager.read().forEach((user) => {
-    console.log(`ID: ${user.id}, Email: ${user.email}, Rol: ${user.role}`);
+    console.log(`ID: ${user.id}, Nombre: ${user.name}, Apellido: ${user.lastName}, DNI: ${user.dni}, Email: ${user.email}, Rol: ${user.role}`);
   });
   

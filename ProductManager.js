@@ -1,11 +1,12 @@
 //Creamos la clase constructora Product donde estructuramos lo que va a contener cada producto.
 
 class Product {
-    constructor(id, title, photo, category, price, stock) {
+    constructor(id, title, photo, category, description, price, stock) {
       this.id = id;
       this.title = title;
       this.photo = photo;
       this.category = category;
+      this.description = description;
       this.price = price;
       this.stock = stock;
     }
@@ -25,6 +26,7 @@ class Product {
         data.title,
         data.photo,
         data.category,
+        data.description,
         data.price,
         data.stock
       );
@@ -49,6 +51,7 @@ class Product {
       title: "Producto 1",
       photo: "ruta_imagen_1.jpg",
       category: "Categoria 1",
+      description: "Este producto es excelente, poco uso.",
       price: 10.99,
       stock: 100,
     },
@@ -56,6 +59,7 @@ class Product {
       title: "Producto 2",
       photo: "ruta_imagen_2.jpg",
       category: "Categoria 2",
+      description: "Este producto es excelente, poco uso.",
       price: 20.99,
       stock: 50,
     },
@@ -63,6 +67,7 @@ class Product {
       title: "Producto 3",
       photo: "ruta_imagen_3.jpg",
       category: "Categoria 1",
+      description: "Este producto es excelente, poco uso.",
       price: 15.99,
       stock: 80,
     },
@@ -70,6 +75,7 @@ class Product {
       title: "Producto 4",
       photo: "ruta_imagen_4.jpg",
       category: "Categoria 2",
+      description: "Este producto es excelente, poco uso.",
       price: 25.99,
       stock: 30,
     },
@@ -77,6 +83,7 @@ class Product {
       title: "Producto 5",
       photo: "ruta_imagen_5.jpg",
       category: "Categoria 1",
+      description: "Este producto es excelente, poco uso.",
       price: 12.99,
       stock: 120,
     },
@@ -91,6 +98,6 @@ class Product {
 console.log("Productos:");
 productManager.read().forEach((product) => {
   console.log(
-    `ID: ${product.id}, Título: ${product.title}, Precio: ${product.price}, Stock: ${product.stock}`
+    `ID: ${product.id}, Título: ${product.title}, Descrición: ${product.description} Precio: ${product.price}, Stock: ${product.stock}`
   );
 });
