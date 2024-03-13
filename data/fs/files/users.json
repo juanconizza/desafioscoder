@@ -1,0 +1,35 @@
+[
+  {
+    "id": "0d004f1c58540af9830f325b",
+    "name": "Juan",
+    "lastName": "Perez",
+    "dni": "12345678",
+    "manzanaYLote": "A-15",
+    "phone": "123456789",
+    "email": "juan@example.com",
+    "password": "password123",
+    "role": "user"
+  },
+  {
+    "id": "093de03368407ed4b13b81f9",
+    "name": "Maria",
+    "lastName": "Gonzalez",
+    "dni": "23456789",
+    "manzanaYLote": "B-20",
+    "phone": "987654321",
+    "email": "maria@example.com",
+    "password": "password456",
+    "role": "user"
+  },
+  {
+    "id": "18c76f0502420ae3dd4ede52",
+    "name": "Pedro",
+    "lastName": "Lopez",
+    "dni": "34567890",
+    "manzanaYLote": "C-5",
+    "phone": "55555555",
+    "email": "pedro@example.com",
+    "password": "password789",
+    "role": "user"
+  }
+]
