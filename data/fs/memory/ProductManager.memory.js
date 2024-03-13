@@ -12,8 +12,7 @@ class Product {
   
   class ProductManager {
     static #products = [];
-    productIdCounter = 1;
-  
+     
     generateId() {
       const idBytes = [];
       for (let i = 0; i < 12; i++) {
