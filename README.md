@@ -13,3 +13,4 @@ El método de memoria está en la carpeta "memory" y se pued ejecutar por con so
 El método fs se encuentra en la carpeta "files" y se puede ejecutar comentando o descomentando los metodos señalados al final del código con el comando "node" y el nombre del archivo correspondiente. 
 
 Este método (fs) crea 2 archivos (products y users) segun corresponda con un array de objetos con la información de cada producto en venta o cada usuario registrado. 
+
