@@ -1,88 +1,85 @@
+const { randomBytes } = require('crypto');
+
 class Product {
     constructor(id, title, photo, category, description, price, stock) {
-      this.id = id;
-      this.title = title;
-      this.photo = photo;
-      this.category = category;
-      this.description = description;
-      this.price = price;
-      this.stock = stock;
+        this.id = id;
+        this.title = title;
+        this.photo = photo;
+        this.category = category;
+        this.description = description;
+        this.price = price;
+        this.stock = stock;
     }
-  }
-  
-  class ProductManager {
+}
+
+class ProductManager {
     static #products = [];
-     
+
     generateId() {
-      const idBytes = [];
-      for (let i = 0; i < 12; i++) {
-        idBytes.push(Math.floor(Math.random() * 256));
-      }
-      return Buffer.from(idBytes).toString('hex');
+        return randomBytes(12).toString('hex');
     }
-  
+
     create(data) {
-      try {
-        const newProduct = new Product(
-          this.generateId(),
-          data.title,
-          data.photo,
-          data.category,
-          data.description,
-          data.price,
-          data.stock
-        );
-        ProductManager.#products.push(newProduct);
-        return newProduct;
-      } catch (error) {
-        console.error('Error al crear el producto:', error.message);
-        return null;
-      }
+        try {
+            const newProduct = new Product(
+                this.generateId(),
+                data.title,
+                data.photo || "defaultphoto.jpg", // Ruta de imagen por defecto si no se proporciona
+                data.category,
+                data.description,
+                data.price,
+                data.stock
+            );
+            ProductManager.#products.push(newProduct);
+            return newProduct;
+        } catch (error) {
+            console.error('Error al crear el producto:', error.message);
+            return null;
+        }
     }
-  
+
     read() {
-      try {
-        return ProductManager.#products;
-      } catch (error) {
-        console.error('Error al leer los productos:', error.message);
-        return [];
-      }
+        try {
+            return ProductManager.#products;
+        } catch (error) {
+            console.error('Error al leer los productos:', error.message);
+            return [];
+        }
     }
-  
+
     readOne(id) {
-      try {
-        const product = ProductManager.#products.find((product) => product.id === id);
-        if (!product) {
-          throw new Error(`No se encontró ningún producto con el ID ${id}.`);
+        try {
+            const product = ProductManager.#products.find((product) => product.id === id);
+            if (!product) {
+                throw new Error(`No se encontró ningún producto con el ID ${id}.`);
+            }
+            return product;
+        } catch (error) {
+            console.error('Error al leer el producto:', error.message);
+            return null;
         }
-        return product;
-      } catch (error) {
-        console.error('Error al leer el producto:', error.message);
-        return null;
-      }
     }
-  
+
     destroy(id) {
-      try {
-        const index = ProductManager.#products.findIndex((product) => product.id === id);
-        if (index === -1) {
-          throw new Error(`No se encontró ningún producto con el ID ${id}.`);
+        try {
+            const index = ProductManager.#products.findIndex((product) => product.id === id);
+            if (index === -1) {
+                throw new Error(`No se encontró ningún producto con el ID ${id}.`);
+            }
+            const deletedProduct = ProductManager.#products.splice(index, 1)[0];
+            return deletedProduct;
+        } catch (error) {
+            console.error('Error al eliminar el producto:', error.message);
+            return null;
         }
-        const deletedProduct = ProductManager.#products.splice(index, 1)[0];
-        return deletedProduct;
-      } catch (error) {
-        console.error('Error al eliminar el producto:', error.message);
-        return null;
-      }
     }
-  }
-  
-  // Ejemplo de uso:
-  
-  const productManager = new ProductManager();
-  
-  // Definir 10 productos
-  const productsData = [
+}
+
+// Ejemplo de uso:
+const productManager = new ProductManager();
+
+// Definir 10 productos
+const productsData = [
     { title: "Sofá de Cuero", photo: "sofa_cuero.jpg", category: "Muebles", description: "Sofá de cuero genuino en buen estado. Color marrón oscuro.", price: 350, stock: 1 },
     { title: "Mesa de Comedor de Madera", photo: "mesa_comedor.jpg", category: "Muebles", description: "Mesa de comedor de madera maciza con capacidad para 6 personas. Estilo rústico.", price: 250, stock: 1 },
     { title: "Televisor LED Samsung 55 Pulgadas", photo: "tv_samsung.jpg", category: "Electrónica", description: "Televisor LED Samsung de 55 pulgadas en perfectas condiciones. Resolución 4K Ultra HD.", price: 500, stock: 1 },
@@ -93,25 +90,19 @@ class Product {
     { title: "Silla de Oficina Ergonómica", photo: "silla_oficina.jpg", category: "Muebles", description: "Silla de oficina ergonómica con respaldo ajustable y soporte lumbar. Excelente estado.", price: 100, stock: 1 },
     { title: "Licuadora Oster de Alta Velocidad", photo: "licuadora_oster.jpg", category: "Electrodomésticos", description: "Licuadora Oster de alta velocidad con vaso de vidrio resistente y cuchillas de acero inoxidable.", price: 60, stock: 1 },
     { title: "Mesa de Noche de Roble", photo: "mesa_noche.jpg", category: "Muebles", description: "Mesa de noche de roble con cajón y estante inferior. Perfecta para dormitorios modernos.", price: 80, stock: 1 }
-  ];
-  
-  // Crear los productos 
-  
-  productsData.forEach((productData) => productManager.create(productData));
-  
-  
-  // Leer todos los productos
-  console.log("Todos los productos:");
-  console.log(productManager.read());
-  
-  
-  // Leer un producto por su ID
-  console.log("Producto con ID:");
-  console.log(productManager.readOne("0714aa17ba38eaf58fd3dd8b")); // Definir el ID a Buscar en base al hash hexa generado. 
-  
+];
 
-  
-  // Eliminar un producto por su ID
-  console.log("Eliminar producto con ID: ");
-  console.log(productManager.destroy("0fdeb76559c6af4a31a3d145")); // Definir el ID a Buscar en base al hash hexa generado. 
-  
+// Crear los productos
+productsData.forEach((productData) => productManager.create(productData));
+
+// Leer todos los productos
+console.log("Todos los productos:");
+console.log(productManager.read());
+
+// Leer un producto por su ID
+console.log("Producto con ID:");
+console.log(productManager.readOne("0714aa17ba38eaf58fd3dd8b")); // Definir el ID a Buscar en base al hash hexa generado.
+
+// Eliminar un producto por su ID
+console.log("Eliminar producto con ID: ");
+console.log(productManager.destroy("0fdeb76559c6af4"));

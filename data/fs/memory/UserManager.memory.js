@@ -1,3 +1,5 @@
+const { randomBytes } = require('crypto');
+
 class User {
     constructor(id, name, lastName, dni, manzanaYLote, phone, email, password, role) {
       this.id = id;
@@ -16,11 +18,7 @@ class UserManager {
     static #users = []; 
 
     generateId() {
-      const idBytes = [];
-      for (let i = 0; i < 12; i++) {
-        idBytes.push(Math.floor(Math.random() * 256));
-      }
-      return Buffer.from(idBytes).toString('hex');
+      return randomBytes(12).toString('hex');
     }
 
     // Nuevo Usuario
