@@ -1,5 +1,5 @@
-const fs = require("fs").promises;
-const { randomBytes } = require("crypto");
+import fs from "fs";
+import { randomBytes } from "crypto";
 
 class User {
   constructor(
@@ -25,29 +25,29 @@ class User {
   }
 }
 
-class UserManager {
-  static #path = "./users.json";
+export class UserManager {
+  #path = "./data/fs/files/users.json"; 
 
-  static async init() {
+  async init() {
     try {
       // Verificar si el archivo existe
-      await fs.access(UserManager.#path);
+      await fs.promises.access(this.#path);
     } catch (error) {
       // Si el archivo no existe, crearlo con un array vacío
-      await fs.writeFile(UserManager.#path, "[]");
+      await fs.promises.writeFile(this.#path, "[]");
     }
   }
 
-  static generateId() {
+  generateId() {
     return randomBytes(12).toString("hex");
   }
 
-  static async create(data) {
+  async create(data) {
     try {
       // Leer los usuarios existentes del archivo
-      const users = JSON.parse(await fs.readFile(UserManager.#path, "utf-8"));
+      const users = JSON.parse(await fs.promises.readFile(this.#path, "utf-8"));
       const newUser = new User(
-        UserManager.generateId(),
+        this.generateId(),
         data.name,
         data.lastName,
         data.dni,
@@ -60,65 +60,72 @@ class UserManager {
       // Agregar el nuevo usuario a la lista
       users.push(newUser);
       // Escribir la lista de usuarios actualizada en el archivo
-      await fs.writeFile(UserManager.#path, JSON.stringify(users, null, 2));
-      console.log("Usuario Creado con Exito!");
+      await fs.promises.writeFile(this.#path, JSON.stringify(users, null, 2));
+      console.log("User Created Successfully!");
       return newUser;
     } catch (error) {
-      console.error("Error al crear el usuario:", error.message);
+      console.error("Error creating user:", error.message);
       return null;
     }
   }
 
-  static async read() {
+  async read() {
     try {
       // Leer los usuarios del archivo
-      const users = JSON.parse(await fs.readFile(UserManager.#path, "utf-8"));
+      const users = JSON.parse(await fs.promises.readFile(this.#path, "utf-8"));
       return users;
     } catch (error) {
-      console.error("Error al leer los usuarios:", error.message);
+      console.error("Error reading users:", error.message);
       return [];
     }
   }
 
-  static async readOne(id) {
+  async readOne(id) {
     try {
       // Leer los usuarios del archivo
-      const users = JSON.parse(await fs.readFile(UserManager.#path, "utf-8"));
+      const users = JSON.parse(await fs.promises.readFile(this.#path, "utf-8"));
       const user = users.find((user) => user.id === id);
       if (!user) {
-        throw new Error(`No se encontró ningún usuario con el ID ${id}.`);
+        throw new Error(`Did NOT find any user with ID ${id}.`);
       }
-      console.log("Usuario Encontrado!");
+      console.log("User Found!");
       return user;
     } catch (error) {
-      console.error("Error al leer el usuario:", error.message);
+      console.error("Error reading user:", error.message);
       return null;
     }
   }
 
-  static async destroy(id) {
+  async destroy(id) {
     try {
       // Leer los usuarios del archivo
-      let users = JSON.parse(await fs.readFile(UserManager.#path, "utf-8"));
+      let users = JSON.parse(await fs.promises.readFile(this.#path, "utf-8"));
       const index = users.findIndex((user) => user.id === id);
       if (index === -1) {
-        throw new Error(`No se encontró ningún usuario con el ID ${id}.`);
+        throw new Error(`Did NOT find any user with ID ${id}.`);
       }
       const deletedUser = users.splice(index, 1)[0];
       // Escribir la lista de usuarios actualizada en el archivo
-      await fs.writeFile(UserManager.#path, JSON.stringify(users, null, 2));
-      console.log("Usuario Eliminado con Exito!");
+      await fs.promises.writeFile(this.#path, JSON.stringify(users, null, 2));
+      console.log("User Deleted Successfully!");
       return deletedUser;
     } catch (error) {
-      console.error("Error al eliminar el usuario:", error.message);
+      console.error("Error trying to delete user:", error.message);
       return null;
     }
   }
 }
 
-// Ejemplo de uso:
+
+
+
+
+
+// Función para la creación del archivo users.json //Usar si no está creado el archivo.
+/*
 (async () => {
-  await UserManager.init();
+  const userManager = new UserManager();
+  await userManager.init(); // Inicializa el gestor de usuarios
 
   // Definir usuarios
   const usersData = [
@@ -166,8 +173,17 @@ class UserManager {
 
   // Crear usuarios
   for (const userData of usersData) {
-    await UserManager.create(userData);
+    await userManager.create(userData);
   }
+
+
+})();
+*/
+
+
+/*
+
+DEJAMOS LOS METODOS MANUALES PARA PROBAR EL USER MANAGER:
 
   // Leer todos los usuarios
   console.log("Usuarios:");
@@ -188,4 +204,9 @@ class UserManager {
   // Eliminar un usuario por su ID - en este caso da error porque no lo encuentra.
   console.log("Eliminar usuario por ID:");
   console.log(await UserManager.destroy("2113285b542bbcc55c1f759a"));
-})();
+*/
+
+
+
+
+

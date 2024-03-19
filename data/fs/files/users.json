@@ -1,6 +1,6 @@
 [
   {
-    "id": "0d004f1c58540af9830f325b",
+    "id": "68591e7000c68fa285d83187",
     "name": "Juan",
     "lastName": "Perez",
     "dni": "12345678",
@@ -11,7 +11,7 @@
     "role": "user"
   },
   {
-    "id": "093de03368407ed4b13b81f9",
+    "id": "e1d9f3182b604d219a74075e",
     "name": "Maria",
     "lastName": "Gonzalez",
     "dni": "23456789",
@@ -22,7 +22,7 @@
     "role": "user"
   },
   {
-    "id": "18c76f0502420ae3dd4ede52",
+    "id": "bfe183fbaa6627663d723e49",
     "name": "Pedro",
     "lastName": "Lopez",
     "dni": "34567890",
@@ -31,5 +31,16 @@
     "email": "pedro@example.com",
     "password": "password789",
     "role": "user"
+  },
+  {
+    "id": "e4e63683be7eeae382cd1845",
+    "name": "Admin",
+    "lastName": "Admin",
+    "dni": "45678901",
+    "manzanaYLote": "D-10",
+    "phone": "11111111",
+    "email": "admin@example.com",
+    "password": "admin123",
+    "role": "admin"
   }
 ]
