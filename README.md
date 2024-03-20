@@ -22,5 +22,28 @@ Para la prueba luego de instalar las dependencias con el comando "npm install" y
 
 Luego, utilizando el navedador en el puerto 8080 (localhost:8080) podemos acceder a las siguientes URLs: 
 
-ENDPOINTS: 
+** ENDPOINTS ** : 
 
+* Obtener todos los productos:
+
+localhost:8080/api/products
+
+* Obtener todos los productos filtrados por la categoria: 
+
+localhost:8080/api/products?category="nombre de la categoria sin comillas"  (Muebles, Electrónica, Electrodomésticos, Deportes y Fitness)
+
+* Obtener un producto por id:
+
+localhost:8080/api/products/"id sin comillas" (ej: dd483ca53281b05cc2f7963c )
+
+* Obtener todos los usuarios:
+
+localhost:8080/api/users
+
+* Obtener todos los usuarios con un determinado rol:
+
+localhost:8080/api/users?role="rol sin comillas" (ej: admin, user)
+
+* Obtener un usuario por su ID:
+
+localhost:8080/api/users/"id sin comillas" (ej: bfe183fbaa6627663d723e49 )

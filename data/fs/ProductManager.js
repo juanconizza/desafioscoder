@@ -14,7 +14,7 @@ class Product {
   }
 }
 
-class ProductManager {
+export class ProductManager {
   static #path = "./data/fs/files/products.json";
 
   async init() {
@@ -58,9 +58,7 @@ class ProductManager {
   async read() {
     try {
       // Leer los productos del archivo
-      const products = JSON.parse(
-        await fs.readFile(ProductManager.#path, "utf-8")
-      );
+      const products = JSON.parse(await fs.promises.readFile(ProductManager.#path, "utf-8"));
       return products;
     } catch (error) {
       console.error("Error reading products:", error.message);
@@ -72,7 +70,7 @@ class ProductManager {
     try {
       // Leer los productos del archivo
       const products = JSON.parse(
-        await fs.readFile(ProductManager.#path, "utf-8")
+        await fs.promises.readFile(ProductManager.#path, "utf-8")
       );
       const product = products.find((product) => product.id === id);
       if (!product) {
@@ -89,7 +87,7 @@ class ProductManager {
     try {
       // Leer los productos del archivo
       let products = JSON.parse(
-        await fs.readFile(ProductManager.#path, "utf-8")
+        await fs.promises.readFile(ProductManager.#path, "utf-8")
       );
       const index = products.findIndex((product) => product.id === id);
       if (index === -1) {
@@ -97,7 +95,7 @@ class ProductManager {
       }
       const deletedProduct = products.splice(index, 1)[0];
       // Escribir la lista de productos actualizada en el archivo
-      await fs.writeFile(
+      await fs.promises.writeFile(
         ProductManager.#path,
         JSON.stringify(products, null, 2)
       );
