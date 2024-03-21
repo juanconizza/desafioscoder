@@ -14,6 +14,9 @@ const productManager = new ProductManager();
 // Middleware para manejar JSON
 app.use(express.json());
 
+// Este middleware de Express analiza los cuerpos de las solicitudes entrantes en un formulario codificado en URL y los coloca en req.body.
+app.use(express.urlencoded({ extended: true }));
+
 // Iniciar el servidor
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
