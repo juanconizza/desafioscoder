@@ -10,12 +10,12 @@
   },
   {
     "id": "dd483ca53281b05cc2f7963c",
-    "title": "Mesa de Comedor de Madera",
+    "title": "Mesa de Comedor de Hierro",
     "photo": "mesa_comedor.jpg",
     "category": "Muebles",
     "description": "Mesa de comedor de madera maciza con capacidad para 6 personas. Estilo rústico.",
-    "price": 250,
-    "stock": 1
+    "price": 300000,
+    "stock": 45
   },
   {
     "id": "744bd377cbd83bf41d69c227",

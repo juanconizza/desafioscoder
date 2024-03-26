@@ -2,6 +2,7 @@ import fs from "fs"
 import { randomBytes } from "crypto";
 
 
+
 class Product {
   constructor(id, title, photo, category, description, price, stock) {
     this.id = id;
@@ -15,7 +16,7 @@ class Product {
 }
 
 export class ProductManager {
-  static #path = "./data/fs/files/products.json";
+  static #path = "./src/data/fs/files/products.json";
 
   async init() {
     try {
@@ -83,6 +84,39 @@ export class ProductManager {
     }
   }
 
+  async update(id, newData) {
+    try {
+      // Leer los productos del archivo
+      let products = JSON.parse(
+        await fs.promises.readFile(ProductManager.#path, "utf-8")
+      );
+      
+      // Buscar el producto con el ID proporcionado
+      const index = products.findIndex((product) => product.id === id);
+      if (index === -1) {
+        throw new Error(`Did not find the product with ID: ${id}.`);
+      }
+      
+      // Actualizar las propiedades del producto con los nuevos datos
+      products[index] = {
+        ...products[index], // Mantener las propiedades anteriores
+        ...newData // Actualizar con los nuevos datos
+      };
+      
+      // Escribir la lista de productos actualizada en el archivo
+      await fs.promises.writeFile(
+        ProductManager.#path,
+        JSON.stringify(products, null, 2)
+      );
+      
+      return products[index]; // Devolver el producto actualizado
+    } catch (error) {
+      console.error("Error updating product:", error.message);
+      return null;
+    }
+}
+
+
   async destroy(id) {
     try {
       // Leer los productos del archivo
@@ -107,7 +141,14 @@ export class ProductManager {
   }
 }
 
-// Definir 20 productos
+
+// Modificar el producto con el ID  y actualizar el precio y el stock y descripción
+//console.log(await productManager.update("dd483ca53281b05cc2f7963c", { title: "Mesa de Comedor de Hierro", price: 300000, stock: 45 }));
+
+
+
+//Definir 20 productos
+/*
 const productsData = [
   {
     title: "Sofá de Cuero",
@@ -307,11 +348,6 @@ const productsData = [
 })();
 */
 
-
-
-  
-
- 
 /*
 DEJAMOS LOS METODOS MANUALES PARA PROBAR EL PRODUCT MANAGER: 
 
@@ -330,6 +366,9 @@ DEJAMOS LOS METODOS MANUALES PARA PROBAR EL PRODUCT MANAGER:
   // Eliminar un producto por su ID
   console.log("Eliminar producto con ID: ");
   console.log(await productManager.destroy("dd606c7d186c9423fb816f69"));
+
+  // Modificar el producto con el ID  y actualizar el precio y el stock y descripción
+console.log(await productManager.update("dd483ca53281b05cc2f7963c", { title: "Mesa de Comedor de Hierro", price: 300000, stock: 45 }));
 
   // Eliminar un producto por su ID que NO EXISTE
   console.log("Eliminar producto con ID: ");

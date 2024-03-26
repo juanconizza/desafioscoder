@@ -12,13 +12,13 @@
   },
   {
     "id": "e1d9f3182b604d219a74075e",
-    "name": "Maria",
+    "name": "Mariana",
     "lastName": "Gonzalez",
     "dni": "23456789",
     "manzanaYLote": "B-20",
     "phone": "987654321",
     "email": "maria@example.com",
-    "password": "password456",
+    "password": "0303456",
     "role": "user"
   },
   {
