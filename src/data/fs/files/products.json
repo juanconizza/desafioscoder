@@ -117,15 +117,6 @@
     "stock": 1
   },
   {
-    "id": "c0a3ac9b56b867f63bdee5b8",
-    "title": "Televisor OLED LG 65 Pulgadas 4K",
-    "photo": "tv_lg_oled.jpg",
-    "category": "Electrónica",
-    "description": "Televisor OLED LG de 65 pulgadas con resolución 4K. Colores vibrantes y negros perfectos.",
-    "price": 1500,
-    "stock": 1
-  },
-  {
     "id": "f11ffb6f6ddd379cfbbbd57d",
     "title": "Mesa de Escritorio de Estilo Industrial",
     "photo": "escritorio_industrial.jpg",
@@ -136,12 +127,12 @@
   },
   {
     "id": "f1f62d1845e32f7bb5a90a37",
-    "title": "Cafetera Expresso De'Longhi",
-    "photo": "cafetera_delonghi.jpg",
-    "category": "Electrodomésticos",
-    "description": "Cafetera Expresso De'Longhi con sistema de espuma de leche. Prepara café como un barista profesional.",
-    "price": 300,
-    "stock": 1
+    "title": "Reloj Xiaomi Neo Rojo",
+    "photo": "reloj.jpg",
+    "category": "Electronica",
+    "description": "El usuario no incluyó una descripción",
+    "price": 25000,
+    "stock": 3
   },
   {
     "id": "e133e8671c243767b20a62a2",

@@ -25,7 +25,7 @@ class User {
   }
 }
 
-export default class UserManager {
+export class UserManager {
   #path = "./src/data/fs/files/users.json"; 
 
   async init() {

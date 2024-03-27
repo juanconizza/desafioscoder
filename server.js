@@ -2,11 +2,17 @@ import express from "express";
 import router from "./src/routers/index.router.js";
 import errorHandler from "./src/middlewares/errorHandler.js";
 import pathHandler from "./src/middlewares/pathHandler.js";
+import validateProductsProps from "./src/middlewares/validateProductsProps.js";
+import validateUsersProps from "./src/middlewares/validateUsersProps.js";
 
 
 const app = express();
 const port = 8080;
 
+// Iniciar el servidor
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
 
 // Middleware para manejar JSON
 app.use(express.json());
@@ -20,10 +26,15 @@ app.use("/", router);
 // Middleware para el manejo de errores.
 app.use(errorHandler);
 
-// Middleware para el manejo de rutas desconocidas
+// Middleware para el manejo de rutas desconocidas.
 app.use(pathHandler)
 
-// Iniciar el servidor
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+// Middleware para validación de propiedades obligatorias y por defecto en los productos.
+app.use(validateProductsProps)
+
+// Middleware para validación de propiedades obligatorias y por defecto en los usuarios.
+app.use(validateUsersProps)
+
+
+
+
