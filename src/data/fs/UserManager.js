@@ -26,7 +26,7 @@ class User {
 }
 
 export class UserManager {
-  #path = "./data/fs/files/users.json"; 
+  #path = "./src/data/fs/files/users.json"; 
 
   async init() {
     try {
@@ -96,6 +96,32 @@ export class UserManager {
     }
   }
 
+  async update(id, newData) {
+    try {
+      // Leer los usuarios del archivo
+      let users = JSON.parse(await fs.promises.readFile(this.#path, "utf-8"));
+      
+      // Buscar el usuario por su ID
+      const index = users.findIndex((user) => user.id === id);
+      if (index === -1) {
+        throw new Error(`No se encontró ningún usuario con el ID ${id}.`);
+      }
+  
+      // Actualizar los datos del usuario con los nuevos datos
+      users[index] = { ...users[index], ...newData };
+  
+      // Escribir la lista de usuarios actualizada en el archivo
+      await fs.promises.writeFile(this.#path, JSON.stringify(users, null, 2));
+  
+      console.log("User Updated Successfully!");
+      return users[index];
+    } catch (error) {
+      console.error("Error updating user:", error.message);
+      return null;
+    }
+  }
+  
+
   async destroy(id) {
     try {
       // Leer los usuarios del archivo
@@ -115,7 +141,6 @@ export class UserManager {
     }
   }
 }
-
 
 
 
@@ -200,6 +225,11 @@ DEJAMOS LOS METODOS MANUALES PARA PROBAR EL USER MANAGER:
   // Eliminar un usuario por su ID
   console.log("Eliminar usuario por ID:");
   console.log(await UserManager.destroy("88455aa85b0970009b652f94"));
+
+  // Modificar un usuario y sus propiedades
+  console.log("Modificar usuario por ID:");
+console.log(await userManager.update("e1d9f3182b604d219a74075e", { name: "Mariana", lastName: "Gonzalez", password: "0303456" }));
+
 
   // Eliminar un usuario por su ID - en este caso da error porque no lo encuentra.
   console.log("Eliminar usuario por ID:");
