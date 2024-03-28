@@ -47,3 +47,67 @@ localhost:8080/api/users?role="rol sin comillas" (ej: admin, user)
 * Obtener un usuario por su ID:
 
 localhost:8080/api/users/"id sin comillas" (ej: bfe183fbaa6627663d723e49 )
+
+# Challenge 1 -  Branch: challenge1
+
+En esta primera entrega del proyecto final de desarollo la implementación de Router de Express para el correcto enrutamiento de la api y así poder dividirla en usuarios y productos. El mismo se encuentra en la carpeta "routers" donde tenemos la carpeta "api" y "views". 
+
+Se implementaron endpoints de tipo get, post, put y delete tanto para usuarios como para productos.
+
+Para probar los metodos se necesita la herramienta POSTMAN la cual puede descargarse de: https://www.postman.com/
+
+A continuación dejamos las rutas correspondientes:
+
+* Users:
+
+GET (read), leer todos los usuarios:  localhost:8080/api/users
+GET (readOne), leer 1 usuario usando el ID:  localhost:8080/api/users/:uid
+POST (create), crear 1 usuario nuevo: localhost:8080/api/users
+PUT (update), modificar un usuario por ID: localhost:8080/api/users/:uid
+DELETE (destroy), eleminar un usuario por ID: localhost:8080/api/users/:uid
+
+La estructura básica para probar los usuarios usando POSTMAN es un objeto JSON como muestra a continuación: 
+
+{
+    "name": "Pedro",
+    "lastName": "Lopez",
+    "dni": 34567890,
+    "manzanaYLote": "3445",
+    "phone": 5554564565,
+    "email": "pedro@example.com",
+    "password": "Password789",
+}
+
+(el ID y el role se generan de forma automática)
+
+* Products:
+
+GET (read), leer todos los productos:  localhost:8080/api/products
+GET (readOne), leer 1 producto usando el ID:  localhost:8080/api/products/:pid
+POST (create), crear 1 producto nuevo: localhost:8080/api/products
+PUT (update), modificar un producto por ID: localhost:8080/api/products/:pid
+DELETE (destroy), eleminar un producto por ID: localhost:8080/api/products/:pid
+
+La estructura básica para probar los productos usando POSTMAN es un objeto JSON como muestra a continuación: 
+
+{
+    "title": "Impresora Multifunción WiFi",
+    "photo": "impresora_multifuncion_wifi.jpg",
+    "category": "Informática",
+    "description": "Impresora multifunción WiFi con escáner y copiadora integrados. Imprime documentos y fotos desde cualquier dispositivo.",
+    "price": 150,
+    "stock": 1
+    
+}
+
+El ID se genera automáticamente y si el stock no se coloca siempre marca 1 por defecto. 
+
+Luego también se implementaron 4 Middlewares con el siguiente uso: 
+
+* errorHandler.js: Maneja todos los errores de las estructuras try/catch tanto de users como de products. 
+* pathHandler.js: Maneja todas las rutas que sean erroneas para arrojar un error predefinido 404.
+* validateProductsProps.js. Valida que los campos obligatorios y validaciones adicionales de los productos además de dejar por defecto algunos valores si no se completan.
+* validateUsersProps.js: Valida que los campos obligatorios y validaciones adicionales de los usuarios además de dejar por defecto algunos valores si no se completan.
+
+También implementamos Morgan para poder llevar por consola un seguimientos de las acciones (GET, POST, PUT, DELETE) en tiempo real. 
+

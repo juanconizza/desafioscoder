@@ -9,7 +9,7 @@ function errorHandler(error, req, res, next) {
     return res.status(error.statusCode).json({ error: error.message });
   } else {
     // Si no hay un código HTTP específico, trata el error como un error interno del servidor (500)
-    return res.status(500).json({ error: "Internal Server Error" });
+    return res.status(500).json({ error: error.message || "Internal Server Error 500" });
   }
 }
 

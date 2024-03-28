@@ -1,19 +1,19 @@
 import { Router } from "express";
 import { ProductManager } from "../../../src/data/fs/ProductManager.js";
-import errorHandler from "../../middlewares/errorHandler.js";
 import validateProductsProps from "../../middlewares/validateProductsProps.js";
 
 const productRouter = Router();
 const productManager = new ProductManager();
 
 // Endpoint para obtener todos los productos
-productRouter.get("/", async (req, res) => {
+productRouter.get("/", async (req, res, next) => {
   try {
     const category = req.query.category;
     const products = await productManager.read();
     const filteredProducts = category
       ? products.filter((product) => product.category === category)
       : products;
+      const totalProducts = filteredProducts.length;
 
     if (filteredProducts.length === 0) {
       return res.status(404).json({
@@ -25,16 +25,17 @@ productRouter.get("/", async (req, res) => {
 
     res.status(200).json({
       statusCode: 200,
+      totalProducts: totalProducts, 
       response: filteredProducts,
     });
   } catch (error) {
-    return errorHandler(error, req, res);
+    return next(error);
   }
 });
 
 //Endpoint para leer un producto por id usando el metodo readOne()
 
-productRouter.get("/:pid", async (req, res) => {
+productRouter.get("/:pid", async (req, res, next) => {
   try {
     // Obtener el parámetro pid de la URL
     const productId = req.params.pid;
@@ -58,13 +59,13 @@ productRouter.get("/:pid", async (req, res) => {
       });
     }
   } catch (error) {
-    return errorHandler(error, req, res);
+    return next(error);
   }
 });
 
 // Endpoint para crear un nuevo producto (POST) con validador de propiedades como middleware.
 
-productRouter.post("/", validateProductsProps, async (req, res) => {
+productRouter.post("/", validateProductsProps, async (req, res, next) => {
   try {
     const data = req.body;
 
@@ -79,12 +80,12 @@ productRouter.post("/", validateProductsProps, async (req, res) => {
     });
     } catch (error) {
     // Manejar errores utilizando el errorHandler
-    return errorHandler(error, req, res);
+    return next(error);
   }
 });
 
 // Endpoint para actualizar un producto por su ID
-productRouter.put("/:pid", validateProductsProps, async (req, res) => {
+productRouter.put("/:pid", validateProductsProps, async (req, res, next) => {
   try {
     const productId = req.params.pid;
     const newData = req.body;
@@ -105,12 +106,12 @@ productRouter.put("/:pid", validateProductsProps, async (req, res) => {
     }
   } catch (error) {
     // Manejar errores utilizando el errorHandler
-    return errorHandler(error, req, res);
+    return next(error);
   }
 });
 
 // Endpoint para eliminar un producto por su ID
-productRouter.delete("/:pid", async (req, res) => {
+productRouter.delete("/:pid", async (req, res, next) => {
   try {
     const productId = req.params.pid;
 
@@ -130,7 +131,7 @@ productRouter.delete("/:pid", async (req, res) => {
     }
   } catch (error) {
     // Manejar errores utilizando el errorHandler
-    return errorHandler(error, req, res);
+    return next(error);
   }
 });
 

@@ -39,6 +39,11 @@ function validateUsersProps(req, res, next) {
         errors.push(`"manzanaYLote" must have the format MMLL where MM and LL are two integer numbers.`);
     }
 
+    // Validamos por defecto que role sea 0 (0 = user / 1= admin)
+    if (!data.role){
+        req.body.role = 0
+    }
+
     // Si hay errores, devolver un mensaje de error
     if (errors.length > 0) {
         return res.status(400).json({

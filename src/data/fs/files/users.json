@@ -8,7 +8,7 @@
     "phone": 123456789,
     "email": "juan@example.com",
     "password": "Password123",
-    "role": "user"
+    "role": 0
   },
   {
     "id": "e1d9f3182b604d219a74075e",
@@ -30,7 +30,7 @@
     "phone": "11111111",
     "email": "admin@example.com",
     "password": "admin123",
-    "role": "admin"
+    "role": 1
   },
   {
     "id": "73033945825934fe69b130df",
@@ -41,7 +41,7 @@
     "phone": 3515921209,
     "email": "pedro@example.com",
     "password": "Password789",
-    "role": "user"
+    "role": 0
   },
   {
     "id": "cb21b4de175a5e3cc535b66d",
@@ -52,6 +52,28 @@
     "phone": 5554564565,
     "email": "pedro@example.com",
     "password": "Password789",
-    "role": "user"
+    "role": 0
+  },
+  {
+    "id": "515a45be8a4e3b8ca70fdddc",
+    "name": "Pedro",
+    "lastName": "Lopez",
+    "dni": 34567890,
+    "manzanaYLote": "3445",
+    "phone": 5554564565,
+    "email": "pedro@example.com",
+    "password": "Password789",
+    "role": 0
+  },
+  {
+    "id": "ad1f164bdeedf7e255a6a8dc",
+    "name": "Juan",
+    "lastName": "Perez",
+    "dni": 33162314,
+    "manzanaYLote": "3445",
+    "phone": 3515921209,
+    "email": "pedro@example.com",
+    "password": "Password789",
+    "role": 0
   }
 ]

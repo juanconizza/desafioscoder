@@ -4,10 +4,14 @@ import errorHandler from "./src/middlewares/errorHandler.js";
 import pathHandler from "./src/middlewares/pathHandler.js";
 import validateProductsProps from "./src/middlewares/validateProductsProps.js";
 import validateUsersProps from "./src/middlewares/validateUsersProps.js";
+import morgan from "morgan";
 
 
 const app = express();
 const port = 8080;
+
+// Inicializamos Morgan
+app.use(morgan("dev"));
 
 // Iniciar el servidor
 app.listen(port, () => {

@@ -1,14 +1,12 @@
 import { Router } from "express";
-import { UserManager }  from "../../../src/data/fs/UserManager.js";
-import errorHandler from "../../middlewares/errorHandler.js";
+import { UserManager } from "../../../src/data/fs/UserManager.js";
 import validateUsersProps from "../../middlewares/validateUsersProps.js";
 
 const userRouter = Router();
-const userManager = new UserManager()
-
+const userManager = new UserManager();
 
 // Endpoint para obtener todos los usuarios y filtro query por rol
-userRouter.get("/", async (req, res) => {
+userRouter.get("/", async (req, res, next) => {
   try {
     const { role } = req.query; // Obtener el valor del parámetro role de la query
 
@@ -33,12 +31,12 @@ userRouter.get("/", async (req, res) => {
       });
     }
   } catch (error) {
-    return errorHandler(error, req, res);
+    return next(error);
   }
 });
 
 // Endpoint para obtener un usuario por su ID
-userRouter.get("/:uid", async (req, res) => {
+userRouter.get("/:uid", async (req, res, next) => {
   try {
     const user = await userManager.readOne(req.params.uid);
     if (!user) {
@@ -49,12 +47,12 @@ userRouter.get("/:uid", async (req, res) => {
       res.status(200).json({ statusCode: 200, response: user });
     }
   } catch (error) {
-    return errorHandler(error, req, res);
+    return next(error);
   }
 });
 
-// Endpoint POST para crear un nuevo usuario utilizando el middleware de validación. 
-userRouter.post("/", validateUsersProps, async (req, res) => {
+// Endpoint POST para crear un nuevo usuario utilizando el middleware de validación.
+userRouter.post("/", validateUsersProps, async (req, res, next) => {
   try {
     const data = req.body; // Obtener los datos del cuerpo de la solicitud
 
@@ -69,12 +67,12 @@ userRouter.post("/", validateUsersProps, async (req, res) => {
     });
   } catch (error) {
     // Manejar los errores utilizando el errorHandler
-    return errorHandler(error, req, res);
+    return next(error);
   }
 });
 
 // Endpoint PUT para actualizar un usuario existente
-userRouter.put("/:uid", validateUsersProps, async (req, res) => {
+userRouter.put("/:uid", validateUsersProps, async (req, res, next) => {
   try {
     const { uid } = req.params; // Obtener el ID del usuario de los parámetros de la URL
     const data = req.body; // Obtener los datos del cuerpo de la solicitud
@@ -89,12 +87,12 @@ userRouter.put("/:uid", validateUsersProps, async (req, res) => {
     });
   } catch (error) {
     // Manejar los errores utilizando el errorHandler
-    return errorHandler(error, req, res);
+    return next(error);
   }
 });
 // Endpoint DELETE para eliminar un usuario existente
 
-userRouter.delete("/:uid", async (req, res) => {
+userRouter.delete("/:uid", async (req, res, next) => {
   try {
     const { uid } = req.params; // Obtener el ID del usuario de los parámetros de la URL
 
@@ -102,13 +100,18 @@ userRouter.delete("/:uid", async (req, res) => {
     const deletedUser = await userManager.destroy(uid);
 
     // Enviar una respuesta con el usuario eliminado
-    res.status(200).json({
-      statusCode: 200,
-      response: deletedUser,
-    });
+    if (deletedUser) {
+      res.status(200).json({
+        statusCode: 200,
+        response: deletedUser,
+      });
+    } else {
+      // Si no se pudo eliminar el usuario envía un mensaje de error
+      throw new Error(`Failed to delete user with ID ${uid}.`);
+    }
   } catch (error) {
     // Manejar los errores utilizando el errorHandler
-    return errorHandler(error, req, res);
+    return next(error);
   }
 });
 

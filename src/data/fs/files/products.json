@@ -129,10 +129,10 @@
     "id": "f1f62d1845e32f7bb5a90a37",
     "title": "Reloj Xiaomi Neo Rojo",
     "photo": "reloj.jpg",
-    "category": "Electronica",
+    "category": "Relojes",
     "description": "El usuario no incluyó una descripción",
     "price": 25000,
-    "stock": 3
+    "stock": 1
   },
   {
     "id": "e133e8671c243767b20a62a2",
@@ -169,5 +169,194 @@
     "description": "Máquina de ejercicio multifuncional para entrenamiento en casa. Tonifica y fortalece todos los grupos musculares.",
     "price": 800,
     "stock": 1
+  },
+  {
+    "id": "1a2b3c4d5e6f7g8h9i0j",
+    "title": "Televisor LED Ultra HD 4K",
+    "photo": "tv_led_4k.jpg",
+    "category": "Electrónica",
+    "description": "Televisor LED Ultra HD 4K con pantalla de 55 pulgadas. Imágenes nítidas y colores vibrantes.",
+    "price": 1200,
+    "stock": 1
+  },
+  {
+    "id": "2b3c4d5e6f7g8h9i0j1k",
+    "title": "Sofá Modular de Cuero",
+    "photo": "sofa_modular_cuero.jpg",
+    "category": "Hogar",
+    "description": "Sofá modular de cuero con asientos reclinables. Estilo moderno y máximo confort.",
+    "price": 1500,
+    "stock": 1
+  },
+  {
+    "id": "3c4d5e6f7g8h9i0j1k2l",
+    "title": "Lavadora de Carga Frontal",
+    "photo": "lavadora_carga_frontal.jpg",
+    "category": "Electrodomésticos",
+    "description": "Lavadora de carga frontal con capacidad para 8 kg. Programas de lavado personalizables.",
+    "price": 800,
+    "stock": 1
+  },
+  {
+    "id": "4d5e6f7g8h9i0j1k2l3m",
+    "title": "Cámara Réflex Digital",
+    "photo": "camara_reflex_digital.jpg",
+    "category": "Fotografía",
+    "description": "Cámara réflex digital con sensor de 24.2 MP. Captura imágenes de alta calidad y videos en Full HD.",
+    "price": 900,
+    "stock": 1
+  },
+  {
+    "id": "5e6f7g8h9i0j1k2l3m4n",
+    "title": "Robot Aspirador Inteligente",
+    "photo": "robot_aspirador_inteligente.jpg",
+    "category": "Hogar",
+    "description": "Robot aspirador inteligente con mapeo de áreas y función de limpieza programable. Ideal para hogares con mascotas.",
+    "price": 300,
+    "stock": 1
+  },
+  {
+    "id": "6f7g8h9i0j1k2l3m4n5o",
+    "title": "Smartwatch con Monitor de Ritmo Cardíaco",
+    "photo": "smartwatch_ritmo_cardiaco.jpg",
+    "category": "Electrónica",
+    "description": "Smartwatch con monitor de ritmo cardíaco y GPS integrado. Seguimiento de actividad física y notificaciones inteligentes.",
+    "price": 200,
+    "stock": 1
+  },
+  {
+    "id": "7g8h9i0j1k2l3m4n5o6p",
+    "title": "Bicicleta de Montaña Todo Terreno",
+    "photo": "bicicleta_montana.jpg",
+    "category": "Deportes y Fitness",
+    "description": "Bicicleta de montaña todo terreno con suspensión delantera y cambios Shimano. Ideal para aventuras al aire libre.",
+    "price": 600,
+    "stock": 1
+  },
+  {
+    "id": "8h9i0j1k2l3m4n5o6p7q",
+    "title": "Teclado Mecánico para Gaming",
+    "photo": "teclado_mecanico_gaming.jpg",
+    "category": "Informática",
+    "description": "Teclado mecánico para gaming con retroiluminación RGB y teclas programables. Diseño ergonómico y respuesta rápida.",
+    "price": 100,
+    "stock": 1
+  },
+  {
+    "id": "9i0j1k2l3m4n5o6p7q8r",
+    "title": "Auriculares Inalámbricos Bluetooth",
+    "photo": "auriculares_inalambricos_bluetooth.jpg",
+    "category": "Electrónica",
+    "description": "Auriculares inalámbricos Bluetooth con cancelación de ruido activa. Sonido de alta fidelidad y comodidad de uso.",
+    "price": 150,
+    "stock": 1
+  },
+  {
+    "id": "0j1k2l3m4n5o6p7q8r9s",
+    "title": "Monitor Curvo Ultrawide de 34 Pulgadas",
+    "photo": "monitor_curvo_ultrawide.jpg",
+    "category": "Informática",
+    "description": "Monitor curvo ultrawide de 34 pulgadas con resolución Quad HD. Experiencia visual inmersiva y amplio espacio de trabajo.",
+    "price": 800,
+    "stock": 1
+  },
+  {
+    "id": "1k2l3m4n5o6p7q8r9s0t",
+    "title": "Aspiradora sin Bolsa Multiusos",
+    "photo": "aspiradora_sin_bolsa.jpg",
+    "category": "Electrodomésticos",
+    "description": "Aspiradora sin bolsa multiusos con filtro HEPA y accesorios para limpieza de suelos y superficies.",
+    "price": 250,
+    "stock": 1
+  },
+  {
+    "id": "2l3m4n5o6p7q8r9s0t1u",
+    "title": "Tablet Android de 10 Pulgadas",
+    "photo": "tablet_android.jpg",
+    "category": "Electrónica",
+    "description": "Tablet Android de 10 pulgadas con procesador de alto rendimiento y pantalla Full HD. Ideal para entretenimiento y productividad.",
+    "price": 300,
+    "stock": 1
+  },
+  {
+    "id": "3m4n5o6p7q8r9s0t1u2v",
+    "title": "Silla de Escritorio Ergonómica",
+    "photo": "silla_escritorio_ergonomica.jpg",
+    "category": "Muebles",
+    "description": "Silla de escritorio ergonómica con respaldo ajustable y soporte lumbar. Comodidad y salud durante largas horas de trabajo.",
+    "price": 150,
+    "stock": 1
+  },
+  {
+    "id": "5o6p7q8r",
+    "title": "Horno Eléctrico Multifunción",
+    "photo": "horno_electrico.jpg",
+    "category": "Electrodomésticos",
+    "description": "Horno eléctrico multifunción con capacidad de 60 litros. Ideal para hornear, asar y gratinar una variedad de alimentos.",
+    "price": 400,
+    "stock": 1
+  },
+  {
+    "id": "6p7q8r9s",
+    "title": "Mochila para Portátil de 15 Pulgadas",
+    "photo": "mochila_portatil.jpg",
+    "category": "Accesorios",
+    "description": "Mochila para portátil de 15 pulgadas con compartimentos acolchados y diseño resistente al agua. Protege tu equipo en todo momento.",
+    "price": 50,
+    "stock": 1
+  },
+  {
+    "id": "7q8r9s0t",
+    "title": "Cafetera Automática con Molinillo",
+    "photo": "cafetera_automatica.jpg",
+    "category": "Electrodomésticos",
+    "description": "Cafetera automática con molinillo integrado y sistema de preparación de espresso. Disfruta de café fresco y aromático en casa.",
+    "price": 300,
+    "stock": 1
+  },
+  {
+    "id": "8r9s0t1u",
+    "title": "Plancha de Vapor Profesional",
+    "photo": "plancha_vapor_profesional.jpg",
+    "category": "Electrodomésticos",
+    "description": "Plancha de vapor profesional con suela de cerámica antiadherente. Elimina las arrugas de manera eficiente y deja tus prendas impecables.",
+    "price": 80,
+    "stock": 1
+  },
+  {
+    "id": "9s0t1u2v",
+    "title": "Batería Externa Portátil",
+    "photo": "bateria_externa_portatil.jpg",
+    "category": "Accesorios",
+    "description": "Batería externa portátil con capacidad de 20000 mAh. Carga rápida para smartphones, tabletas y otros dispositivos electrónicos.",
+    "price": 30,
+    "stock": 1
+  },
+  {
+    "id": "0t1u2v3w",
+    "title": "Sistema de Alarma para Hogar",
+    "photo": "sistema_alarma_hogar.jpg",
+    "category": "Seguridad",
+    "description": "Sistema de alarma para hogar con sensores de movimiento y control remoto. Protege tu vivienda contra intrusos y emergencias.",
+    "price": 200,
+    "stock": 1
+  },
+  {
+    "id": "1u2v3w4x",
+    "title": "Maletín de Viaje Rígido",
+    "photo": "maletin_viaje_rigido.jpg",
+    "category": "Equipaje",
+    "description": "Maletín de viaje rígido con ruedas giratorias y asa telescópica. Resistente y espacioso para tus desplazamientos.",
+    "price": 100,
+    "stock": 1
+  },
+  {
+    "id": "dc5e242d55781b4ffdcda556",
+    "title": "Reloj Xiaomi Neo Rojo",
+    "photo": "reloj.jpg",
+    "category": "Electronica",
+    "description": "El usuario no incluyó una descripción",
+    "price": 25000,
+    "stock": 3
   }
 ]

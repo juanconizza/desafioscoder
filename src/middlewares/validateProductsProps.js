@@ -1,6 +1,6 @@
 function validateProductsProps(req, res, next) {
     const data = req.body;
-    const requiredProps = ["title", "photo", "category", "price", "stock"];
+    const requiredProps = ["title", "photo", "category", "price"];
     const missingProps = [];
 
     // Verificar si las propiedades obligatorias están presentes y si son números enteros
@@ -24,6 +24,9 @@ function validateProductsProps(req, res, next) {
     // Definir propiedades por defecto si no están presentes
     if (!data.description) {
         req.body.description = "El usuario no incluyó una descripción";
+    }
+    if (!data.stock){
+        req.body.stock = 1
     }
 
     // Pasar al siguiente middleware
