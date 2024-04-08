@@ -33,12 +33,6 @@ app.use(errorHandler);
 // Middleware para el manejo de rutas desconocidas.
 app.use(pathHandler)
 
-// Middleware para validación de propiedades obligatorias y por defecto en los productos.
-app.use(validateProductsProps)
-
-// Middleware para validación de propiedades obligatorias y por defecto en los usuarios.
-app.use(validateUsersProps)
-
 
 
 
