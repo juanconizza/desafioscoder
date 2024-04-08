@@ -19,10 +19,10 @@ viewsRouter.get("/", async (req, res, next) => {
 
 viewsRouter.get("/products/real", async (req, res, next) => {
   try {
-    const products = await productManager.read(); 
+    
     return res.render("productsReal", { 
       title: "¡Manantiales Market! - Carga tu Producto ",
-      products: products 
+     
     });
   } catch (error) {
     return next(error);

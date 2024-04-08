@@ -1,5 +1,8 @@
 import express from "express";
 import { engine } from "express-handlebars";
+import { createServer } from "http";
+import { Server } from "socket.io";
+import socketCb from "./src/routers/index.socket.js"
 import router from "./src/routers/index.router.js";
 import errorHandler from "./src/middlewares/errorHandler.js";
 import pathHandler from "./src/middlewares/pathHandler.js";
@@ -7,8 +10,18 @@ import morgan from "morgan";
 import __dirname from "./utils.js";
 import { join } from "path";
 
+
 const app = express();
 const port = 8080;
+// Iniciar el servidor
+const ready = () => console.log("server ready on port " + port);
+const nodeServer = createServer(app);
+nodeServer.listen(port, ready);
+
+
+//Iniciamos el servidor TCP
+const socketServer = new Server(nodeServer);
+socketServer.on("connection", socketCb);
 
 //Configuramos el motor de plantillas de handlebars
 app.engine("handlebars", engine());
@@ -20,11 +33,6 @@ app.use(express.static(join(__dirname, "public/img")));
 
 // Inicializamos Morgan
 app.use(morgan("dev"));
-
-// Iniciar el servidor
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
 
 // Middleware para manejar JSON
 app.use(express.json());
