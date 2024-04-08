@@ -1,12 +1,22 @@
 import express from "express";
+import { engine } from "express-handlebars";
 import router from "./src/routers/index.router.js";
 import errorHandler from "./src/middlewares/errorHandler.js";
 import pathHandler from "./src/middlewares/pathHandler.js";
 import morgan from "morgan";
-
+import __dirname from "./utils.js";
+import { join } from "path";
 
 const app = express();
 const port = 8080;
+
+//Configuramos el motor de plantillas de handlebars
+app.engine("handlebars", engine());
+app.set("view engine", "handlebars");
+app.set("views", __dirname + "/src/views");
+
+//Carpeta Public de Imagenes
+app.use(express.static(join(__dirname, "public/img")));
 
 // Inicializamos Morgan
 app.use(morgan("dev"));
@@ -29,8 +39,4 @@ app.use("/", router);
 app.use(errorHandler);
 
 // Middleware para el manejo de rutas desconocidas.
-app.use(pathHandler)
-
-
-
-
+app.use(pathHandler);
