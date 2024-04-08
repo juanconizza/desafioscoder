@@ -2,8 +2,6 @@ import express from "express";
 import router from "./src/routers/index.router.js";
 import errorHandler from "./src/middlewares/errorHandler.js";
 import pathHandler from "./src/middlewares/pathHandler.js";
-import validateProductsProps from "./src/middlewares/validateProductsProps.js";
-import validateUsersProps from "./src/middlewares/validateUsersProps.js";
 import morgan from "morgan";
 
 

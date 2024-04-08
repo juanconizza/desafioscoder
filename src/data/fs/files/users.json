@@ -19,7 +19,7 @@
     "phone": "9876543210",
     "email": "maria@example.com",
     "password": "A0303456",
-    "role": "user"
+    "role": 0
   },
   {
     "id": "e4e63683be7eeae382cd1845",
@@ -73,6 +73,17 @@
     "manzanaYLote": "3445",
     "phone": 3515921209,
     "email": "pedro@example.com",
+    "password": "Password789",
+    "role": 0
+  },
+  {
+    "id": "5f4622f176b53228532d4a51",
+    "name": "Fernando",
+    "lastName": "Rabellini",
+    "dni": 33162314,
+    "manzanaYLote": "3445",
+    "phone": 3515921209,
+    "email": "fer@zumi.com",
     "password": "Password789",
     "role": 0
   }
