@@ -4,7 +4,7 @@
   <div class="row justify-content-center">
     <div class="col-md-6">
       <h2 class="text-center mb-4">Ingrese su producto a publicar</h2>
-      <form id="productForm" class="mt-5">
+      <form id="productForm" class="mt-5" action="/upload" method="post" enctype="multipart/form-data">
         <div class="mb-3">
           <label for="title" class="form-label">Nombre del Producto</label>
           <input
@@ -77,15 +77,14 @@
   </div>
 </div>
 
+
 <!-- Contenido para renderizar productos en tiempo real -->
-<<!-- Contenido para renderizar productos en tiempo real -->
 <div class="container mt-5">
   <h2 class="text-center mb-4">Productos en Tiempo Real</h2>
   <div class="row" id="realTimeProducts">
     <!-- Aquí se renderizarán los productos en tiempo real -->
   </div>
 </div>
-
 
 
 <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
@@ -98,23 +97,45 @@
   });
 
   // Manejar el envío del formulario para agregar un nuevo producto
-  const productForm = document.getElementById("productForm");
-  productForm.addEventListener("submit", (event) => {
-    event.preventDefault(); // Evitar la recarga de la página al enviar el formulario
+const productForm = document.getElementById("productForm");
+productForm.addEventListener("submit", async (event) => {
+  event.preventDefault(); // Evitar la recarga de la página al enviar el formulario
 
-const formData = new FormData(productForm);
+  const formData = new FormData(productForm);
+    
   const newProduct = {
     title: formData.get("title"),
-    photo: formData.get("photo"),
     category: formData.get("category"),
     description: formData.get("description"),
     price: formData.get("price"),
     stock: formData.get("stock")
   };
+  
+   const photoFile = formData.get("photo");
 
-    // Enviar el evento "newProduct" al servidor con los datos del nuevo producto
-    socket.emit("newProduct", newProduct);
-  });
+try {
+  // Enviar la imagen al servidor y obtener la URL de la imagen guardada
+  const response = await fetch("/upload", {
+    method: "POST",
+    body: formData})
+        
+
+    if (response.ok) {
+      // Obtener la URL de la imagen del servidor
+      const imageUrl = await response.text();
+      // Agregar la URL de la imagen al objeto del nuevo producto
+      newProduct.photo = imageUrl;
+
+      // Enviar el evento "newProduct" al servidor con los datos del nuevo producto
+      socket.emit("newProduct", newProduct);
+    } else {
+      console.error("Error al subir la imagen:", response.status);
+    }
+  } catch (error) {
+    console.error("Error al subir la imagen:", error);
+  }
+});
+
 
   // Función para renderizar los productos
   function renderProducts(products) {

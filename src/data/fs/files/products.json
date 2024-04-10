@@ -351,12 +351,12 @@
     "stock": 1
   },
   {
-    "id": "dc5e242d55781b4ffdcda556",
-    "title": "Reloj Xiaomi Neo Rojo",
-    "photo": "reloj.jpg",
-    "category": "Electronica",
-    "description": "El usuario no incluyó una descripción",
-    "price": 25000,
-    "stock": 3
+    "id": "d8a4f70104bbc3ad866d16d9",
+    "title": "Pelota de Futbol 5",
+    "photo": "Pelota_de_Futbol_5.jpg",
+    "category": "Deportes",
+    "description": "Excelente estado",
+    "price": "3000",
+    "stock": "1"
   }
 ]
