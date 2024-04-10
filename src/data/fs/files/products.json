@@ -358,5 +358,23 @@
     "description": "Excelente estado",
     "price": "3000",
     "stock": "1"
+  },
+  {
+    "id": "97449527e8c8971d6de16d92",
+    "title": "Pelota de Baseball de Cuero",
+    "photo": "Pelota-de-Baseball-de-Cuero_1712769848741.jpeg",
+    "category": "Deportes",
+    "description": "Excelente!",
+    "price": "3000",
+    "stock": "1"
+  },
+  {
+    "id": "671ef73e082b03d610909a40",
+    "title": "Caja de Herramientas ",
+    "photo": "Caja-de-Herramientas-_1712775475534.jpeg",
+    "category": "Hogar",
+    "description": "Excelente caja de herramienta como nueva",
+    "price": "10000",
+    "stock": "1"
   }
 ]
