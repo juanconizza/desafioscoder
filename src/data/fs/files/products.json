@@ -376,5 +376,14 @@
     "description": "Excelente caja de herramienta como nueva",
     "price": "10000",
     "stock": "1"
+  },
+  {
+    "id": "3fa78275f61bb264f485ca94",
+    "title": "Iphone 12 Pro Max ",
+    "photo": "Iphone-12-Pro-Max-_1712794970816.jpeg",
+    "category": "Electronica",
+    "description": "Excelente estado",
+    "price": "850000",
+    "stock": "1"
   }
 ]
