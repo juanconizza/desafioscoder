@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { ProductManager } from "../../../src/data/fs/ProductManager.js";
+import productManager from "../../data/mongo/ProductsManager.mongo.js";
 import validateProductsProps from "../../middlewares/validateProductsProps.js";
 
 const productRouter = Router();
-const productManager = new ProductManager();
+
 
 // Endpoint para obtener todos los productos
 productRouter.get("/", async (req, res, next) => {

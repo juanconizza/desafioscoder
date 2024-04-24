@@ -1,4 +1,5 @@
-const { randomBytes } = require('crypto');
+import { randomBytes } from 'crypto';
+
 
 class Product {
     constructor(id, title, photo, category, description, price, stock) {
@@ -24,7 +25,7 @@ class ProductManager {
             const newProduct = new Product(
                 this.generateId(),
                 data.title,
-                data.photo || "defaultphoto.jpg", // Ruta de imagen por defecto si no se proporciona
+                data.photo || "default_picture.png", // Ruta de imagen por defecto si no se proporciona
                 data.category,
                 data.description,
                 data.price,

@@ -1,4 +1,6 @@
+import "dotenv/config.js"
 import express from "express";
+import dbConnection from "./src/utils/db.js";
 import { engine } from "express-handlebars";
 import { createServer } from "http";
 import { Server } from "socket.io";
@@ -13,9 +15,12 @@ import path from "path";
 import { upload } from "./src/middlewares/uploader.js";
 
 const app = express();
-const port = 8080;
-// Iniciar el servidor
-const ready = () => console.log("server ready on port " + port);
+const port = process.env.PORT;
+// Iniciar el servidor con conexión a Mongodb
+const ready = async () => {
+  console.log("server ready on port " + port);
+  await dbConnection();
+};
 const nodeServer = createServer(app);
 nodeServer.listen(port, ready);
 
@@ -27,6 +32,7 @@ socketServer.on("connection", socketCb);
 app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
 app.set("views", __dirname + "/src/views");
+
 
 // Ruta para servir los archivos CSS de Bootstrap
 app.use(

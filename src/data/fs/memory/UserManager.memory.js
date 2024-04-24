@@ -1,4 +1,5 @@
-const { randomBytes } = require('crypto');
+import { randomBytes } from 'crypto';
+
 
 class User {
     constructor(id, name, lastName, dni, manzanaYLote, phone, email, password, role) {

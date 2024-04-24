@@ -125,6 +125,18 @@ En la vista de userPanel en la URL localhost:8080/panel/5f4622f176b53228532d4a51
 
 Por ultimo en el link de "Login / Registro" se implemento de momento solo un formulario que a futuro se utilizará para el registro de los nuevos usuarios. 
 
+# DESAFIO 5 - Branch: sprint5
+
+En este desafío se implemento la creación de un nuevo manager de "Cart Contact" que se utilizará en la app para crear un chat entre los vendedores y los compradores (ya que el sitio será al estilo de alamaula y olx). Donde si bien se podrá realizar un carrito de compras al finalizar el mismo abrirá conversación y notificará vía email a los interesados para que puedan hablar y contactarse por la plataforma. 
+
+El Cart Contact Manager se implementó tanto en la persistencia Memory, File System y la nube de MongoDb. Se crearon los metodos CRUD con los modelos y clases constructoras correspondiente tanto para Cart Contact como también para Product Manager y User Manager.  
+
+Luego se creó una ruta dentro de la api como /api/cart-contact donde se pueden probar los metods CRUD correspondientes con postman. 
+
+También implementé la vista de producto en la ruta /products/pid donde se puede ver el resumen del producto y el botón agregar al carrito. También en el index se vinculó dinamicamente el id para que se pueda acceder a cada producto. 
+
+La App quedó funcionando todo en la base de datos de la nube de Mongo Db y se importó la base de File System. Las colecciones creadas son: products, users, carts_contact.
+
 
 
 
