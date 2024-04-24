@@ -351,12 +351,39 @@
     "stock": 1
   },
   {
-    "id": "dc5e242d55781b4ffdcda556",
-    "title": "Reloj Xiaomi Neo Rojo",
-    "photo": "reloj.jpg",
+    "id": "d8a4f70104bbc3ad866d16d9",
+    "title": "Pelota de Futbol 5",
+    "photo": "Pelota_de_Futbol_5.jpg",
+    "category": "Deportes",
+    "description": "Excelente estado",
+    "price": "3000",
+    "stock": "1"
+  },
+  {
+    "id": "97449527e8c8971d6de16d92",
+    "title": "Pelota de Baseball de Cuero",
+    "photo": "Pelota-de-Baseball-de-Cuero_1712769848741.jpeg",
+    "category": "Deportes",
+    "description": "Excelente!",
+    "price": "3000",
+    "stock": "1"
+  },
+  {
+    "id": "671ef73e082b03d610909a40",
+    "title": "Caja de Herramientas ",
+    "photo": "Caja-de-Herramientas-_1712775475534.jpeg",
+    "category": "Hogar",
+    "description": "Excelente caja de herramienta como nueva",
+    "price": "10000",
+    "stock": "1"
+  },
+  {
+    "id": "3fa78275f61bb264f485ca94",
+    "title": "Iphone 12 Pro Max ",
+    "photo": "Iphone-12-Pro-Max-_1712794970816.jpeg",
     "category": "Electronica",
-    "description": "El usuario no incluyó una descripción",
-    "price": 25000,
-    "stock": 3
+    "description": "Excelente estado",
+    "price": "850000",
+    "stock": "1"
   }
 ]

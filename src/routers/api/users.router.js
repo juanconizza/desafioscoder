@@ -8,20 +8,23 @@ const userManager = new UserManager();
 // Endpoint para obtener todos los usuarios y filtro query por rol
 userRouter.get("/", async (req, res, next) => {
   try {
-    const { role } = req.query; // Obtener el valor del parámetro role de la query
-
     let users = await userManager.read();
+    let filteredUsers = users;
 
-    // Filtrar usuarios por rol si se proporciona el parámetro role
-    if (role) {
-      users = users.filter((user) => user.role === role);
+    // Verificar si se proporcionó el parámetro "role" en la consulta
+    if (req.query.role !== undefined) {
+      // Convertir el valor de "role" a un número entero
+      const role = parseInt(req.query.role);
+
+      // Filtrar usuarios por rol
+      filteredUsers = users.filter((user) => user.role === role);
     }
 
-    // Verificar si hay usuarios después de filtrar
-    if (users.length > 0) {
+    // Verificar si se encontraron usuarios después de aplicar el filtro
+    if (filteredUsers.length > 0) {
       res.status(200).json({
         statusCode: 200,
-        response: users,
+        response: filteredUsers,
       });
     } else {
       res.status(404).json({
@@ -34,6 +37,7 @@ userRouter.get("/", async (req, res, next) => {
     return next(error);
   }
 });
+
 
 // Endpoint para obtener un usuario por su ID
 userRouter.get("/:uid", async (req, res, next) => {

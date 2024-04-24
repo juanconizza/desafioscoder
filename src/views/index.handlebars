@@ -1,8 +1,21 @@
-<!-- Utilizamos el layout principal -->
-{{> main}}
-
 <!-- Contenido específico de la página de inicio -->
 <div class="container">
-  <h1>Bienvenido a Manantiales Market!</h1>
-  <p>Descubre una amplia variedad de productos usados disponibles para comprar en nuestra comunidad.</p>
+  <h1 class="text-center">¡Bienvenido a Manantiales Market!</h1>
+  <p class="text-center">Descubre una amplia variedad de productos usados disponibles para comprar en nuestra comunidad.</p>
+  <h3>Productos Publicados</h3>
+<div class="row">
+    {{#each products}}
+    <div class="col-md-3 mb-4">
+      <div class="card">
+        <img src="/products/{{this.photo}}" class="card-img-top" alt="{{this.title}}">
+        <div class="card-body">
+          <h5 class="card-title">{{this.title}}</h5>
+          <p class="card-text">Precio: ${{this.price}}</p>
+          <!-- Agrega cualquier otra información que desees mostrar en la tarjeta -->
+          <a href="#" class="btn btn-primary">Ver más</a>
+        </div>
+      </div>
+    </div>
+    {{/each}}
+  </div>
 </div>

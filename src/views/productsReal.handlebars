@@ -1,0 +1,182 @@
+
+<!-- Contenido del formulario -->
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <h2 class="text-center mb-4">Ingrese su producto a publicar</h2>
+      <form id="productForm" class="mt-5" action="/upload" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+          <label for="title" class="form-label">Nombre del Producto</label>
+          <input
+            type="text"
+            class="form-control"
+            id="title"
+            name="title"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="photo" class="form-label">Foto</label>
+          <input
+            type="file"
+            class="form-control"
+            id="photo"
+            name="photo"
+            accept="image/*"
+            
+          />
+        </div>
+        <div class="mb-3">
+          <label for="category" class="form-label">Categoría</label>
+          <select class="form-select" id="category" name="category" required>
+            <option value="">Seleccione una categoría</option>
+            <option value="Muebles">Muebles</option>
+            <option value="Deportes">Deportes</option>
+            <option value="Electronica">Electrónica</option>
+            <option value="Hogar">Hogar</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="description" class="form-label">Descripción</label>
+          <textarea
+            class="form-control"
+            id="description"
+            name="description"
+            rows="3"
+            required
+          ></textarea>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <label for="price" class="form-label">Precio</label>
+            <div class="input-group mb-3">
+              <span class="input-group-text">$</span>
+              <input
+                type="number"
+                class="form-control"
+                id="price"
+                name="price"
+                required
+              />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label for="stock" class="form-label">Stock</label>
+            <input
+              type="number"
+              class="form-control"
+              id="stock"
+              name="stock"
+              required
+            />
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Publicar Producto</button>
+        <p id="successMessage" class="mt-3 d-none text-success fw-bold">Producto Publicado correctamente</p>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- Contenido para renderizar productos en tiempo real -->
+<div class="container mt-5">
+  <h2 class="text-center mb-4">Productos en Tiempo Real</h2>
+  <div class="row" id="realTimeProducts">
+    <!-- Aquí se renderizarán los productos en tiempo real -->
+  </div>
+</div>
+
+
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+<script>
+  const socket = io();
+
+  // Escuchar el evento "products" enviado por el servidor al cargar la página
+  socket.on("products", (products) => {
+    renderProducts(products);
+  });
+
+  // Función para renderizar los productos
+  function renderProducts(products) {
+    const productContainer = document.getElementById("realTimeProducts");
+    productContainer.innerHTML = ""; // Limpiar los productos anteriores
+
+  // Invertir el orden de los productos
+    const reversedProducts = products.reverse();
+
+    // Iterar sobre los productos y crear elementos para mostrarlos en la página
+    reversedProducts.forEach((product) => {
+      const productHtml = `
+        <div class="col-md-3 mb-4">
+          <div class="card">
+            <img src="/products/${product.photo}" class="card-img-top" alt="${product.title}">
+            <div class="card-body">
+              <h5 class="card-title">${product.title}</h5>
+              <p class="card-text">Precio: $${product.price}</p>
+              <a href="#" class="btn btn-primary">Ver más</a>
+            </div>
+          </div>
+        </div>
+      `;
+      productContainer.innerHTML += productHtml;
+    });
+  }
+
+  // Manejar el envío del formulario para agregar un nuevo producto
+const productForm = document.getElementById("productForm");
+productForm.addEventListener("submit", async (event) => {
+  event.preventDefault(); // Evitar la recarga de la página al enviar el formulario
+
+  const formData = new FormData(productForm);
+    
+  const newProduct = {
+    title: formData.get("title"),
+    category: formData.get("category"),
+    description: formData.get("description"),
+    price: formData.get("price"),
+    stock: formData.get("stock")
+  };
+  
+
+try {
+  // Enviar la imagen al servidor y obtener la URL de la imagen guardada
+  const response = await fetch("/upload", {
+    method: "POST",
+    body: formData})
+        
+
+    if (response.ok) {
+      // Obtener la URL de la imagen del servidor
+      const imageUrl = await response.text();
+      // Agregar la URL de la imagen al objeto del nuevo producto
+      newProduct.photo = imageUrl;
+
+    const successMessage = document.getElementById("successMessage");
+    successMessage.classList.remove("d-none"); 
+    successMessage.classList.add("d-block"); 
+
+    // Restablecer el formulario
+    productForm.reset();
+
+    // Ocultar el mensaje después de 5 segundos
+    setTimeout(() => {
+        successMessage.classList.add("d-none"); // Ocultar el mensaje
+        successMessage.classList.remove("d-block"); // Asegurarse de que esté oculto
+    }, 5000);
+
+      // Enviar el evento "newProduct" al servidor con los datos del nuevo producto
+      socket.emit("newProduct", newProduct);
+    } else {
+      console.error("Error al subir la imagen:", response.status);
+    }
+  } catch (error) {
+    console.error("Error al subir la imagen:", error);
+    return next(error);
+  }
+});
+
+
+  
+</script>

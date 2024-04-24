@@ -1,0 +1,38 @@
+<div class="container mt-3 mb-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <h2 class="text-center mb-4">Registro de Usuario</h2>
+      <form action="/registro" method="POST">
+        <div class="mb-3">
+          <label for="name" class="form-label">Nombre</label>
+          <input type="text" class="form-control" id="name" name="name" placeholder="Ej: Fernando" required>
+        </div>
+        <div class="mb-3">
+          <label for="lastName" class="form-label">Apellido</label>
+          <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Ej: Rabellini" required>
+        </div>
+        <div class="mb-3">
+          <label for="dni" class="form-label">DNI</label>
+          <input type="number" class="form-control" id="dni" name="dni" placeholder="Ej: 33162314" required>
+        </div>
+        <div class="mb-3">
+          <label for="manzanaYLote" class="form-label">Manzana y Lote</label>
+          <input type="text" class="form-control" id="manzanaYLote" name="manzanaYLote" placeholder="Ej: 3445" required>
+        </div>
+        <div class="mb-3">
+          <label for="phone" class="form-label">Teléfono</label>
+          <input type="tel" class="form-control" id="phone" name="phone" placeholder="Ej: 3515921209" required>
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Correo Electrónico</label>
+          <input type="email" class="form-control" id="email" name="email" placeholder="Ej: fer@gmail.com" required>
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Contraseña</label>
+          <input type="password" class="form-control" id="password" name="password" placeholder="Ej: Password789" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Registrarse</button>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,38 @@
+{{#if userLogged}}
+<div class="container mt-3 mb-5">
+  <div class="row">
+    <!-- Columna para la información del usuario -->
+    <div class="col-md-4">
+      <h3 class="mb-4">¡Bienvenido, {{userLogged.name}} {{userLogged.lastName}}!</h3>
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Tu Información:</h5>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item"><strong>Nombre:</strong> {{userLogged.name}}</li>
+            <li class="list-group-item"><strong>Apellido:</strong> {{userLogged.lastName}}</li>
+            <li class="list-group-item"><strong>DNI:</strong> {{userLogged.dni}}</li>
+            <li class="list-group-item"><strong>Manzana y Lote:</strong> {{userLogged.manzanaYLote}}</li>
+            <li class="list-group-item"><strong>Teléfono:</strong> {{userLogged.phone}}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- Columna para los productos -->
+    <div class="col-md-7">
+      <!-- Espacio para mostrar los productos -->
+      <h3 class="mb-4">Tus Productos Publicados</h3>
+      <!-- Aquí puedes colocar la lógica para mostrar los productos -->
+    </div>
+  </div>
+</div>
+{{else}}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="alert alert-danger" role="alert">
+        El usuario no existe o no se encontró la información.
+      </div>
+    </div>
+  </div>
+</div>
+{{/if}}

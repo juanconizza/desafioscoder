@@ -111,3 +111,20 @@ Luego también se implementaron 4 Middlewares con el siguiente uso:
 
 También implementamos Morgan para poder llevar por consola un seguimientos de las acciones (GET, POST, PUT, DELETE) en tiempo real. 
 
+# DESAFIO 4 - Branch: sprint4
+
+En este desafío se implementó el uso de un sistema de plantillas llamado Handlebars para crear webs dinámicas y el uso de una dependencia llamada socket.io para crear un servidor TCP en simultaneo con el HTTP y podes renderizar los productos en tiempo real. 
+
+En el inicio vemos que implementamos handlebars para renderizar todos los productos de forma inversa (reverse) para que se vean siempre los ultimos publicados desde el array de products se la base de datos. 
+
+En el link de "Publicar un Producto" puede verse la implementación de TCP al podes subir un nuevo artículo. En este formulario se utilizó el metodo POST y se instaló una dependencia llamada Multer para poder subir las fotos al servidor y renombrarlo de manera que quede optimizada para SEO (utilizando el titulo que el usuario le da al articulo) y de esa forma agregarlo dinamicamente al json de productos utilizando el metodo de create() del file system implementado anteriormente. 
+
+También se implementó la logica de uso de socket io para poder renderizar los productos en tiempo real invirtiendo el array para que se vean siempre los ultimos articulos publicados.  
+
+En la vista de userPanel en la URL localhost:8080/panel/5f4622f176b53228532d4a51 (ejemplo con id de user) se puede ver que se verifica si hay un usuario con ese ID y si es así se le muestra la información del usuario registrado. Esto servirá mas adelante para crear el panel privado que cada usuario tendrá para acceder a los articulos publicados de cada uno. Otros ids de ejemplo que pueden probar son: cb21b4de175a5e3cc535b66d / 515a45be8a4e3b8ca70fdddc / ad1f164bdeedf7e255a6a8dc.
+
+Por ultimo en el link de "Login / Registro" se implemento de momento solo un formulario que a futuro se utilizará para el registro de los nuevos usuarios. 
+
+
+
+
