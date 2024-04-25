@@ -4,19 +4,19 @@ const collection = "carts_contact";
 
 const schema = new Schema(
   {
-    user_id: { type: String, require: true },
-    name: { type: String, require: true },
-    lastName: { type: String, require: true },
-    manzanaYLote: { type: String, require: true },
-    product_id: { type: String, require: true },
+    user_id: { type: String, required: true },
+    name: { type: String, required: true },
+    lastName: { type: String, required: true },
+    manzanaYLote: { type: String, required: true },
+    product_id: { type: String, required: true },
     photo:{ type: String, default: "/default_picture.png" },
-    quantity: { type: Number, require: true },
+    quantity: { type: Number, required: true },
     state: {
         type: String,
         enum: ['pending', 'connected', 'success', 'failed'],
         default: 'pending'
       },
-    total: { type: Number, require: true },
+    total: { type: Number, required: true },
   },
   { timestamps: true }
 );
