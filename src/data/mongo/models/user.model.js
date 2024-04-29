@@ -6,7 +6,7 @@ const schema = new Schema({
   name: { type: String, required: true },
   lastName: { type: String, required: true },
   dni: { type: Number, required: true, unique: true },
-  manzanaYLote: { type: String, required: true, unique: true },
+  blockAndLot: { type: String, required: true, unique: true },
   phone: { type: Number, required: true, unique: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },

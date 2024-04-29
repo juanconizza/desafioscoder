@@ -1,6 +1,6 @@
 import multer from "multer";
 import path from "path";
-import __dirname from "../../utils.js";
+import __dirname from "../../pathhandler.js";
 
 // Configuración de Multer
 const storage = multer.diskStorage({
@@ -16,4 +16,6 @@ const storage = multer.diskStorage({
   }
 });
 
-export const upload = multer({ storage: storage });
+export const upload = multer({ storage });
+
+

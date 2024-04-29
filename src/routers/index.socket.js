@@ -1,4 +1,4 @@
-import productManager from "../data/mongo/ProductsManager.mongo.js";
+import productManager from "../data/mongo/managers/ProductsManager.mongo.js";
 
 export default async (socket) => {
   console.log("Client connected: " + socket.id);

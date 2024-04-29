@@ -1,5 +1,5 @@
 import { Router } from "express";
-import cartContactManager from "../../data/mongo/CartContactManager.mongo.js";
+import cartContactManager from "../../data/mongo/managers/CartContactManager.mongo.js";
 
 
 const cartContactRouter = Router();

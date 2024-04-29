@@ -1,6 +1,6 @@
 import "dotenv/config.js"
 import express from "express";
-import dbConnection from "./src/utils/db.js";
+import dbConnection from "./src/services/db.js";
 import { engine } from "express-handlebars";
 import { createServer } from "http";
 import { Server } from "socket.io";
@@ -9,9 +9,8 @@ import router from "./src/routers/index.router.js";
 import errorHandler from "./src/middlewares/errorHandler.js";
 import pathHandler from "./src/middlewares/pathHandler.js";
 import morgan from "morgan";
-import __dirname from "./utils.js";
+import __dirname from "./pathhandler.js"
 import { join } from "path";
-import path from "path";
 import { upload } from "./src/middlewares/uploader.js";
 
 const app = express();
@@ -32,19 +31,6 @@ socketServer.on("connection", socketCb);
 app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
 app.set("views", __dirname + "/src/views");
-
-
-// Ruta para servir los archivos CSS de Bootstrap
-app.use(
-  "/css/bootstrap",
-  express.static(path.join(__dirname, "node_modules/bootstrap/dist/css"))
-);
-
-// Ruta para servir los archivos JavaScript de Bootstrap
-app.use(
-  "/js/bootstrap",
-  express.static(path.join(__dirname, "node_modules/bootstrap/dist/js"))
-);
 
 //Carpeta Public de Imagenes
 app.use(express.static(join(__dirname, "public/img")));

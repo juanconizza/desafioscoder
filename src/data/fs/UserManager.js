@@ -7,7 +7,7 @@ class User {
     name,
     lastName,
     dni,
-    manzanaYLote,
+    blockAndLot,
     phone,
     email,
     password,
@@ -17,7 +17,7 @@ class User {
     this.name = name;
     this.lastName = lastName;
     this.dni = dni;
-    this.manzanaYLote = manzanaYLote;
+    this.blockAndLot = blockAndLot;
     this.phone = phone;
     this.email = email;
     this.password = password;
@@ -51,7 +51,7 @@ export class UserManager {
         data.name,
         data.lastName,
         data.dni,
-        data.manzanaYLote,
+        data.blockAndLot,
         data.phone,
         data.email,
         data.password,
@@ -158,7 +158,7 @@ export class UserManager {
       name: "Juan",
       lastName: "Perez",
       dni: "12345678",
-      manzanaYLote: "A-15",
+      blockAndLot: "A-15",
       phone: "123456789",
       email: "juan@example.com",
       password: "password123",
@@ -168,7 +168,7 @@ export class UserManager {
       name: "Maria",
       lastName: "Gonzalez",
       dni: "23456789",
-      manzanaYLote: "B-20",
+      blockAndLot: "B-20",
       phone: "987654321",
       email: "maria@example.com",
       password: "password456",
@@ -178,7 +178,7 @@ export class UserManager {
       name: "Pedro",
       lastName: "Lopez",
       dni: "34567890",
-      manzanaYLote: "C-5",
+      blockAndLot: "C-5",
       phone: "55555555",
       email: "pedro@example.com",
       password: "password789",
@@ -188,7 +188,7 @@ export class UserManager {
       name: "Admin",
       lastName: "Admin",
       dni: "45678901",
-      manzanaYLote: "D-10",
+      blockAndLot: "D-10",
       phone: "11111111",
       email: "admin@example.com",
       password: "admin123",

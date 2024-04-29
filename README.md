@@ -72,7 +72,7 @@ La estructura básica para probar los usuarios usando POSTMAN es un objeto JSON 
     "name": "Pedro",
     "lastName": "Lopez",
     "dni": 34567890,
-    "manzanaYLote": "3445",
+    "blockAndLot": "3445",
     "phone": 5554564565,
     "email": "pedro@example.com",
     "password": "Password789",
