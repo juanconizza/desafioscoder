@@ -1,9 +1,8 @@
 import { Router } from "express";
-import { UserManager } from "../../../src/data/fs/UserManager.js";
+import userManager from "../../data/mongo/managers/UsersManager.mongo.js";
 import validateUsersProps from "../../middlewares/validateUsersProps.js";
 
 const userRouter = Router();
-const userManager = new UserManager();
 
 // Endpoint para obtener todos los usuarios y filtro query por rol
 userRouter.get("/", async (req, res, next) => {
@@ -37,7 +36,6 @@ userRouter.get("/", async (req, res, next) => {
     return next(error);
   }
 });
-
 
 // Endpoint para obtener un usuario por su ID
 userRouter.get("/:uid", async (req, res, next) => {
@@ -84,6 +82,15 @@ userRouter.put("/:uid", validateUsersProps, async (req, res, next) => {
     // Actualizar el usuario utilizando el método update(uid, data) del UserManager
     const updatedUser = await userManager.update(uid, data);
 
+    // Verificar si el usuario fue actualizado correctamente
+    if (!updatedUser) {
+      // Enviar una respuesta de error indicando que el usuario no se encontró
+      return res.status(404).json({
+        statusCode: 404,
+        error: `User with ID ${uid} not found.`,
+      });
+    }
+
     // Enviar una respuesta con el usuario actualizado
     res.status(200).json({
       statusCode: 200,
@@ -94,6 +101,7 @@ userRouter.put("/:uid", validateUsersProps, async (req, res, next) => {
     return next(error);
   }
 });
+
 // Endpoint DELETE para eliminar un usuario existente
 
 userRouter.delete("/:uid", async (req, res, next) => {

@@ -72,7 +72,7 @@ La estructura básica para probar los usuarios usando POSTMAN es un objeto JSON 
     "name": "Pedro",
     "lastName": "Lopez",
     "dni": 34567890,
-    "manzanaYLote": "3445",
+    "blockAndLot": "3445",
     "phone": 5554564565,
     "email": "pedro@example.com",
     "password": "Password789",
@@ -124,6 +124,18 @@ También se implementó la logica de uso de socket io para poder renderizar los 
 En la vista de userPanel en la URL localhost:8080/panel/5f4622f176b53228532d4a51 (ejemplo con id de user) se puede ver que se verifica si hay un usuario con ese ID y si es así se le muestra la información del usuario registrado. Esto servirá mas adelante para crear el panel privado que cada usuario tendrá para acceder a los articulos publicados de cada uno. Otros ids de ejemplo que pueden probar son: cb21b4de175a5e3cc535b66d / 515a45be8a4e3b8ca70fdddc / ad1f164bdeedf7e255a6a8dc.
 
 Por ultimo en el link de "Login / Registro" se implemento de momento solo un formulario que a futuro se utilizará para el registro de los nuevos usuarios. 
+
+# DESAFIO 5 - Branch: sprint5
+
+En este desafío se implemento la creación de un nuevo manager de "Cart Contact" que se utilizará en la app para crear un chat entre los vendedores y los compradores (ya que el sitio será al estilo de alamaula y olx). Donde si bien se podrá realizar un carrito de compras al finalizar el mismo abrirá conversación y notificará vía email a los interesados para que puedan hablar y contactarse por la plataforma. 
+
+El Cart Contact Manager se implementó tanto en la persistencia Memory, File System y la nube de MongoDb. Se crearon los metodos CRUD con los modelos y clases constructoras correspondiente tanto para Cart Contact como también para Product Manager y User Manager.  
+
+Luego se creó una ruta dentro de la api como /api/cart-contact donde se pueden probar los metods CRUD correspondientes con postman. 
+
+También implementé la vista de producto en la ruta /products/pid donde se puede ver el resumen del producto y el botón agregar al carrito. También en el index se vinculó dinamicamente el id para que se pueda acceder a cada producto. 
+
+La App quedó funcionando todo en la base de datos de la nube de Mongo Db y se importó la base de File System. Las colecciones creadas son: products, users, carts_contact.
 
 
 

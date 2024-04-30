@@ -3,7 +3,7 @@ function validateUsersProps(req, res, next) {
     const errors = [];
 
     // Verificar si las propiedades obligatorias están presentes
-    const requiredProps = ["name", "lastName", "dni", "manzanaYLote", "phone", "email", "password"];
+    const requiredProps = ["name", "lastName", "dni", "blockAndLot", "phone", "email", "password"];
     requiredProps.forEach(prop => {
         if (!data[prop]) {
             errors.push(`"${prop}" is a required field.`);
@@ -12,12 +12,12 @@ function validateUsersProps(req, res, next) {
 
     // Validar dni como número entero sin puntos
     if (data.dni) {
-        if (typeof data.dni !== 'number') {
+        if (isNaN(data.dni)) {
             errors.push(`"dni" must be a number.`);
-        } else if (!/^\d+$/.test(data.dni.toString())) {
+         } else if (!/^\d+$/.test(data.dni.toString())) {
             errors.push(`"dni" must be an integer number without dots.`);
         }
-    }
+    }    
 
     // Validar phone como número de teléfono
     if (data.phone && !/^\d{10}$/.test(data.phone)) {
@@ -34,9 +34,9 @@ function validateUsersProps(req, res, next) {
         errors.push(`"password" must be at least 8 characters long and contain at least one uppercase letter and one number.`);
     }
 
-    // Validar manzanaYLote con el formato MMLL donde MM y LL son dos números enteros
-    if (data.manzanaYLote && !/^\d{2}\d{2}$/.test(data.manzanaYLote)) {
-        errors.push(`"manzanaYLote" must have the format MMLL where MM and LL are two integer numbers.`);
+    // Validar blockAndLot con el formato MMLL donde MM y LL son dos números enteros
+    if (data.blockAndLot && !/^\d{2}\d{2}$/.test(data.blockAndLot)) {
+        errors.push(`"blockAndLot" must have the format MMLL where MM and LL are two integer numbers.`);
     }
 
     // Validamos por defecto que role sea 0 (0 = user / 1= admin)
