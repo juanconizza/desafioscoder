@@ -30,7 +30,7 @@ viewsRouter.get("/products/real", async (req, res, next) => {
   }
 });
 
-viewsRouter.get("/panel/:uid", async (req, res, next) => {
+viewsRouter.get("/users/:uid", async (req, res, next) => {
   try {
     const userId = req.params.uid; // Obtener el id del usuario de los parámetros de la URL
     const userLogged = await userManager.readOne(userId); // Leer el usuario correspondiente
