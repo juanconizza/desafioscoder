@@ -56,8 +56,7 @@ productRouter.get("/paginate", async (req, res, next) => {
         limit: products.limit,
         prevPage: products.prevPage,
         nextPage: products.nextPage,
-        totalPages: products.totalPages,
-        totaDocs: products.totalDocs,
+        totalPages: products.totalPages        
       },
     });
   } catch (error) {
