@@ -76,7 +76,7 @@ viewsRouter.get("/products/:pid", async (req, res, next) => {
   }
 });
 
-viewsRouter.get("/users/register", async (req, res, next) => {
+viewsRouter.get("/register", async (req, res, next) => {
   try {
     return res.render("register", {
       title: "¡Manantiales Market! - Registro ",

@@ -19,6 +19,15 @@ class Manager {
         throw error;
       }
     }
+    async paginate({filter, sortAndPaginate}) {
+      try {
+        //cat para filtrar por categorias
+        const all = await this.Model.paginate(filter, sortAndPaginate);
+        return all;
+      } catch (error) {
+        throw error;
+      }
+    }
     async readOne(id) {
       try {
         const one = await this.Model.findOne({ _id: id }).lean();
