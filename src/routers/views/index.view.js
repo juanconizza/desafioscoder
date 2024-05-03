@@ -2,21 +2,53 @@ import { Router } from "express";
 import productManager from "../../data/mongo/managers/ProductsManager.mongo.js";
 import userManager from "../../data/mongo/managers/UsersManager.mongo.js";
 
+
 const viewsRouter = Router();
 
 viewsRouter.get("/", async (req, res, next) => {
   try {
-    const products = await productManager.read();
-    products.reverse(); // Invertir el orden del array para que muestre los ultimos productos primero.
+    const filter = {};
+    const sortAndPaginate = {};
+    //condicional para tomar el query de limit y utilizarlo.
+    if (req.query.limit) {
+      sortAndPaginate.limit = req.query.limit;
+    }
+    //condicional para tomar el query de page y utilizarlo.
+    if (req.query.page) {
+      sortAndPaginate.page = req.query.page;
+    }
+    //condicional para tomar el query de categoria y utilizarlo como filtro.
+    if (req.query.category){
+      filter.category = req.query.category
+    }    
+    
+    const products = await productManager.paginate({ filter, sortAndPaginate })
+
+    // Obtén la información de paginación para usarla en front-end
+    const paginationInfo = {
+      productsAll: products.docs,
+      page: products.page,
+      limit: products.limit,
+      prevPage: products.prevPage,
+      nextPage: products.nextPage,
+      totalPages: products.totalPages
+    };
+    
+    console.log(paginationInfo);
+    
+    // Renderiza la vista con los productos y la información de paginación
     return res.render("index", {
       title:
         "¡Manantiales Market!, donde comprar y vender entre vecinos es fácil.",
-      products: products,
-    });
+      productsAll: paginationInfo.productsAll,
+      paginationInfo: paginationInfo     
+    }) 
+    ;
   } catch (error) {
     return next(error);
   }
 });
+
 
 viewsRouter.get("/products/real", async (req, res, next) => {
   try {

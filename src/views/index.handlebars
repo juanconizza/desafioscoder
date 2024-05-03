@@ -3,8 +3,28 @@
   <h1 class="text-center">¡Bienvenido a Manantiales Market!</h1>
   <p class="text-center">Descubre una amplia variedad de productos usados disponibles para comprar en nuestra comunidad.</p>
   <h3>Productos Publicados</h3>
-  <div class="row">
-    {{#each products}}
+  <!-- Menú desplegable de categorías -->
+  <div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Categorías
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <a class="dropdown-item" href="#" onclick="selectCategory('Arte y Artesanía')">Arte y Artesanía</a>
+    <a class="dropdown-item" href="#" onclick="selectCategory('Bebés y Niños Pequeños')">Bebés y Niños Pequeños</a>
+    <a class="dropdown-item" href="#" onclick="selectCategory('Coleccionables')">Coleccionables</a>
+    <a class="dropdown-item" href="#" onclick="selectCategory('Deportes')">Deportes</a>
+    <a class="dropdown-item" href="#" onclick="selectCategory('Electrónica')">Electrónica</a>
+    <a class="dropdown-item" href="#" onclick="selectCategory('Herramientas y Equipamiento')">Herramientas y Equipamiento</a>
+    <a class="dropdown-item" href="#" onclick="selectCategory('Hogar')">Hogar</a>
+    <a class="dropdown-item" href="#" onclick="selectCategory('Instrumentos Musicales')">Instrumentos Musicales</a>
+    <a class="dropdown-item" href="#" onclick="selectCategory('Juguetes y Juegos')">Juguetes y Juegos</a>
+    <a class="dropdown-item" href="#" onclick="selectCategory('Libros y Medios')">Libros y Medios</a>
+    <a class="dropdown-item" href="#" onclick="selectCategory('Moda y Accesorios')">Moda y Accesorios</a>
+    <a class="dropdown-item" href="#" onclick="selectCategory('Muebles')">Muebles</a>
+  </div>
+</div>
+  <div class="row mt-5">
+    {{#each productsAll}}
       <div class="col-md-3 mb-4">
         <div class="card h-100">
           <div class="card-img-top" style="height: 250px; overflow: hidden;"> 
@@ -23,4 +43,17 @@
       </div>
     {{/each}}
   </div>
+   <!-- Botones de anterior y siguiente -->
+  <div class="mt-4 mb-5 text-center">
+    <a href="#" class="btn btn-primary me-2">Anterior</a>
+    <a href="#" class="btn btn-primary">Siguiente</a>
+  </div>  
 </div>
+
+
+<script>
+  function selectCategory(category) {
+    // Redirigir al usuario con la consulta de categoría seleccionada en la URL
+    window.location.href = '/?category=' + encodeURIComponent(category);
+  }
+</script>

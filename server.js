@@ -28,9 +28,15 @@ const socketServer = new Server(nodeServer);
 socketServer.on("connection", socketCb);
 
 //Configuramos el motor de plantillas de handlebars
-app.engine("handlebars", engine());
+app.engine("handlebars", engine({ 
+  runtimeOptions: {
+  allowedProtoMethods: true,
+  allowProtoMethodsByDefault: true,
+  allowedProtoProperties: true,
+  allowProtoPropertiesByDefault: true}}));
 app.set("view engine", "handlebars");
 app.set("views", __dirname + "/src/views");
+
 
 //Carpeta Public de Imagenes
 app.use(express.static(join(__dirname, "public/img")));

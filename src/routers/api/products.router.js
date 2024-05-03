@@ -45,6 +45,14 @@ productRouter.get("/paginate", async (req, res, next) => {
     if (req.query.page) {
       sortAndPaginate.page = req.query.page;
     }
+    //condicional para tomar el query de categoria y utilizarlo como filtro.
+    if (req.query.category){
+      filter.category = req.query.category
+    }
+    //condicional para tomar el query de seller_id y utilizarlo como filtro.
+    if (req.query.seller_id){
+      filter.seller_id = req.query.seller_id
+    }
 
     const products = await productManager.paginate({ filter, sortAndPaginate });
 
