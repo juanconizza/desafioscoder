@@ -103,42 +103,81 @@
 
 <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 <script>
-  const socket = io(); // Escuchar el evento "products" enviado por el servidor
-  al cargar la página socket.on("products", (products) => {
-  renderProducts(products); }); // Función para renderizar los productos
-  function renderProducts(products) { const productContainer =
-  document.getElementById("realTimeProducts"); productContainer.innerHTML = "";
-  // Limpiar los productos anteriores // Invertir el orden de los productos
-  const reversedProducts = products.reverse(); // Iterar sobre los productos y
-  crear elementos para mostrarlos en la página
-  reversedProducts.forEach((product) => { const productHtml = ` <div
-  class="col-md-3 mb-4"> <div class="card"> <img
-  src="/products/${product.photo}" class="card-img-top" alt="${product.title}">
-  <div class="card-body"> <h5 class="card-title">${product.title}</h5> <p
-  class="card-text">Precio: $${product.price}</p> <a
-  href="/products/${product._id}" class="btn btn-primary">Ver más</a> </div>
-  </div> </div> `; productContainer.innerHTML += productHtml; }); } // Manejar
-  el envío del formulario para agregar un nuevo producto const productForm =
-  document.getElementById("productForm"); productForm.addEventListener("submit",
-  async (event) => { event.preventDefault(); // Evitar la recarga de la página
-  al enviar el formulario const formData = new FormData(productForm); const
-  newProduct = { title: formData.get("title"), category:
-  formData.get("category"), description: formData.get("description"), price:
-  formData.get("price"), stock: formData.get("stock") }; try { // Enviar la
-  imagen al servidor y obtener la URL de la imagen guardada const response =
-  await fetch("/upload", { method: "POST", body: formData}) if (response.ok) {
-  // Obtener la URL de la imagen del servidor const imageUrl = await
-  response.text(); // Agregar la URL de la imagen al objeto del nuevo producto
-  newProduct.photo = imageUrl; const successMessage =
-  document.getElementById("successMessage");
-  successMessage.classList.remove("d-none");
-  successMessage.classList.add("d-block"); // Restablecer el formulario
-  productForm.reset(); // Ocultar el mensaje después de 5 segundos setTimeout(()
-  => { successMessage.classList.add("d-none"); // Ocultar el mensaje
-  successMessage.classList.remove("d-block"); // Asegurarse de que esté oculto
-  }, 5000); // Enviar el evento "newProduct" al servidor con los datos del nuevo
-  producto socket.emit("newProduct", newProduct); } else { console.error("Error
-  al subir la imagen:", response.status); } } catch (error) {
-  console.error("Error al subir la imagen:", error); return next(error); } });
+  // Escuchar el evento "products" enviado por el servidor al cargar la página
+  const socket = io(); 
+  socket.on("products", (products) => {
+    renderProducts(products); 
+  }); 
 
+  // Función para renderizar los productos
+  function renderProducts(products) { 
+    const productContainer = document.getElementById("realTimeProducts"); 
+    productContainer.innerHTML = ""; // Limpiar los productos anteriores
+
+    // Invertir el orden de los productos
+    const reversedProducts = products.reverse(); 
+
+    // Iterar sobre los productos y crear elementos para mostrarlos en la página
+    reversedProducts.forEach((product) => { 
+      const productHtml = `
+        <div class="col-md-3 mb-4">
+          <div class="card">
+            <img src="/products/${product.photo}" class="card-img-top" alt="${product.title}">
+            <div class="card-body">
+              <h5 class="card-title">${product.title}</h5>
+              <p class="card-text">Precio: $${product.price}</p>
+              <a href="/products/${product._id}" class="btn btn-primary">Ver más</a>
+            </div>
+          </div>
+        </div>
+      `; 
+      productContainer.innerHTML += productHtml; 
+    }); 
+  } 
+
+  // Manejar el envío del formulario para agregar un nuevo producto
+  const productForm = document.getElementById("productForm"); 
+  productForm.addEventListener("submit", async (event) => { 
+    event.preventDefault(); // Evitar la recarga de la página al enviar el formulario 
+    const formData = new FormData(productForm); 
+    const newProduct = { 
+      title: formData.get("title"), 
+      category: formData.get("category"), 
+      description: formData.get("description"), 
+      price: formData.get("price"), 
+      stock: formData.get("stock") 
+    }; 
+    try { 
+      // Enviar la imagen al servidor y obtener la URL de la imagen guardada 
+      const response = await fetch("/upload", { 
+        method: "POST", 
+        body: formData
+      }); 
+      if (response.ok) { 
+        // Obtener la URL de la imagen del servidor 
+        const imageUrl = await response.text(); 
+        // Agregar la URL de la imagen al objeto del nuevo producto 
+        newProduct.photo = imageUrl; 
+        const successMessage = document.getElementById("successMessage"); 
+        successMessage.classList.remove("d-none"); 
+        successMessage.classList.add("d-block"); 
+        // Restablecer el formulario 
+        productForm.reset(); 
+        // Ocultar el mensaje después de 5 segundos 
+        setTimeout(() => { 
+          successMessage.classList.add("d-none"); 
+          // Ocultar el mensaje 
+          successMessage.classList.remove("d-block"); 
+          // Asegurarse de que esté oculto 
+        }, 5000); 
+        // Enviar el evento "newProduct" al servidor con los datos del nuevo producto 
+        socket.emit("newProduct", newProduct); 
+      } else { 
+        console.error("Error al subir la imagen:", response.status); 
+      } 
+    } catch (error) { 
+      console.error("Error al subir la imagen:", error); 
+      return next(error); 
+    } 
+  });
 </script>

@@ -34,9 +34,10 @@
           <hr class="my-0" />
           <div class="card-body">
             <div class="d-flex justify-content-between align-items-center pb-2 mb-1">
-              <a href="/" class="text-dark fw-bold">Atrás</a>
-              <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary">Agregar al Carrito</button>
-            </div>
+          <a href="/" class="text-dark fw-bold">Atrás</a>
+           <button id="addToCartBtn" type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary">Agregar al Carrito</button>
+             <div id="addToCartMessage" class="text-success fw-bold" style="display: none;">Producto agregado al carrito!</div>
+              </div>
           </div>
         </div>
       </div>
@@ -54,3 +55,40 @@
 </div>
 {{/if}}
 </section>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const addToCartBtn = document.getElementById("addToCartBtn");
+    const addToCartMessage = document.getElementById("addToCartMessage");
+
+    if (addToCartBtn) {
+      addToCartBtn.addEventListener("click", async () => {
+        const product_id = "{{productFound._id}}";
+        const buyer_id = "66298c2971a5c48e51f7ad5f";
+        const seller_id = "66298c2971a5c48e51f7ad5e";
+        const quantity = 1;
+  
+        const response = await fetch("/api/cart-contact", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            product_id,
+            buyer_id,
+            seller_id,
+            quantity
+          })
+        });
+  
+        if (response.ok) {
+          // El producto se agregó al carrito exitosamente
+          addToCartMessage.style.display = "block";
+        } else {
+          // Hubo un error al agregar el producto al carrito
+          addToCartMessage.style.display = "none";
+        }
+      });
+    }
+  });
+</script>

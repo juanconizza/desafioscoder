@@ -23,7 +23,7 @@ const schema = new Schema(
 );
 
 // Con este pre usamos el metodo findOne para popular el carrito en cuestión con la información necesaria. 
-schema.pre("findOne", function () {
+schema.pre("find", function () {
   this.populate("buyer_id", "name lastName blockAndLot _id");
   this.populate("seller_id", "name lastName blockAndLot _id");
   this.populate("product_id", "title photo price stock _id");

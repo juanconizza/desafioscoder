@@ -33,7 +33,9 @@ app.engine("handlebars", engine({
   allowedProtoMethods: true,
   allowProtoMethodsByDefault: true,
   allowedProtoProperties: true,
-  allowProtoPropertiesByDefault: true}}));
+  allowProtoPropertiesByDefault: true}  
+}));
+  
 app.set("view engine", "handlebars");
 app.set("views", __dirname + "/src/views");
 
