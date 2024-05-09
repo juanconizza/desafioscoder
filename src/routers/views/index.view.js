@@ -155,21 +155,20 @@ viewsRouter.get("/login", async (req, res, next) => {
 });
 
 
-viewsRouter.get("/cart", async (req, res, next) => {
+viewsRouter.get("/cart/:uid", async (req, res, next) => {
   try {
     const filter = {};
     const sortAndPaginate = {};
-    //condicional para tomar el query del comprador y utilizarlo como filtro.
-    if (req.query.buyer_id) {
-      filter.buyer_id = req.query.buyer_id;
+
+    //condicional para tomar el params del comprador y utilizarlo como filtro.
+    if (req.params.uid) {
+      filter.buyer_id = req.params.uid;
     }
 
     const buyerFound = await cartContactManager.paginate({ filter, sortAndPaginate });
 
     const cartInfo = buyerFound.docs
-
-    console.log(cartInfo);
-     
+         
     if (!buyerFound) {
       // Si el producto no existe, devolver un error 404
       return res.status(404).send("Carrito NO encontrado");
@@ -184,6 +183,8 @@ viewsRouter.get("/cart", async (req, res, next) => {
     return next(error);
   }
 });
+
+
 
 export default viewsRouter;
 
