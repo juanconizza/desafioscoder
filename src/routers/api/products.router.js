@@ -4,7 +4,6 @@ import validateProductsProps from "../../middlewares/validateProductsProps.js";
 
 const productRouter = Router();
 
-
 // Endpoint para obtener todos los productos
 productRouter.get("/", async (req, res, next) => {
   try {
@@ -13,7 +12,7 @@ productRouter.get("/", async (req, res, next) => {
     const filteredProducts = category
       ? products.filter((product) => product.category === category)
       : products;
-      const totalProducts = filteredProducts.length;
+    const totalProducts = filteredProducts.length;
 
     if (filteredProducts.length === 0) {
       return res.status(404).json({
@@ -25,8 +24,48 @@ productRouter.get("/", async (req, res, next) => {
 
     res.status(200).json({
       statusCode: 200,
-      totalProducts: totalProducts, 
+      totalProducts: totalProducts,
       response: filteredProducts,
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
+
+// Endpoint para obtener todos los productos PAGINADOS
+productRouter.get("/paginate", async (req, res, next) => {
+  try {
+    const filter = {};
+    const sortAndPaginate = {};
+    //condicional para tomar el query de limit y utilizarlo.
+    if (req.query.limit) {
+      sortAndPaginate.limit = req.query.limit;
+    }
+    //condicional para tomar el query de page y utilizarlo.
+    if (req.query.page) {
+      sortAndPaginate.page = req.query.page;
+    }
+    //condicional para tomar el query de categoria y utilizarlo como filtro.
+    if (req.query.category){
+      filter.category = req.query.category
+    }
+    //condicional para tomar el query de seller_id y utilizarlo como filtro.
+    if (req.query.seller_id){
+      filter.seller_id = req.query.seller_id
+    }
+
+    const products = await productManager.paginate({ filter, sortAndPaginate });
+
+    res.status(200).json({
+      statusCode: 200,
+      response: products.docs,
+      info: {
+        page: products.page,
+        limit: products.limit,
+        prevPage: products.prevPage,
+        nextPage: products.nextPage,
+        totalPages: products.totalPages        
+      },
     });
   } catch (error) {
     return next(error);
@@ -78,7 +117,7 @@ productRouter.post("/", validateProductsProps, async (req, res, next) => {
       response: newProduct.id,
       message: "Product created successfully!",
     });
-    } catch (error) {
+  } catch (error) {
     // Manejar errores utilizando el errorHandler
     return next(error);
   }

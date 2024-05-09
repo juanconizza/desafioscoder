@@ -138,5 +138,19 @@ También implementé la vista de producto en la ruta /products/pid donde se pued
 La App quedó funcionando todo en la base de datos de la nube de Mongo Db y se importó la base de File System. Las colecciones creadas son: products, users, carts_contact.
 
 
+# Challenge 2 - Branch: challenge2
+
+En este desafío de modificó principalmente mediante un plugin de moongoose el uso del método "Paginate" el cual nos permite organizar mejor los productos y la interacción entre el backend y front-end. 
+
+Se modificó la pagina de inicio para mostrar productos paginados cada 8 por defecto. También se incluyeron botones de siguiente y anterior que estan condicionados a si existen o no paginas siguientes o anteriores. 
+
+Se creó un filtro por categorías también paginado para podes ver las mismas. Las categoris con productos en el ejemplo son: Muebles, Electronica, Deportes, y Hogar. 
+
+Se creó una vista premliminar de login para usuarios
+
+Se creo una vist de carrito donde está hardcodeado un usuario comprador de la base al cual se le agregan todos los productos que se seleccionan con el botón agregar al carrito. 
+
+El panel de usuario se puede ver en este ejemplo: http://localhost:8080/users/66298c2971a5c48e51f7ad5e
+
 
 

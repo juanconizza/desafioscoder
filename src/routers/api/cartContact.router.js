@@ -6,6 +6,7 @@ const cartContactRouter = Router();
 
 
 // Endpoint para obtener todos los cart contact
+
 cartContactRouter.get("/", async (req, res, next) => {
   try {
     const state = req.query.state;
@@ -27,6 +28,42 @@ cartContactRouter.get("/", async (req, res, next) => {
       statusCode: 200,
       totalCartContacts: totalCartContacts, 
       response: filteredCartContacts,
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
+
+// Endpoint para obtener el carrito filtrado por usuario con propiedades paginate
+cartContactRouter.get("/paginate", async (req, res, next) => {
+  try {
+    const filter = {};
+    const sortAndPaginate = {};
+    //condicional para tomar el query de limit y utilizarlo.
+    if (req.query.limit) {
+      sortAndPaginate.limit = req.query.limit;
+    }
+    //condicional para tomar el query de page y utilizarlo.
+    if (req.query.page) {
+      sortAndPaginate.page = req.query.page;
+    }
+    //condicional para tomar el query de buyer_id y utilizarlo como filtro.
+    if (req.query.buyer_id){
+      filter.buyer_id = req.query.buyer_id
+    }
+
+    const products = await cartContactManager.paginate({ filter, sortAndPaginate });
+
+    res.status(200).json({
+      statusCode: 200,
+      response: products.docs,
+      info: {
+        page: products.page,
+        limit: products.limit,
+        prevPage: products.prevPage,
+        nextPage: products.nextPage,
+        totalPages: products.totalPages        
+      },
     });
   } catch (error) {
     return next(error);

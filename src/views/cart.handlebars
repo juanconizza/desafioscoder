@@ -1,0 +1,64 @@
+<div class="container mt-3">
+  <h2 class="text-center mb-4">Carrito de Compras</h2>
+  {{#if cartInfo}}
+    <div class="row">
+      {{#each cartInfo}}
+        <div class="col-md-6 mb-2">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">{{product_id.title}}</h5>
+              <p class="card-text">Precio: ${{product_id.price}}</p>
+              <label for="quantity">Cantidad:</label>
+              <input type="number" id="quantity" name="quantity" min="1" value="{{this.quantity}}">
+              <button class="btn btn-danger" onclick="removeFromCart('{{this._id}}')">Eliminar</button>
+            </div>
+          </div>
+        </div>
+      {{/each}}
+    </div>
+    <div class="row mt-4 mb-5">
+      <div class="col-md-6 mb-5">
+        <button class="btn btn-success" onclick="checkout()">Contactar</button>
+        <button class="btn btn-secondary" onclick="cancel()">Cancelar</button>
+      </div>
+    </div>
+  {{else}}
+    <div class="alert alert-info" role="alert">
+      No hay productos en el carrito.
+    </div>
+  {{/if}}
+</div>
+
+<script>
+  // Función para eliminar un producto del carrito y recargar la página
+  async function removeFromCart(cartItemId) {
+    try {
+      // Realizar una solicitud DELETE al endpoint correspondiente
+      const response = await fetch(`/api/cart-contact/${cartItemId}`, {
+        method: 'DELETE'
+      });
+
+      if (response.ok) {
+        // Si la solicitud se realizó con éxito, recargar la página
+        location.reload();
+      } else {
+        // Si hubo un error en la solicitud, mostrar un mensaje de error
+        console.error('Error al eliminar el producto del carrito:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error al eliminar el producto del carrito:', error.message);
+    }
+  }
+
+  // Función para procesar el pago y contactar al vendedor
+  function checkout() {
+    // Agregar aquí la lógica para procesar el pago y contactar al vendedor
+    console.log('Procesando el pago y contactando al vendedor...');
+  }
+
+  // Función para cancelar la compra y vaciar el carrito
+  function cancel() {
+    // Agregar aquí la lógica para cancelar la compra y vaciar el carrito
+    console.log('Cancelando la compra y vaciando el carrito...');
+  }
+</script>
