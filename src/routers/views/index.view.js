@@ -139,6 +139,7 @@ viewsRouter.get("/register", async (req, res, next) => {
     return res.render("register", {
       title: "¡Manantiales Market! - Registro ",
     });
+    
   } catch (error) {
     return next(error);
   }

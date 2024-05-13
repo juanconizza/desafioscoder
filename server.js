@@ -4,6 +4,8 @@ import dbConnection from "./src/services/db.js";
 import { engine } from "express-handlebars";
 import { createServer } from "http";
 import { Server } from "socket.io";
+import expressSession from "express-session"
+import MongoStore from "connect-mongo"
 import socketCb from "./src/routers/index.socket.js";
 import router from "./src/routers/index.router.js";
 import errorHandler from "./src/middlewares/errorHandler.js";
@@ -39,6 +41,13 @@ app.engine("handlebars", engine({
 app.set("view engine", "handlebars");
 app.set("views", __dirname + "/src/views");
 
+//Configuración para Session
+app.use(expressSession({
+  store: new MongoStore ({ mongoUrl:process.env.LINK_MONGO, ttl:10 }),
+  secret: process.env.SECRET_SESSION,
+  resave: true,
+  saveUninitialized: true  
+}))
 
 //Carpeta Public de Imagenes
 app.use(express.static(join(__dirname, "public/img")));
@@ -52,7 +61,7 @@ app.use(express.json());
 // Este middleware de Express analiza los cuerpos de las solicitudes entrantes en un formulario codificado en URL y los coloca en req.body.
 app.use(express.urlencoded({ extended: true }));
 
-// Ruta para procesar el formulario y subir la imagen
+// Ruta para procesar el formulario y subir la imagen en carga de producto
 app.post("/upload", upload.single("photo"), (req, res) => {
   // Enviar el nombre del archivo como respuesta
   res.send(req.file.filename);
