@@ -2,28 +2,68 @@
   <div class="row justify-content-center">
     <div class="col-md-6">
       <h2 class="text-center mb-4">Inicio de Sesión</h2>
-      <form action="/api/login" method="post">
+      <form id="loginForm">
         <div class="mb-3">
           <label for="email" class="form-label">Correo Electrónico</label>
-          <input type="email" class="form-control" id="email" name="email" placeholder="Ej: fer@gmail.com" required>
+          <input
+            type="email"
+            class="form-control"
+            id="email"
+            name="email"
+            placeholder="Ej: fer@gmail.com"
+            required
+          />
         </div>
-        {{#if errors.email}}
-            <div class="invalid-feedback">{{errors.email}}</div>
-          {{/if}}
         <div class="mb-3">
           <label for="password" class="form-label">Contraseña</label>
-          <input type="password" class="form-control" id="password" name="password" placeholder="Ej: Password789" required>
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            name="password"
+            placeholder="Ej: Password789"
+            required
+          />
         </div>
-        {{#if errors.password}}
-            <div class="invalid-feedback">{{errors.password}}</div>
-          {{/if}}
         <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
       </form>
-      {{#if errorMessage}}
-        <div class="alert alert-danger mt-3" role="alert">
-          {{errorMessage}}
-        </div>
-      {{/if}}
+      <div class="alert alert-danger mt-3 d-none" id="loginError" role="alert">
+      </div>
     </div>
   </div>
 </div>
+
+<script>
+  document.getElementById("loginForm").addEventListener("submit", async function(event) {
+    event.preventDefault();
+    
+    const formData = new FormData(event.target);
+    const email = formData.get("email");
+    const password = formData.get("password");
+    
+    try {
+      const response = await fetch("/api/sessions/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email, password })
+      });
+      
+        console.log(response);
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        const userId = data.user_id;         
+        window.location.href = `/users/${userId}`;
+      } else if (response.status === 401) {
+        document.getElementById("loginError").classList.remove("d-none");
+        document.getElementById("loginError").textContent = "Error!, Verifique usuario y/o contraseña.";
+      } else {
+        throw new Error("Error en el servidor");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  });
+</script>
