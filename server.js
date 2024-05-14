@@ -43,7 +43,7 @@ app.set("views", __dirname + "/src/views");
 
 //Configuración para Session
 app.use(expressSession({
-  store: new MongoStore ({ mongoUrl:process.env.LINK_MONGO, ttl:10 }),
+  store: new MongoStore ({ mongoUrl:process.env.LINK_MONGO, ttl:432000 }),
   secret: process.env.SECRET_SESSION,
   resave: true,
   saveUninitialized: true  

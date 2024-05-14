@@ -1,4 +1,4 @@
-  
+
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
@@ -48,25 +48,26 @@
           <a class="nav-link" href="/">Inicio</a>
         </li>
         <li class="nav-item active">
-          <a class="nav-link" href="/products/real">Publicar un Producto</a>
+          <a class="nav-link" id="newProduct" href="/products/real">Publicar un Producto</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" id="register">
           <a class="nav-link" href="/register">Registro</a>
         </li>
       </ul>
       <ul class="navbar-nav ms-auto"> 
-        <li class="nav-item">
-          <a class="nav-link" href="/login"><i class="fas fa-user"></i> Login</a> 
+        <li class="nav-item" id="loginDiv">
+          <a class="nav-link" href="/login"><i class="fas fa-user"></i> Iniciar Sesión</a> 
         </li>
-        <li class="nav-item mt-1">
-          <a class="nav-link" href="/cart/66298c2971a5c48e51f7ad5f"><i class="fas fa-shopping-cart"></i></a> 
+        <li class="nav-item" id="logoutDiv">
+          <button class="nav-link" id="logout"><i class="fas fa-user"></i> Cerrar Sesión</button> 
+        </li>
+        <li class="nav-item mt-1" id="cartDiv">
+          <a class="nav-link" id="cartLink" href=""><i class="fas fa-shopping-cart"></i></a> 
         </li>
       </ul>
     </div>
   </nav>
 </header>
-
-
     
 
     {{{body}}}
@@ -85,3 +86,60 @@
     ></script>
   </body>
 </html>
+
+<script>
+  document.addEventListener("DOMContentLoaded", async function() {
+    try {
+      const response = await fetch("/api/sessions/", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        },
+       
+      });
+      const responseData = await response.json();
+      console.log(responseData)
+
+      if (responseData.statusCode === 200) {
+        
+        // Si la respuesta es 200, ocultar loginDiv y register
+        document.getElementById("loginDiv").classList.add("d-none");
+        document.getElementById("register").classList.add("d-none");
+      } else if (responseData.statusCode === 401) {
+        // Si la respuesta es 401, ocultar logoutDiv, cartDiv y newProduct
+        document.getElementById("logoutDiv").classList.add("d-none");
+        document.getElementById("cartDiv").classList.add("d-none");
+        document.getElementById("newProduct").classList.add("d-none");
+      }
+
+      const cartLink = document.getElementById("cartLink");
+    if (cartLink) {
+      const userId = responseData.user_id;
+      cartLink.href = `/cart/${userId}`;
+    }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  });
+
+  // Acción al hacer clic en el botón de logout
+  document.getElementById("logout").addEventListener("click", async function(event) {
+    try {
+      event.preventDefault();
+      const response = await fetch("/api/sessions/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        
+      });
+      if (response.ok) {
+        // Si la respuesta es 200, redireccionar a la página de inicio
+        window.location.href = "/";
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  });
+</script>
+
