@@ -21,7 +21,7 @@ function validateUsersProps(req, res, next) {
   // Validar dni como número entero sin puntos
   if (data.dni) {
     if (isNaN(data.dni)) {
-      errors.dni = `"dni" must be a number.`;
+      errors.dni = `"DNI" debe ser un número sin puntos.`;
     } else if (!/^\d+$/.test(data.dni.toString())) {
       errors.dni = `"DNI" debe ser un número sin puntos.`;
     }
