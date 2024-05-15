@@ -97,26 +97,26 @@
         },
        
       });
-      const responseData = await response.json();
-      console.log(responseData)
+      const responseData = await response.json();      
 
       if (responseData.statusCode === 200) {
         
         // Si la respuesta es 200, ocultar loginDiv y register
         document.getElementById("loginDiv").classList.add("d-none");
         document.getElementById("register").classList.add("d-none");
+        
+        //Creamos dinamicamente el link del carrito correspondiente al usuario logueado.
+        const cartLink = document.getElementById("cartLink");
+        const userId = responseData.user_id;
+        cartLink.href = `/cart/${userId}`;
+
       } else if (responseData.statusCode === 401) {
         // Si la respuesta es 401, ocultar logoutDiv, cartDiv y newProduct
         document.getElementById("logoutDiv").classList.add("d-none");
         document.getElementById("cartDiv").classList.add("d-none");
         document.getElementById("newProduct").classList.add("d-none");
       }
-
-      const cartLink = document.getElementById("cartLink");
-    if (cartLink) {
-      const userId = responseData.user_id;
-      cartLink.href = `/cart/${userId}`;
-    }
+      
     } catch (error) {
       console.error("Error:", error);
     }

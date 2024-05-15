@@ -153,4 +153,17 @@ Se creo una vist de carrito donde está hardcodeado un usuario comprador de la b
 El panel de usuario se puede ver en este ejemplo: http://localhost:8080/users/66298c2971a5c48e51f7ad5e
 
 
+# DESAFÍO 6 - Branch: sprint6
+
+En este desafío se agregaron bastantes cosas nuevas a la lógica del back-end. 
+
+1- Se condicionó la barra de navegación para verificar si hay o no una sesión iniciada de usuario y de esa manera mostrar los botones correspondietes. Como en el caso del carrito que figura oculto hasta que se inicie sesión. También en la vista de producto se condicionó el botón "Agregar al carrito" para que si no está logueado no se muestre. 
+
+2- Se dejó funcionando el formulario de registro con los correspondientes Middlewares de validación e iterando en cada error según corresponda para mostrarlo debajo de cada campo. 
+
+3- Se dejó funcionando la vista de login también con los middlewares de validación correspondientes y en caso de ser exitoso redirige al panel de usuario tomando del req.session.user_id el id correspondiete del usuario en cuestión. 
+
+4- Se dejó funcionando el botón de "logout" el cual destruye la sesión y vuelve al inicio. 
+
+5- Se dejó funcionando la vista de carrito relacionado con cada usuario de forma dinámica. 
 
