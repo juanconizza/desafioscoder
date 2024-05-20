@@ -58,8 +58,14 @@
         <li class="nav-item" id="loginDiv">
           <a class="nav-link" href="/login"><i class="fas fa-user"></i> Iniciar Sesión</a> 
         </li>
-        <li class="nav-item" id="logoutDiv">
-          <button class="nav-link" id="logout"><i class="fas fa-user"></i> Cerrar Sesión</button> 
+        <li class="nav-item dropdown" id="logoutDiv">
+          <a class="nav-link dropdown-toggle" href="#" id="userDropdownMenu" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-user"></i>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdownMenu">
+            <a class="dropdown-item" href="/users">Mi cuenta</a>
+            <button class="dropdown-item" id="logout">Cerrar Sesión</button>
+          </div>
         </li>
         <li class="nav-item mt-1" id="cartDiv">
           <a class="nav-link" id="cartLink" href=""><i class="fas fa-shopping-cart"></i></a> 
@@ -108,7 +114,7 @@
         //Creamos dinamicamente el link del carrito correspondiente al usuario logueado.
         const cartLink = document.getElementById("cartLink");
         const userId = responseData.user_id;
-        cartLink.href = `/cart/${userId}`;
+        cartLink.href = `/cart/`;
 
       } else if (responseData.statusCode === 401) {
         // Si la respuesta es 401, ocultar logoutDiv, cartDiv y newProduct
