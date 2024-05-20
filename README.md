@@ -167,3 +167,12 @@ En este desafío se agregaron bastantes cosas nuevas a la lógica del back-end.
 
 5- Se dejó funcionando la vista de carrito relacionado con cada usuario de forma dinámica. 
 
+# DESAFÍO 7 - Branch: sprint7
+
+En este desafío se restructuró basicamente el protocolo de registro y de login incorportando estrategias de passport locales con hash de la contraseña para reducir las cantidad de middlewares y optimizar el código. 
+
+También se corrigió que la ruta de /user y de /cart en el router sessions tome el parámetro del objeto de requerimiento de sessions y no ya por params como se venía haciendo. 
+
+Se agregó además a la barra de navegación, cuando se encuentra logeado la posibilidad de cerrar sesión o de volver al panel de usario mediante un menú desplegable. 
+
+El punto de aplicar JWT no se implementó de momento ya que el middleware isAdmin no se está utilziando de momento para nada, ya que en el modelo que se plantea de e-commerce todos los usuarios pueden ser compradores o vendedores, con lo cual aún no está definido que más si va a poder hacer un user admin de otro que no lo es. Se implementará seguramente más adelante. 
