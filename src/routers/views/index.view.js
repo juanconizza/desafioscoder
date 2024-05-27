@@ -88,9 +88,9 @@ viewsRouter.get("/products/real", async (req, res, next) => {
   }
 });
 
-viewsRouter.get("/users/:uid", async (req, res, next) => {
+viewsRouter.get("/users/", async (req, res, next) => {
   try {
-    const userId = req.params.uid; // Obtener el id del usuario de los parámetros de la URL
+    const userId = req.session.user_id; // Obtener el id del usuario de los parámetros de sessions
     const userFound = await userManager.readOne(userId); // Leer el usuario correspondiente
     const isOnline = req.session.online;
 
@@ -164,14 +164,18 @@ viewsRouter.get("/login", async (req, res, next) => {
 
 
 
+<<<<<<< HEAD
+viewsRouter.get("/cart/", async (req, res, next) => {
+=======
 viewsRouter.get("/cart/:uid", async (req, res, next) => {
+>>>>>>> dev
   try {
     const filter = {};
     const sortAndPaginate = {};
 
     //condicional para tomar el params del comprador y utilizarlo como filtro.
-    if (req.params.uid) {
-      filter.buyer_id = req.params.uid;
+    if (req.session.user_id) {
+      filter.buyer_id = req.session.user_id;
     }
 
     const buyerFound = await cartContactManager.paginate({ filter, sortAndPaginate });

@@ -49,13 +49,9 @@
         },
         body: JSON.stringify({ email, password })
       });
-      
-        console.log(response);
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data);
-        const userId = data.user_id;         
-        window.location.href = `/users/${userId}`;
+                    
+      if (response.ok) {             
+        window.location.href = `/users/`;
       } else if (response.status === 401) {
         document.getElementById("loginError").classList.remove("d-none");
         document.getElementById("loginError").textContent = "Error!, Verifique usuario y/o contraseña.";
