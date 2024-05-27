@@ -164,11 +164,7 @@ viewsRouter.get("/login", async (req, res, next) => {
 
 
 
-<<<<<<< HEAD
 viewsRouter.get("/cart/", async (req, res, next) => {
-=======
-viewsRouter.get("/cart/:uid", async (req, res, next) => {
->>>>>>> dev
   try {
     const filter = {};
     const sortAndPaginate = {};
