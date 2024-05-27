@@ -1,16 +1,13 @@
 function errorHandler(error, req, res, next) {
   if (res.headersSent) {
-    // Si los encabezados ya se enviaron, pasa al siguiente middleware
     return next(error);
   }
+  
+  const statusCode = error.statusCode || 500;
+  const errorMessage = error.message || "Internal Server Error";
+  const errors = error.errors || {};
 
-  if (error.statusCode) {
-    // Si el error tiene un código HTTP específico, responde con ese código y un mensaje de error
-    return res.status(error.statusCode).json({ error: error.message });
-  } else {
-    // Si no hay un código HTTP específico, trata el error como un error interno del servidor (500)
-    return res.status(500).json({ error: error.message || "Internal Server Error 500" });
-  }
+  res.status(statusCode).json({ error: errorMessage, errors: errors });
 }
 
 export default errorHandler;

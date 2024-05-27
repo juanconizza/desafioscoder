@@ -91,19 +91,20 @@ viewsRouter.get("/products/real", async (req, res, next) => {
 viewsRouter.get("/users/:uid", async (req, res, next) => {
   try {
     const userId = req.params.uid; // Obtener el id del usuario de los parámetros de la URL
-    const userLogged = await userManager.readOne(userId); // Leer el usuario correspondiente
+    const userFound = await userManager.readOne(userId); // Leer el usuario correspondiente
+    const isOnline = req.session.online;
 
-    if (!userLogged) {
+    if (!isOnline || !userFound) {
       // Si el usuario no existe, devolver un error 404
       return res.status(404).send("Usuario no encontrado");
     }
 
-    const { name } = userLogged; // Obtener el nombre del usuario
+    const { name } = userFound; // Obtener el nombre del usuario
 
     // Renderizar la vista del panel de usuario con los datos del usuario
     return res.render("userPanel", {
       title: `¡Manantiales Market! - Bienvenido a tu Panel ${name}!`,
-      userLogged: userLogged,
+      userLogged: userFound,
     });
   } catch (error) {
     // Manejar errores
@@ -113,32 +114,34 @@ viewsRouter.get("/users/:uid", async (req, res, next) => {
 
 viewsRouter.get("/products/:pid", async (req, res, next) => {
   try {
-    const productId = req.params.pid; // Obtener el id del producto de los parámetros de la URL
-    const productFound = await productManager.readOne(productId); // Leer el producto correspondiente
+    const productId = req.params.pid;
+    const productFound = await productManager.readOne(productId);
 
     if (!productFound) {
-      // Si el producto no existe, devolver un error 404
       return res.status(404).send("Producto NO encontrado");
     }
 
-    const { product } = productFound.title; // Obtener el nombre del producto
+    // Obtener isOnline de req.session
+    const isOnline = req.session.online || false;
 
-    // Renderizar la vista del panel de usuario con los datos del usuario
     return res.render("productDetail", {
-      title: `¡Manantiales Market! - ${product}!`,
+      title: `¡Manantiales Market! - ${productFound.title}!`,
       productFound: productFound,
+      isOnline: isOnline,
+      user_id: req.session.user_id 
     });
   } catch (error) {
-    // Manejar errores
     return next(error);
   }
 });
+
 
 viewsRouter.get("/register", async (req, res, next) => {
   try {
     return res.render("register", {
       title: "¡Manantiales Market! - Registro ",
     });
+    
   } catch (error) {
     return next(error);
   }
@@ -146,13 +149,19 @@ viewsRouter.get("/register", async (req, res, next) => {
 
 viewsRouter.get("/login", async (req, res, next) => {
   try {
-    return res.render("login", {
-      title: "¡Manantiales Market! - Login ",
-    });
+    if(!req.session.online){
+      return res.render("login", {
+        title: "¡Manantiales Market! - Login ",
+      });
+    } else {
+      // Redireccionar al inicio si el usuario no está en línea
+      return res.redirect("/");
+    }
   } catch (error) {
     return next(error);
   }
 });
+
 
 
 viewsRouter.get("/cart/:uid", async (req, res, next) => {

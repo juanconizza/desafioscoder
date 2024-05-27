@@ -1,4 +1,4 @@
-  
+
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
@@ -18,50 +18,57 @@
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
+  <script src="https://kit.fontawesome.com/e4eccb6dea.js" crossorigin="anonymous"></script>
     <title>{{title}}</title>
   </head>
   <body>
     <header class="container">
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/"><img
-            class="logo"
-            style="width: auto"
-            height="78px"
-            src="/logo/logo.png"
-            alt="logo manantiales market"
-          /></a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNavDropdown"
-          aria-controls="navbarNavDropdown"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
-          <ul class="navbar-nav">
-            <li class="nav-item active">
-              <a class="nav-link" href="/">Inicio</a>
-            </li>
-            <li class="nav-item active">
-              <a class="nav-link" href="/products/real">Publicar un Producto</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/register">Registro</a>
-              </li>
-              <li class="nav-item">
-              <a class="nav-link" href="/login">Login</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/cart/66298c2971a5c48e51f7ad5f">Carrito</a>
-            </li>
-          </ul>
-        </div>
-      </nav>
-    </header>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/"><img
+        class="logo"
+        style="width: auto"
+        height="78px"
+        src="/logo/logo.png"
+        alt="logo manantiales market"
+      /></a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNavDropdown"
+      aria-controls="navbarNavDropdown"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="/">Inicio</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" id="newProduct" href="/products/real">Publicar un Producto</a>
+        </li>
+        <li class="nav-item" id="register">
+          <a class="nav-link" href="/register">Registro</a>
+        </li>
+      </ul>
+      <ul class="navbar-nav ms-auto"> 
+        <li class="nav-item" id="loginDiv">
+          <a class="nav-link" href="/login"><i class="fas fa-user"></i> Iniciar Sesión</a> 
+        </li>
+        <li class="nav-item" id="logoutDiv">
+          <button class="nav-link" id="logout"><i class="fas fa-user"></i> Cerrar Sesión</button> 
+        </li>
+        <li class="nav-item mt-1" id="cartDiv">
+          <a class="nav-link" id="cartLink" href=""><i class="fas fa-shopping-cart"></i></a> 
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>
+    
 
     {{{body}}}
 
@@ -79,3 +86,60 @@
     ></script>
   </body>
 </html>
+
+<script>
+  document.addEventListener("DOMContentLoaded", async function() {
+    try {
+      const response = await fetch("/api/sessions/", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        },
+       
+      });
+      const responseData = await response.json();      
+
+      if (responseData.statusCode === 200) {
+        
+        // Si la respuesta es 200, ocultar loginDiv y register
+        document.getElementById("loginDiv").classList.add("d-none");
+        document.getElementById("register").classList.add("d-none");
+        
+        //Creamos dinamicamente el link del carrito correspondiente al usuario logueado.
+        const cartLink = document.getElementById("cartLink");
+        const userId = responseData.user_id;
+        cartLink.href = `/cart/${userId}`;
+
+      } else if (responseData.statusCode === 401) {
+        // Si la respuesta es 401, ocultar logoutDiv, cartDiv y newProduct
+        document.getElementById("logoutDiv").classList.add("d-none");
+        document.getElementById("cartDiv").classList.add("d-none");
+        document.getElementById("newProduct").classList.add("d-none");
+      }
+      
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  });
+
+  // Acción al hacer clic en el botón de logout
+  document.getElementById("logout").addEventListener("click", async function(event) {
+    try {
+      event.preventDefault();
+      const response = await fetch("/api/sessions/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        
+      });
+      if (response.ok) {
+        // Si la respuesta es 200, redireccionar a la página de inicio
+        window.location.href = "/";
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  });
+</script>
+
