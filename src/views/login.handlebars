@@ -48,8 +48,7 @@
           "Content-Type": "application/json"
         },
         body: JSON.stringify({ email, password })
-      });
-                    
+      });      
       if (response.ok) {             
         window.location.href = `/users/`;
       } else if (response.status === 401) {
