@@ -6,7 +6,7 @@ class SessionRouter extends CustomRouter {
     this.create(
       "/register",
       ["PUBLIC"],
-      passport.authenticate("register", { session: false }),
+      passport.authenticate("register"),
       async (req, res, next) => {
         try {
           // Enviar una respuesta con el nuevo usuario creado

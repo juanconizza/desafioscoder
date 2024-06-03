@@ -63,7 +63,6 @@ class CustomRouter {
           }
         }
       };
-      //create("/products", isValidAdmin, isText, create)
       create(path, arrayOfPolicies, ...callbacks) {
         this.router.post(
           path,

@@ -78,8 +78,7 @@ passport.use(
           };
           const token = createToken(user);
           user.token = token;
-          console.log(user);
-          return done (null, user);
+          return done(null, user);
         }
         const error = new Error("Invalid credentials");
         error.statusCode = 401;

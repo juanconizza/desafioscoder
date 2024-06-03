@@ -48,14 +48,17 @@
           "Content-Type": "application/json"
         },
         body: JSON.stringify({ email, password })
-      });      
+      });
+      
       if (response.ok) {             
         window.location.href = `/users/`;
       } else if (response.status === 401) {
         document.getElementById("loginError").classList.remove("d-none");
         document.getElementById("loginError").textContent = "Error!, Verifique usuario y/o contraseña.";
       } else {
-        throw new Error("Error en el servidor");
+        document.getElementById("loginError").classList.remove("d-none");
+        document.getElementById("loginError").textContent = "Error en el servidor, intente luego mas tarde.";
+        throw new Error("Server Error");
       }
     } catch (error) {
       console.error("Error:", error);
