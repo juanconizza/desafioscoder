@@ -125,15 +125,15 @@ class ViewsRouter extends CustomRouter {
         }
 
         // Obtener isOnline de req.user
-        const isOnline = req.user.online || false;
+        const isOnline = (req.user && req.user.online !== undefined) ? req.user.online : false;
 
         return res.render("productDetail", {
           title: `¡Manantiales Market! - ${productFound.title}!`,
           productFound: productFound,
           isOnline: isOnline,
-          user_id: req.user.user_id,
+          user_id: req.user ? req.user.user_id : null
         });
-      } catch (error) {
+      } catch (error) {ƒ
         return next(error);
       }
     });
