@@ -153,7 +153,7 @@ class CartContactRouter extends CustomRouter {
       }
     });
 
-    // Endpoint para eliminar un cart contact por su ID
+    // Endpoint para eliminar un articulo del carito contact por su product_id
     this.destroy("/:cid", ["USER"], async (req, res, next) => {
       try {
         const cartContactId = req.params.cid;
@@ -175,6 +175,28 @@ class CartContactRouter extends CustomRouter {
           throw new Error(
             `Failed to delete cart contact with ID ${cartContactId}.`
           );
+        }
+      } catch (error) {
+        // Manejar errores utilizando el errorHandler
+        return next(error);
+      }
+    });
+    // Endpoint para eliminar todos los artículos del carrito contact
+    this.destroy("/all", ["USER"], async (req, res, next) => {
+      try {
+        // Eliminar todos los cart contacts utilizando el método destroy() del CartContactManager
+        const deletedCartContacts = await cartContactManager.destroy("all");
+
+        // Verificar si se eliminaron los cart contacts correctamente
+        if (deletedCartContacts) {
+          // Enviar al cliente la respuesta con un código de estado 200
+          res.status(200).json({
+            statusCode: 200,
+            message: "All cart contacts deleted successfully.",
+          });
+        } else {
+          // Si no se pudieron eliminar los cart contacts, enviar un mensaje de error
+          throw new Error("Failed to delete all cart contacts.");
         }
       } catch (error) {
         // Manejar errores utilizando el errorHandler

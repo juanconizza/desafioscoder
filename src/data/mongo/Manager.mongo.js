@@ -52,10 +52,15 @@ class Manager {
         throw error;
       }
     }
-    async destroy(id) {
+    async destroy(id = null) {
       try {
-        const one = await this.Model.findByIdAndDelete(id);
-        return one;
+        let result;
+        if (id === 'all') {
+          result = await this.Model.deleteMany({});
+        } else {
+          result = await this.Model.findByIdAndDelete(id);
+        }
+        return result;
       } catch (error) {
         throw error;
       }
