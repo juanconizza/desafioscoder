@@ -16,17 +16,17 @@
         </div>
       {{/each}}
     </div>
+    <div class="row mb-3 mt-3">
+  <div class="col-md-6">
+    <p class="fs-3">Total de compra: $<span id="totalAmount"></span></p>
+  </div>
+</div>
     <div class="row mt-4 mb-2">
       <div class="col-md-6 mb-5">
         <button class="btn btn-success" onclick="checkout()">Contactar</button>
         <button class="btn btn-secondary" onclick="cancel()">Cancelar</button>
       </div>
-    </div>
-    <div class="row mb-3">
-      <div class="col-md-6">
-        <p>Total de compra: $<span id="totalAmount"></span></p>
-      </div>
-    </div>
+    </div>    
   {{else}}
     <div class="alert alert-info" role="alert">
       No hay productos en el carrito.
@@ -36,6 +36,21 @@
 
 
 <script>
+  
+document.addEventListener("DOMContentLoaded", async () => {
+    try {
+      const response = await fetch('/api/tickets');
+      if (response.ok) {
+        const data = await response.json();
+        document.getElementById('totalAmount').innerText = data.totalCart;
+      } else {
+        console.error('Error al obtener el total del carrito:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error al obtener el total del carrito:', error.message);
+    }
+  });
+
   // Función para eliminar un producto del carrito y recargar la página
   async function removeFromCart(cartItemId) {
     try {

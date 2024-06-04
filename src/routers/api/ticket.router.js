@@ -1,32 +1,68 @@
 import CustomRouter from "../CustomRouter.js";
-import CartContact from "../../data/mongo/models/cartContact.model.js"; 
+import cartContactManager from "../../data/mongo/managers/CartContactManager.mongo.js";
+import passport from "passport";
+import mongoose from "mongoose";
+
+const { Types } = mongoose;
 
 class TicketRouter extends CustomRouter {
   init() {
     this.read(
       "/",
       ["USER"],
+      passport.authenticate("jwt", { session: false }),
       async (req, res, next) => {
         try {
-          const buyerId = req.user.user_id;
-
-          // Buscar todos los items en el carrito del comprador actual
-          const cartItems = await CartContact.find({ buyer_id: buyerId });
-
-          if (!cartItems || cartItems.length === 0) {
-            return res.json({ total: 0 }); // Si no hay productos en el carrito
+          const filter = {};
+          if (req.user.user_id) {
+            filter.buyer_id = req.user.user_id; 
           }
+          console.log('Filter:', filter);
 
-          // Calcular el total de la compra
-          let totalAmount = 0;
-          for (const item of cartItems) {
-            const productPrice = item.product_id.price; // Obtener el precio del producto
-            const quantity = item.quantity; // Obtener la cantidad del producto en el carrito
-            totalAmount += productPrice * quantity; // Calcular el subtotal del producto
+          const buyerFound = await cartContactManager.paginate({
+            filter,
+          });
+
+          const cartInfo = buyerFound.docs;
+          console.log('Cart Info:', cartInfo);
+
+          // Realizar la agregación para obtener el total de la compra
+          const total = await cartContactManager.Model.aggregate([
+            {
+              $match: { buyer_id: new Types.ObjectId(cartInfo[0].buyer_id._id) }
+            },
+            {
+              $lookup: {
+                from: 'products', 
+                localField: 'product_id',
+                foreignField: '_id',
+                as: 'product'
+              }
+            },
+            {
+              $unwind: '$product'
+            },
+            {
+              $group: {
+                _id: null,
+                totalCart: {
+                  $sum: {
+                    $multiply: ["$product.price", "$quantity"]
+                  }
+                }
+              }
+            }
+          ]);
+
+          console.log('Aggregation Result:', total);
+
+          if (total.length > 0) {
+            res.json({ totalCart: total[0].totalCart });
+          } else {
+            res.json({ totalCart: 0 });
           }
-
-          res.json({ total: totalAmount }); // Devolver el total de la compra
         } catch (error) {
+          console.error('Aggregation Error:', error);
           next(error);
         }
       }
@@ -35,5 +71,4 @@ class TicketRouter extends CustomRouter {
 }
 
 const ticketRouter = new TicketRouter();
-
 export default ticketRouter.getRouter();
