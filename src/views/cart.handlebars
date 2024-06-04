@@ -16,10 +16,15 @@
         </div>
       {{/each}}
     </div>
-    <div class="row mt-4 mb-5">
+    <div class="row mt-4 mb-2">
       <div class="col-md-6 mb-5">
         <button class="btn btn-success" onclick="checkout()">Contactar</button>
         <button class="btn btn-secondary" onclick="cancel()">Cancelar</button>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <p>Total de compra: $<span id="totalAmount"></span></p>
       </div>
     </div>
   {{else}}
@@ -28,6 +33,7 @@
     </div>
   {{/if}}
 </div>
+
 
 <script>
   // Función para eliminar un producto del carrito y recargar la página
