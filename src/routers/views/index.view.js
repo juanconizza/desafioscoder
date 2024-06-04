@@ -2,6 +2,7 @@ import CustomRouter from "../CustomRouter.js";
 import productManager from "../../data/mongo/managers/ProductsManager.mongo.js";
 import userManager from "../../data/mongo/managers/UsersManager.mongo.js";
 import cartContactManager from "../../data/mongo/managers/CartContactManager.mongo.js";
+import passport from "passport";
 
 class ViewsRouter extends CustomRouter {
   init() {
@@ -91,52 +92,76 @@ class ViewsRouter extends CustomRouter {
       }
     });
 
-    this.read("/users/", ["USER"], async (req, res, next) => {
-      try {
-        const userId = req.user.user_id; // Obtener el id del usuario de los parámetros de user
-        const userFound = await userManager.readOne(userId); // Leer el usuario correspondiente
-        const isOnline = req.user.online;
+    this.read(
+      "/users/",
+      ["USER"],
+      passport.authenticate("jwt", { session: false }),
+      async (req, res, next) => {
+        try {
+          const userId = req.user.user_id; // Obtener el id del usuario de los parámetros de user
+          const userFound = await userManager.readOne(userId); // Leer el usuario correspondiente
+          const isOnline = req.user.online;
 
-        if (!isOnline || !userFound) {
-          // Si el usuario no existe, devolver un error 404
-          return res.status(404).send("Usuario no encontrado");
+          if (!isOnline || !userFound) {
+            // Si el usuario no existe, devolver un error 404
+            return res.status(404).send("Usuario no encontrado");
+          }
+
+          const { name } = userFound; // Obtener el nombre del usuario
+
+          // Renderizar la vista del panel de usuario con los datos del usuario
+          return res.render("userPanel", {
+            title: `¡Manantiales Market! - Bienvenido a tu Panel ${name}!`,
+            userLogged: userFound,
+          });
+        } catch (error) {
+          // Manejar errores
+          return next(error);
         }
-
-        const { name } = userFound; // Obtener el nombre del usuario
-
-        // Renderizar la vista del panel de usuario con los datos del usuario
-        return res.render("userPanel", {
-          title: `¡Manantiales Market! - Bienvenido a tu Panel ${name}!`,
-          userLogged: userFound,
-        });
-      } catch (error) {
-        // Manejar errores
-        return next(error);
       }
-    });
+    );
 
-    this.read("/products/:pid", ["PUBLIC"], async (req, res, next) => {
-      try {
-        const productId = req.params.pid;
-        const productFound = await productManager.readOne(productId);
-
-        if (!productFound) {
-          return res.status(404).send("Producto NO encontrado");
+    this.read(
+      "/products/:pid",
+      ["PUBLIC"],
+      (req, res, next) => {
+        passport.authenticate("jwt", { session: false }, (err, user) => {
+          if (err) {
+            return next(err);
+          }
+          // Si no hay usuario (no se pudo autenticar correctamente)
+          if (!user) {
+            req.user = { online: false }; // Establecer manualmente que no está online
+          } else {
+            req.user = user; // Establecer el usuario autenticado
+          }
+          next();
+        })(req, res, next);
+      },
+      async (req, res, next) => {
+        try {
+          const productId = req.params.pid;
+          const productFound = await productManager.readOne(productId);
+    
+          if (!productFound) {
+            return res.status(404).send("Producto NO encontrado");
+          }
+    
+          // Obtener isOnline de req.user
+          const isOnline = req.user.online || false;
+    
+          return res.render("productDetail", {
+            title: `¡Manantiales Market! - ${productFound.title}!`,
+            productFound: productFound,
+            isOnline: isOnline,
+            user_id: req.user.user_id || null,
+          });
+        } catch (error) {
+          return next(error);
         }
-
-        // Obtener isOnline de req.user
-        const isOnline = (req.user && req.user.online !== undefined) ? req.user.online : false;
-
-        return res.render("productDetail", {
-          title: `¡Manantiales Market! - ${productFound.title}!`,
-          productFound: productFound,
-          isOnline: isOnline,
-          user_id: req.user ? req.user.user_id : null
-        });
-      } catch (error) {ƒ
-        return next(error);
       }
-    });
+    );
+    
 
     this.read("/register", ["PUBLIC"], async (req, res, next) => {
       try {
@@ -150,9 +175,9 @@ class ViewsRouter extends CustomRouter {
 
     this.read("/login", ["PUBLIC"], async (req, res, next) => {
       try {
-            return res.render("login", {
-            title: "¡Manantiales Market! - Login ",
-          });        
+        return res.render("login", {
+          title: "¡Manantiales Market! - Login ",
+        });
       } catch (error) {
         return next(error);
       }

@@ -1,16 +1,14 @@
 import jwt from "jsonwebtoken";
 
-const createToken = (data) =>
- jwt.sign(data, process.env.SECRET, { expiresIn: 60 * 60 * 24 });
+const createToken = (data) => {
+  const opts = { expiresIn: 60 * 60 * 24 };
+  const token = jwt.sign(data, process.env.SECRET_JWT, opts);
+  return token;
+};
 
-const verifyToken = (headers) => {
- const token = headers.token;
- if (!token) {
-   const error = new Error("bad auth");
-   error.statusCode = 401;
-   throw error;
- }
- return jwt.verify(token, process.env.SECRET);
+const verifyToken = (token) => {
+  const data = jwt.verify(token, process.env.SECRET_JWT);
+  return data;
 };
 
 export { createToken, verifyToken };

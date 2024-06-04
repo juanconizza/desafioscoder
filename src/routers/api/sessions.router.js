@@ -23,7 +23,7 @@ class SessionRouter extends CustomRouter {
     this.create(
       "/login",
       ["PUBLIC"],
-      passport.authenticate("login"),
+      passport.authenticate("login", { session: false }),
       async (req, res, next) => {
         try {
           console.log("paso passport!")
@@ -41,7 +41,7 @@ class SessionRouter extends CustomRouter {
     this.read(
       "/",
       ["USER"],
-      passport.authenticate("jwt"),
+      passport.authenticate("jwt", { session: false }),
       async (req, res, next) => {
         try {
           if (req.user.online) {
@@ -66,13 +66,19 @@ class SessionRouter extends CustomRouter {
 
     this.create("/logout", ["USER"], (req, res, next) => {
       try {
+        // Establecer el estado de usuario como desconectado
         req.user.online = false;
-        req.user.destroy();
+        
+        // Destruir la cookie "token"
+        res.clearCookie("token", { signed: true });
+        
+        // Responder con un mensaje de éxito
         return res.json({ statusCode: 200, message: "Signed out!" });
       } catch (error) {
         return next(error);
       }
     });
+    
   }
 }
 

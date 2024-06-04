@@ -6,8 +6,7 @@ import validateUsersProps from "./validateUsersProps.js";
 import { createHash, verifyHash } from "../services/hash.js";
 import { createToken } from "../services/token.js";
 
-passport.use(
-  "register",
+passport.use("register",
   new LocalStrategy(
     { passReqToCallback: true, usernameField: "email" },
     async (req, email, password, done) => {
@@ -104,8 +103,8 @@ passport.use(
         if (data) {
           return done(null, data);
         } else {
-          const error = new Error("Forbidden from jwt!");
-          error.statusCode = 403;
+          const error = new Error("Unauthorized. JWT token not provided or invalid.");
+          error.statusCode = 401;
           return done(error);
         }
       } catch (error) {
@@ -114,5 +113,6 @@ passport.use(
     }
   )
 );
+
 
 export default passport;
