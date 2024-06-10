@@ -1,6 +1,6 @@
 import "dotenv/config.js"
 import express from "express";
-import dbConnection from "./src/services/db.js";
+import dbConnection from "./src/utils/db.js";
 import { engine } from "express-handlebars";
 import { createServer } from "http";
 import { Server } from "socket.io";

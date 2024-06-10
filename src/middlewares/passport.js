@@ -3,8 +3,8 @@ import { Strategy as LocalStrategy } from "passport-local";
 import { Strategy as JWTStrategy, ExtractJwt } from "passport-jwt";
 import userManager from "../data/mongo/managers/UsersManager.mongo.js";
 import validateUsersProps from "./validateUsersProps.js";
-import { createHash, verifyHash } from "../services/hash.js";
-import { createToken } from "../services/token.js";
+import { createHash, verifyHash } from "../utils/hash.js";
+import { createToken } from "../utils/token.js";
 
 passport.use("register",
   new LocalStrategy(
@@ -75,7 +75,7 @@ passport.use(
             role: one.role,
             user_id: one._id,
           };
-          const token = createToken(user);
+          const token = createToken(user);          
           user.token = token;
           return done(null, user);
         }
