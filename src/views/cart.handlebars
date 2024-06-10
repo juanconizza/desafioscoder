@@ -16,12 +16,17 @@
         </div>
       {{/each}}
     </div>
-    <div class="row mt-4 mb-5">
+    <div class="row mb-3 mt-3">
+  <div class="col-md-6">
+    <p class="fs-3">Total de compra: $<span id="totalAmount"></span></p>
+  </div>
+</div>
+    <div class="row mt-4 mb-2">
       <div class="col-md-6 mb-5">
         <button class="btn btn-success" onclick="checkout()">Contactar</button>
-        <button class="btn btn-secondary" onclick="cancel()">Cancelar</button>
+        <button class="btn btn-secondary" onclick="clearCart()">Vaciar Carrito</button>
       </div>
-    </div>
+    </div>    
   {{else}}
     <div class="alert alert-info" role="alert">
       No hay productos en el carrito.
@@ -29,7 +34,23 @@
   {{/if}}
 </div>
 
+
 <script>
+
+document.addEventListener("DOMContentLoaded", async () => {
+    try {
+      const response = await fetch('/api/tickets');
+      if (response.ok) {
+        const data = await response.json();
+        document.getElementById('totalAmount').innerText = data.totalCart;
+      } else {
+        console.error('Error al obtener el total del carrito:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error al obtener el total del carrito:', error.message);
+    }
+  });
+
   // Función para eliminar un producto del carrito y recargar la página
   async function removeFromCart(cartItemId) {
     try {
@@ -57,8 +78,27 @@
   }
 
   // Función para cancelar la compra y vaciar el carrito
-  function cancel() {
-    // Agregar aquí la lógica para cancelar la compra y vaciar el carrito
-    console.log('Cancelando la compra y vaciando el carrito...');
+      async function clearCart() {
+    try {
+      const response = await fetch('/api/cart-contact/all', {
+        method: 'DELETE'
+      });
+
+      responseData = response.json()
+
+      console.log(responseData)
+
+      if (response.ok) {
+        // Si la solicitud se realizó con éxito, recargar la página o realizar otra acción
+        location.reload(); // Recargar la página para reflejar los cambios
+      } else {
+        console.error('Error al vaciar el carrito:', response.statusText);
+        // Mostrar un mensaje de error al usuario, si es necesario
+      }
+    } catch (error) {
+      console.error('Error al vaciar el carrito:', error.message);
+      // Manejar errores de red u otros errores
+    }
   }
+  
 </script>

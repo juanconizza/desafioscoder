@@ -1,18 +1,18 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
+import { Strategy as JWTStrategy, ExtractJwt } from "passport-jwt";
 import userManager from "../data/mongo/managers/UsersManager.mongo.js";
+import validateUsersProps from "./validateUsersProps.js";
 import { createHash, verifyHash } from "../services/hash.js";
-import validateUsersProps from "./validateUsersProps.js"
+import { createToken } from "../services/token.js";
 
-
-passport.use(
-  "register",
+passport.use("register",
   new LocalStrategy(
     { passReqToCallback: true, usernameField: "email" },
     async (req, email, password, done) => {
       try {
         const data = req.body;
-        // Acá adaptamos el middleware anterior y lo refactorizamos para las validaciones extra. 
+        // Acá adaptamos el middleware anterior y lo refactorizamos para las validaciones extra.
         const errors = validateUsersProps(data);
 
         // Validamos por defecto que role sea 0 (0 = user / 1= admin)
@@ -34,7 +34,9 @@ passport.use(
         const existingUser = await userManager.readByEmail(email);
         if (existingUser) {
           const error = new Error("Email already registered! Use another one");
-          error.errors = { email: "El email ingresado ya fue registrado, utilice otro" };
+          error.errors = {
+            email: "El email ingresado ya fue registrado, utilice otro",
+          };
           error.statusCode = 401;
           return done(error);
         }
@@ -67,11 +69,15 @@ passport.use(
         }
         const verify = verifyHash(password, one.password);
         if (verify) {
-          req.session.email = email;
-          req.session.online = true;
-          req.session.role = one.role;
-          req.session.user_id = one._id;          
-          return done(null, one);
+          const user = {
+            email,
+            online: true,
+            role: one.role,
+            user_id: one._id,
+          };
+          const token = createToken(user);
+          user.token = token;
+          return done(null, user);
         }
         const error = new Error("Invalid credentials");
         error.statusCode = 401;
@@ -82,5 +88,31 @@ passport.use(
     }
   )
 );
+
+passport.use(
+  "jwt",
+  new JWTStrategy(
+    {
+      jwtFromRequest: ExtractJwt.fromExtractors([
+        (req) => req?.cookies["token"],
+      ]),
+      secretOrKey: process.env.SECRET_JWT,
+    },
+    (data, done) => {
+      try {
+        if (data) {
+          return done(null, data);
+        } else {
+          const error = new Error("Unauthorized. JWT token not provided or invalid.");
+          error.statusCode = 401;
+          return done(error);
+        }
+      } catch (error) {
+        return done(error);
+      }
+    }
+  )
+);
+
 
 export default passport;

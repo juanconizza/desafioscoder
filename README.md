@@ -176,3 +176,19 @@ También se corrigió que la ruta de /user y de /cart en el router sessions tome
 Se agregó además a la barra de navegación, cuando se encuentra logeado la posibilidad de cerrar sesión o de volver al panel de usario mediante un menú desplegable. 
 
 El punto de aplicar JWT no se implementó de momento ya que el middleware isAdmin no se está utilziando de momento para nada, ya que en el modelo que se plantea de e-commerce todos los usuarios pueden ser compradores o vendedores, con lo cual aún no está definido que más si va a poder hacer un user admin de otro que no lo es. Se implementará seguramente más adelante. 
+
+# DESAFÍO 8 - Branch: sprint8
+
+En este desafío se restructuraron los routers con el constructor de "Custom Router" para una mejor organización y escalabilidad. 
+
+Se realizaron respuestas predeterminadas y políticas de autenticación "USER", "PUBLIC" y "ADMIN" para el manejo de permisos. 
+
+También se implementó la validacón por JWT, eliminando las sessions de Mongo para validat todo con un token en el lado del cliente. 
+
+Se crearon 2 nuevos endpoints: 
+
+"/api/tickets" llamando al método correspondiente para calcular el total de la compra (agregation) el cual puede verse en el carrito, una vez logueado. 
+
+"api/cart-contact/all" para vaciar y borrar el carrito del cliente. 
+
+

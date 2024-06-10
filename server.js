@@ -4,8 +4,7 @@ import dbConnection from "./src/services/db.js";
 import { engine } from "express-handlebars";
 import { createServer } from "http";
 import { Server } from "socket.io";
-import expressSession from "express-session"
-import MongoStore from "connect-mongo"
+import cookieParser from "cookie-parser";
 import socketCb from "./src/routers/index.socket.js";
 import router from "./src/routers/index.router.js";
 import errorHandler from "./src/middlewares/errorHandler.js";
@@ -41,13 +40,8 @@ app.engine("handlebars", engine({
 app.set("view engine", "handlebars");
 app.set("views", __dirname + "/src/views");
 
-//Configuración para Session
-app.use(expressSession({
-  store: new MongoStore ({ mongoUrl:process.env.LINK_MONGO, ttl:432000 }),
-  secret: process.env.SECRET_SESSION,
-  resave: true,
-  saveUninitialized: true  
-}))
+//Configuración para Cookie con JWT
+app.use(cookieParser(process.env.SECRET_COOKIE));
 
 //Carpeta Public de Imagenes
 app.use(express.static(join(__dirname, "public/img")));
