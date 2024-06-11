@@ -9,7 +9,7 @@
               <h5 class="card-title">{{product_id.title}}</h5>
               <p class="card-text">Precio: ${{product_id.price}}</p>
               <label for="quantity">Cantidad:</label>
-              <input type="number" id="quantity" name="quantity" min="1" value="{{this.quantity}}">
+              <input type="number" id="quantity" name="quantity" min="1" value="{{this.quantity}}" onchange="updateQuantity('{{this._id}}', this.value)">
               <button class="btn btn-danger" onclick="removeFromCart('{{this._id}}')">Eliminar</button>
             </div>
           </div>
@@ -100,5 +100,49 @@ document.addEventListener("DOMContentLoaded", async () => {
       // Manejar errores de red u otros errores
     }
   }
+
+  // Función para actualizar la cantidad de un producto en el carrito
+let timeout = null; // Variable para almacenar el temporizador
+
+async function updateQuantity(cartItemId, newQuantity) {
+  try {
+    // Realizar una solicitud PUT al endpoint para actualizar la cantidad
+    const response = await fetch(`/api/cart-contact/${cartItemId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ quantity: newQuantity })
+    });
+
+    if (response.ok) {
+      // Si la solicitud se realizó con éxito, actualizar el total después de 2 segundos
+      clearTimeout(timeout); // Limpiar temporizador anterior si existe
+      timeout = setTimeout(() => {
+        updateTotal(); // Llamar a la función para actualizar el total del carrito
+      }, 500); // Esperar 2 segundos antes de actualizar el total
+    } else {
+      console.error('Error al actualizar la cantidad del producto:', response.statusText);
+    }
+  } catch (error) {
+    console.error('Error al actualizar la cantidad del producto:', error.message);
+  }
+}
+
+// Función para actualizar el total del carrito
+async function updateTotal() {
+  try {
+    const response = await fetch('/api/tickets');
+    if (response.ok) {
+      const data = await response.json();
+      document.getElementById('totalAmount').innerText = data.totalCart;
+    } else {
+      console.error('Error al obtener el total del carrito:', response.statusText);
+    }
+  } catch (error) {
+    console.error('Error al obtener el total del carrito:', error.message);
+  }
+}
+
   
 </script>
