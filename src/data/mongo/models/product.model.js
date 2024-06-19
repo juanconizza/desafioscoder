@@ -6,7 +6,7 @@ const collection = "products";
 
 const schema = new Schema({
   //Relacionamos la colección users para traernos información del usuario que creo el producto.
-  seller_id: {type: Types.ObjectId, ref: "users", index: true, required: true},
+  seller_id: {type: Types.ObjectId, ref: "users", index: true, required: false},
   title: { type: String, required: true, index: true},
   photo: { type: String, default: "default_picture.png" },
   category: { type: String, required: true, index: true },
