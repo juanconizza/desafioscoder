@@ -1,4 +1,4 @@
-import { signedCookie } from "cookie-parser";
+import { verifyToken } from "../../src/utils/token.js";
 
 class SessionsController {
   register = async (req, res, next) => {
@@ -13,26 +13,32 @@ class SessionsController {
   };
 
   login = async (req, res, next) => {
-    try {    
+    try {
       if (!req.user || !req.user.token) {
         return res.status(401).json({ message: "Authentication failed" });
       }  
+      // Opciones para la cookie
+      const cookieOptions = {
+        httpOnly: true,          
+        signed: true  
+      };  
       return res
-        .cookie("token", req.user.token, { signedCookie: true })
+        .cookie("token", req.user.token, cookieOptions)
         .status(200)
         .json({ message: "Logged in!" });
-    } catch (error) {     
+    } catch (error) {
       return next(error);
     }
   };
 
   auth = async (req, res, next) => {
-    try {      
+    try {          
+      // Verificar si el usuario está en línea
       if (req.user.online) {
         return res.json({
           statusCode: 200,
           message: "Is Online!",
-          user_id: req.user.user_id,
+          user_id: req.user._id,
         });
       } else {
         return res.json({

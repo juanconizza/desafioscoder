@@ -20,8 +20,7 @@ class SessionRouter extends CustomRouter {
 
     this.read(
       "/",
-      ["USER"],
-      passport.authenticate("jwt", { session: false }),
+      ["USER"],      
       auth
     );
 

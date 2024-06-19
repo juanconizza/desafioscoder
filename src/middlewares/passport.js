@@ -1,6 +1,5 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
-import { Strategy as JWTStrategy, ExtractJwt } from "passport-jwt";
 import userManager from "../data/mongo/managers/UsersManager.mongo.js";
 import validateUsersProps from "./validateUsersProps.js";
 import { createHash, verifyHash } from "../utils/hash.js";
@@ -76,7 +75,7 @@ passport.use(
             user_id: one._id,
           };
           const token = createToken(user);          
-          user.token = token;
+          user.token = token;          
           return done(null, user);
         }
         const error = new Error("Invalid credentials");
@@ -89,30 +88,31 @@ passport.use(
   )
 );
 
-passport.use(
-  "jwt",
-  new JWTStrategy(
-    {
-      jwtFromRequest: ExtractJwt.fromExtractors([
-        (req) => req?.cookies["token"],
-      ]),
-      secretOrKey: process.env.SECRET_JWT,
-    },
-    (data, done) => {
-      try {
-        if (data) {
-          return done(null, data);
-        } else {
-          const error = new Error("Unauthorized. JWT token not provided or invalid.");
-          error.statusCode = 401;
-          return done(error);
-        }
-      } catch (error) {
-        return done(error);
-      }
-    }
-  )
-);
+//Estrategia vieja de JWT con Passport. La dejo comentada a los fines didacticos. 
+// passport.use(
+//   "jwt",
+//   new JWTStrategy(
+//     {
+//       jwtFromRequest: ExtractJwt.fromExtractors([
+//         (req) => req?.cookies["token"],
+//       ]),
+//       secretOrKey: process.env.SECRET_JWT,
+//     },
+//     (data, done) => {
+//       try {
+//         if (data) {
+//           return done(null, data);
+//         } else {
+//           const error = new Error("Unauthorized. JWT token not provided or invalid.");
+//           error.statusCode = 401;
+//           return done(error);
+//         }
+//       } catch (error) {
+//         return done(error);
+//       }
+//     }
+//   )
+// );
 
 
 export default passport;

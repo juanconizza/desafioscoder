@@ -9,8 +9,7 @@ class TicketRouter extends CustomRouter {
   init() {
     this.read(
       "/",
-      ["USER"],
-      passport.authenticate("jwt", { session: false }),
+      ["USER"],      
       async (req, res, next) => {
         try {
           const filter = {};
