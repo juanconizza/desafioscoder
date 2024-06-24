@@ -1,10 +1,10 @@
 class Service {
-    constructor(manager) {
-      this.model = manager;
+    constructor(repository) {
+      this.repository = repository;
     }
     createService = async (data) => {
-      try {
-        const one = await this.model.create(data);
+      try {            
+        const one = await this.repository.createRepository(data);
         return one;
       } catch (error) {
         throw error;
@@ -12,7 +12,7 @@ class Service {
     };
     readService = async (filter) => {
       try {
-        const all = await this.model.read(filter);
+        const all = await this.repository.readRepository(filter);
         return all;
       } catch (error) {
         throw error;
@@ -20,7 +20,7 @@ class Service {
     };
     paginateService = async ({ filter, sortAndPaginate }) => {
       try {
-        const all = await this.model.paginate({ filter, sortAndPaginate });
+        const all = await this.repository.paginateRepository({ filter, sortAndPaginate });
         return all;
       } catch (error) {
         throw error;
@@ -28,7 +28,7 @@ class Service {
     };
     readOneService = async (id) => {
       try {
-        const one = await this.model.readOne(id);
+        const one = await this.repository.readOneRepository(id);
         return one;
       } catch (error) {
         throw error;
@@ -36,7 +36,7 @@ class Service {
     };
     readOneEmailService = async (email) => {
         try {
-          const one = await this.model.readByEmail(email);
+          const one = await this.repository.readByEmailRepository(email);
           return one;
         } catch (error) {
           throw error;
@@ -44,7 +44,7 @@ class Service {
       };
     updateService = async (id, data) => {
       try {
-        const one = await this.model.update(id, data);
+        const one = await this.repository.updateRepository(id, data);
         return one;
       } catch (error) {
         throw error;
@@ -52,7 +52,7 @@ class Service {
     };
     destroyService = async (id) => {
       try {
-        const one = await this.model.destroy(id);
+        const one = await this.repository.destroyRepository(id);
         return one;
       } catch (error) {
         throw error;

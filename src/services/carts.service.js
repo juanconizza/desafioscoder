@@ -1,5 +1,5 @@
 import Service from "./services.js";
-import cartsManager from "../data/mongo/managers/CartContactManager.mongo.js";
+import cartsContactRepository from "../repositories/cartsContact.rep.js";
 
-const cartsService = new Service(cartsManager);
+const cartsService = new Service(cartsContactRepository);
 export const { createService, readService, paginateService, readOneService, readOneEmailService, updateService, destroyService } = cartsService;

@@ -79,7 +79,8 @@
         },
         body: JSON.stringify(requestBody),
       });
-      const responseData = await response.json();        
+      const responseData = await response.json();
+      console.log(responseData)        
       
       if (response.status === 201) {
   // Usuario registrado correctamente

@@ -1,9 +1,11 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
-import userManager from "../data/mongo/managers/UsersManager.mongo.js";
+//import userManager from "../data/mongo/managers/UsersManager.mongo.js";
 import validateUsersProps from "./validateUsersProps.js";
 import { createHash, verifyHash } from "../utils/hash.js";
 import { createToken } from "../utils/token.js";
+import usersRepository from "../repositories/users.rep.js";
+import UsersDTO from "../dto/users.dto.js";
 
 passport.use("register",
   new LocalStrategy(
@@ -30,7 +32,7 @@ passport.use("register",
         }
 
         // Verificamos que el usuario no esté ya registrado.
-        const existingUser = await userManager.readByEmail(email);
+        let existingUser = await usersRepository.readByEmailRepository(email);
         if (existingUser) {
           const error = new Error("Email already registered! Use another one");
           error.errors = {
@@ -45,7 +47,8 @@ passport.use("register",
         req.body.password = hashPassword;
 
         // Creamos el usuario
-        const user = await userManager.create(req.body);
+        const dataDTO = new UsersDTO(req.body)
+        const user = await usersRepository.createRepository(dataDTO);
         return done(null, user);
       } catch (error) {
         return done(error);
@@ -60,7 +63,7 @@ passport.use(
     { passReqToCallback: true, usernameField: "email" },
     async (req, email, password, done) => {
       try {
-        const one = await userManager.readByEmail(email);
+        const one = await usersRepository.readByEmailRepository(email);
         if (!one) {
           const error = new Error("Bad auth from login!");
           error.statusCode = 401;

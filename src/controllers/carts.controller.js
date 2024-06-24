@@ -95,9 +95,8 @@ class CartsController {
 
   createCartContact = async (req, res, next) => {
     try {
-      const data = req.body;
-      console.log(data)
-      const newCartContact = await createService(data);
+      const data = req.body;   
+      const newCartContact = await createService(data);      
       res.status(201).json({
         statusCode: 201,
         response: newCartContact.id,
@@ -112,10 +111,7 @@ class CartsController {
     try {
       const cartContactId = req.params.cid;
       const newData = req.body;
-      const updatedCartContact = await updateService(
-        cartContactId,
-        newData
-      );
+      const updatedCartContact = await updateService(cartContactId, newData);
 
       if (updatedCartContact) {
         res.status(200).json({
@@ -135,9 +131,7 @@ class CartsController {
   deleteCartContact = async (req, res, next) => {
     try {
       const cartContactId = req.params.cid;
-      const deletedCartContact = await destroyService(
-        cartContactId
-      );
+      const deletedCartContact = await destroyService(cartContactId);
 
       if (deletedCartContact) {
         res.status(200).json({

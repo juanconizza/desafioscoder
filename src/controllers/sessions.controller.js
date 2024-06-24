@@ -1,5 +1,3 @@
-import { verifyToken } from "../../src/utils/token.js";
-
 class SessionsController {
   register = async (req, res, next) => {
     try {

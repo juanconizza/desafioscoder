@@ -1,6 +1,5 @@
 import CustomRouter from "../CustomRouter.js";
 import cartContactManager from "../../data/mongo/managers/CartContactManager.mongo.js";
-import passport from "passport";
 import mongoose from "mongoose";
 
 const { Types } = mongoose;
