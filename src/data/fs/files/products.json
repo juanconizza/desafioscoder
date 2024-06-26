@@ -376,16 +376,5 @@
     "description": "Excelente estado",
     "price": "850000",
     "stock": "1"
-  },
-  {
-    "_id": "58d55a3d9d492d4338c0e225",
-    "title": "Caja de herramientas",
-    "photo": "Caja-de-herramientas_1719416813543.jpeg",
-    "category": "Hogar",
-    "description": "Como Nueva!",
-    "price": "10000",
-    "stock": "3",
-    "createdAt": "2024-06-26T15:46:53.570Z",
-    "updatedAt": "2024-06-26T15:46:53.570Z"
-  }
+  }  
 ]

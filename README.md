@@ -189,6 +189,14 @@ Se crearon 2 nuevos endpoints:
 
 "/api/tickets" llamando al método correspondiente para calcular el total de la compra (agregation) el cual puede verse en el carrito, una vez logueado. 
 
-"api/cart-contact/all" para vaciar y borrar el carrito del cliente. 
+"api/cart-contact/all" para vaciar y borrar el carrito del cliente.
+
+# Challenge 3 - Branch: challenge_3
+
+En este desafío se incorporó 2 sistemas de persistencia funcionando correctamente (excepto algunas limitaciones como en el caso de File System.) 
+
+Mediante argunmentos y cambios de entorno se puede cambiar entre "npm run dev" o "npm run test". El mismo cambiará de puerto y de sistema de archivo siendo "dev" para mongo y "test" para file system. 
+
+Luego también se incorporó la verificación vía email que sólo funciona con mongo debido a limitaciones de file system pero funciona correctamente. 
 
 
