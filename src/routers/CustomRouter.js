@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { verifyToken } from "../utils/token.js";
-import userManager from "../data/mongo/managers/UsersManager.mongo.js";
+//import userManager from "../data/mongo/managers/UsersManager.mongo.js";
+import usersRepository from "../repositories/users.rep.js";
 
 class CustomRouter {
   //para construir y configurar cada instancia del enrutador
@@ -53,21 +54,17 @@ class CustomRouter {
       const decoded = verifyToken(token);
 
       const { role, email, online } = decoded;
-      // Permitir acceso público sin verificación
-      if (policies.includes("PUBLIC")) return next();
       // Verificar roles permitidos según las políticas
       if (
         (policies.includes("USER") && role === 0) ||
         (policies.includes("ADMIN") && role === 1)
       ) {
-        const userDoc = await userManager.readByEmail(email);
-        if (userDoc) {
-          // Convertir el documento BSON a un objeto JavaScript plano
-          const user = userDoc.toObject();
+        const user = await usersRepository.readByEmailRepository(email);
+        if (user) {          
           delete user.password;
           user.online = online;
-          req.user = user;
-          console.log(req.user);
+          user.user_id = user._id
+          req.user = user;          
         }        
         return next();
       } else {

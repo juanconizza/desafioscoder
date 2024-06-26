@@ -6,6 +6,7 @@ import { createHash, verifyHash } from "../utils/hash.js";
 import { createToken } from "../utils/token.js";
 import usersRepository from "../repositories/users.rep.js";
 import UsersDTO from "../dto/users.dto.js";
+import sendEmail from "../utils/emailVerify.js";
 
 passport.use("register",
   new LocalStrategy(
@@ -49,6 +50,14 @@ passport.use("register",
         // Creamos el usuario
         const dataDTO = new UsersDTO(req.body)
         const user = await usersRepository.createRepository(dataDTO);
+        
+        console.log(user);
+        // Enviamos el email con código verificador
+        await sendEmail({
+          to: user.email,
+          name: user.name,
+          code: user.verifyCode,
+        });
         return done(null, user);
       } catch (error) {
         return done(error);
@@ -65,12 +74,15 @@ passport.use(
       try {
         const one = await usersRepository.readByEmailRepository(email);
         if (!one) {
-          const error = new Error("Bad auth from login!");
+          const error = new Error("Invalid credentials");
           error.statusCode = 401;
           return done(error);
         }
-        const verify = verifyHash(password, one.password);
-        if (verify) {
+        
+        const verifyPass = verifyHash(password, one.password);
+        const verifyAccount = one.verify;
+
+        if (verifyPass && verifyAccount) {
           const user = {
             email,
             online: true,
@@ -80,16 +92,24 @@ passport.use(
           const token = createToken(user);          
           user.token = token;          
           return done(null, user);
+        } else if (verifyPass && !verifyAccount) {
+          // Contraseña válida pero cuenta no verificada
+          const error = new Error("Account not verified");
+          error.statusCode = 403; // Forbidden status code
+          return done(error);
+        } else {
+          // Contraseña inválida
+          const error = new Error("Invalid credentials");
+          error.statusCode = 401;
+          return done(error);
         }
-        const error = new Error("Invalid credentials");
-        error.statusCode = 401;
-        return done(error);
       } catch (error) {
         return done(error);
       }
     }
   )
 );
+
 
 //Estrategia vieja de JWT con Passport. La dejo comentada a los fines didacticos. 
 // passport.use(

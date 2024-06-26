@@ -7,9 +7,9 @@
   "scripts": {
     "start": "node ./server.js -p 9000",
     "dev": "nodemon ./server.js --env dev",
-    "argv": "nodemon ./server.js -p 8080 --env=prod --persistence memory",
+    "prod": "nodemon ./server.js -p 8082 --env=prod --persistence mongo",
     "memory": "nodemon ./server.js -p 8081 --env=prod --persistence memory",
-    "fs": "nodemon ./server.js -p 8082 --env=prod --persistence fs"
+    "test": "nodemon ./server.js -p 8082 --env=prod --persistence fs"
   },
   "keywords": [],
   "author": "",
@@ -29,6 +29,7 @@
     "mongoose-paginate-v2": "^1.8.0",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.9.14",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",

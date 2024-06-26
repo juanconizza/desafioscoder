@@ -1,22 +1,7 @@
-import fs from "fs"
-import { randomBytes } from "crypto";
+import fs from "fs";
 
-
-
-class Product {
-  constructor(id, title, photo, category, description, price, stock) {
-    this.id = id;
-    this.title = title;
-    this.photo = photo;
-    this.category = category;
-    this.description = description;
-    this.price = price;
-    this.stock = stock;
-  }
-}
-
-export class ProductManager {
-  static #path = "./src/data/fs/files/products.json";
+class ProductManager {
+  static #path = "./src/data/fs/files/products.json"; 
 
   async init() {
     try {
@@ -28,25 +13,12 @@ export class ProductManager {
       await fs.promises.writeFile(ProductManager.#path, JSON.stringify([], null, 2)); // Escribir un array JSON vacío
       console.log("File Created!");
     }
-}
-
-
-  generateId() {
-    return randomBytes(12).toString("hex");
   }
-
+  
   async create(data) {
     try {
       const products = JSON.parse(await fs.promises.readFile(ProductManager.#path, "utf-8"));
-      const newProduct = new Product(
-        this.generateId(),
-        data.title,
-        data.photo || "defaultphoto.jpg",
-        data.category,
-        data.description,
-        data.price,
-        data.stock
-      );
+      const newProduct = data;
       products.push(newProduct);
       await fs.promises.writeFile(ProductManager.#path, JSON.stringify(products, null, 2));
       return newProduct;
@@ -67,15 +39,76 @@ export class ProductManager {
     }
   }
 
+  async paginate({ filter = {}, sortAndPaginate = {} }) {
+    try {
+      const products = JSON.parse(await fs.promises.readFile(ProductManager.#path, "utf-8"));
+
+      // Filtrar productos por categoría si se proporciona
+      let filteredProducts = products;
+      if (filter.category) {
+        filteredProducts = products.filter(product => product.category === filter.category);
+      }
+
+      // Ordenar productos
+      if (sortAndPaginate.sort) {
+        const [sortField, sortOrder] = sortAndPaginate.sort.split(' ');
+        filteredProducts.sort((a, b) => {
+          if (a[sortField] < b[sortField]) return sortOrder === 'asc' ? -1 : 1;
+          if (a[sortField] > b[sortField]) return sortOrder === 'asc' ? 1 : -1;
+          return 0;
+        });
+      }
+
+      // Paginar productos
+      const page = parseInt(sortAndPaginate.page, 10) || 1;
+      const limit = parseInt(sortAndPaginate.limit, 10) || 8; // Default limit is 8
+      const start = (page - 1) * limit;
+      const end = page * limit;
+      const paginatedProducts = filteredProducts.slice(start, end);
+
+      // Obtener información de paginación
+      const total = filteredProducts.length;
+      const totalPages = Math.ceil(total / limit);
+      const prevPage = page > 1 ? page - 1 : null;
+      const nextPage = page < totalPages ? page + 1 : null;
+
+      // Devolver productos paginados con meta información
+      return {
+        docs: paginatedProducts,
+        totalDocs: total,
+        limit,
+        page,
+        totalPages,
+        pagingCounter: start + 1,
+        hasPrevPage: prevPage !== null,
+        hasNextPage: nextPage !== null,
+        prevPage,
+        nextPage
+      };
+    } catch (error) {
+      console.error("Error paginating products:", error.message);
+      return {
+        docs: [],
+        totalDocs: 0,
+        limit: 8,
+        page: 1,
+        totalPages: 1,
+        pagingCounter: 1,
+        hasPrevPage: false,
+        hasNextPage: false,
+        prevPage: null,
+        nextPage: null
+      };
+    }
+  }
+
   async readOne(id) {
     try {
       // Leer los productos del archivo
-      const products = JSON.parse(
-        await fs.promises.readFile(ProductManager.#path, "utf-8")
-      );
-      const product = products.find((product) => product.id === id);
+      const products = JSON.parse(await fs.promises.readFile(ProductManager.#path, "utf-8"));
+      const product = products.find((product) => product._id === id);
       if (!product) {
-        throw new Error(`Did NOT found the product with ID ${id}.`);
+        throw new Error(`Did NOT find the product with ID ${id}.`);
       }
       return product;
     } catch (error) {
@@ -87,9 +120,7 @@ export class ProductManager {
   async update(id, newData) {
     try {
       // Leer los productos del archivo
-      let products = JSON.parse(
-        await fs.promises.readFile(ProductManager.#path, "utf-8")
-      );
+      let products = JSON.parse(await fs.promises.readFile(ProductManager.#path, "utf-8"));
       
       // Buscar el producto con el ID proporcionado
       const index = products.findIndex((product) => product.id === id);
@@ -104,35 +135,26 @@ export class ProductManager {
       };
       
       // Escribir la lista de productos actualizada en el archivo
-      await fs.promises.writeFile(
-        ProductManager.#path,
-        JSON.stringify(products, null, 2)
-      );
+      await fs.promises.writeFile(ProductManager.#path, JSON.stringify(products, null, 2));
       
       return products[index]; // Devolver el producto actualizado
     } catch (error) {
       console.error("Error updating product:", error.message);
       return null;
     }
-}
-
+  }
 
   async destroy(id) {
     try {
       // Leer los productos del archivo
-      let products = JSON.parse(
-        await fs.promises.readFile(ProductManager.#path, "utf-8")
-      );
+      let products = JSON.parse(await fs.promises.readFile(ProductManager.#path, "utf-8"));
       const index = products.findIndex((product) => product.id === id);
       if (index === -1) {
         throw new Error(`No se encontró ningún producto con el ID ${id}.`);
       }
       const deletedProduct = products.splice(index, 1)[0];
       // Escribir la lista de productos actualizada en el archivo
-      await fs.promises.writeFile(
-        ProductManager.#path,
-        JSON.stringify(products, null, 2)
-      );
+      await fs.promises.writeFile(ProductManager.#path, JSON.stringify(products, null, 2));
       return deletedProduct;
     } catch (error) {
       console.error("Error deleting product:", error.message);
@@ -140,6 +162,11 @@ export class ProductManager {
     }
   }
 }
+
+const productsManager = new ProductManager();
+export default productsManager;
+
+  
 
 
 // Modificar el producto con el ID  y actualizar el precio y el stock y descripción

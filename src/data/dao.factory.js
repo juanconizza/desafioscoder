@@ -23,7 +23,7 @@ switch (persistence) {
     dao = {
       users: usersManagerMem,
       products: productsManagerMem,
-      carts: cartsContactManagerMem,
+      cartsContact: cartsContactManagerMem,
     };
     break;
   case "fs":
@@ -39,7 +39,7 @@ switch (persistence) {
     dao = {
       users: usersManagerFs,
       products: productsManagerFs,
-      carts: cartsContactManagerFs,
+      cartsContact: cartsContactManagerFs,
     };
     break;
   default:

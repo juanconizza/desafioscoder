@@ -49,62 +49,70 @@
 
   
 <script>
-  
   document.addEventListener("DOMContentLoaded", function () {
-  const registrationForm = document.getElementById("registrationForm");
-  const successMessage = document.getElementById("successMessage");
-  const mongoError = document.getElementById("mongoError");
+    const registrationForm = document.getElementById("registrationForm");
+    const successMessage = document.getElementById("successMessage");
+    const mongoError = document.getElementById("mongoError");
 
-  registrationForm.addEventListener("submit", async function (event) {
-    event.preventDefault();
+    registrationForm.addEventListener("submit", async function (event) {
+      event.preventDefault();
 
-    // Limpiar los mensajes de error existentes
-    const errorElements = registrationForm.querySelectorAll(".alert-danger");
-    errorElements.forEach(errorElement => {
-      errorElement.textContent = "";
-      errorElement.classList.add("d-none");
-    });
-
-    const formData = new FormData(registrationForm);
-    const requestBody = {};
-    formData.forEach((value, key) => {
-      requestBody[key] = value;
-    });
-
-    try {
-      const response = await fetch("/api/sessions/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestBody),
+      // Limpiar los mensajes de error existentes
+      const errorElements = registrationForm.querySelectorAll(".alert-danger");
+      errorElements.forEach(errorElement => {
+        errorElement.textContent = "";
+        errorElement.classList.add("d-none");
       });
-      const responseData = await response.json();
-      console.log(responseData)        
-      
-      if (response.status === 201) {
-  // Usuario registrado correctamente
-  successMessage.textContent = "Usuario registrado correctamente";
-  successMessage.classList.remove("d-none");
-  registrationForm.reset();
-} else if (response.status === 500) {
-  // Error de Mongo
-  mongoError.textContent = "Error de Validación, Revise los Campos";
-  mongoError.classList.remove("d-none");
-} else {
-  // Mostrar errores según vengan desde el servidor
-  const errors = responseData.errors; // Accede directamente a la propiedad 'errors'
-  console.log(errors);
-  Object.keys(errors).forEach((key) => {
-    const errorElement = document.getElementById(`${key}Error`);
-    errorElement.textContent = errors[key];
-    errorElement.classList.remove("d-none"); 
-  });
-}
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  });
-});
 
+      const formData = new FormData(registrationForm);
+      const requestBody = {};
+      formData.forEach((value, key) => {
+        requestBody[key] = value;
+      });
+
+      try {
+        const response = await fetch("/api/sessions/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestBody),
+        });
+        console.log(response)
+
+        const responseData = await response.json();
+        
+        console.log("responseData" +responseData)
+        
+        if (response.status === 201) {
+          // Usuario registrado correctamente
+          successMessage.textContent = "Usuario registrado correctamente. Verifique su Correo Electrónico";
+
+          // Mostrar mensaje de éxito
+          successMessage.classList.remove("d-none");          
+            registrationForm.reset();
+
+          // Resetear formulario después de 3 segundos
+          setTimeout(() => {            
+            // Redireccionar a /verify
+            window.location.href = "/verify";
+          }, 3000);
+        } else if (response.status === 500) {
+          // Error de Mongo
+          mongoError.textContent = "Error de Validación, Revise los Campos";
+          mongoError.classList.remove("d-none");
+        } else {
+          // Mostrar errores según vengan desde el servidor
+          const errors = responseData.errors; // Accede directamente a la propiedad 'errors'
+          Object.keys(errors).forEach((key) => {
+            const errorElement = document.getElementById(`${key}Error`);
+            errorElement.textContent = errors[key];
+            errorElement.classList.remove("d-none"); 
+          });
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    });
+  });
 </script>

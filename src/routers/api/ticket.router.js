@@ -19,7 +19,7 @@ class TicketRouter extends CustomRouter {
 
           const buyerFound = await cartContactManager.paginate({
             filter,
-          });
+          });          
 
           const cartInfo = buyerFound.docs;
           console.log('Cart Info:', cartInfo);

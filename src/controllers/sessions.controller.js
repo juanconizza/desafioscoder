@@ -30,13 +30,13 @@ class SessionsController {
   };
 
   auth = async (req, res, next) => {
-    try {          
+    try {             
       // Verificar si el usuario está en línea
       if (req.user.online) {
         return res.json({
           statusCode: 200,
           message: "Is Online!",
-          user_id: req.user._id,
+          user_id: req.user._id
         });
       } else {
         return res.json({

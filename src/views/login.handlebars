@@ -58,6 +58,13 @@
       } else if (response.status === 401) {
         document.getElementById("loginError").classList.remove("d-none");
         document.getElementById("loginError").textContent = "Error!, Verifique usuario y/o contraseña.";
+      } else if (response.status === 403) {
+        document.getElementById("loginError").classList.remove("d-none");
+        document.getElementById("loginError").textContent = "Cuenta No Verificada. Llevandoló a la ventana de verificación...";
+        setTimeout(() => {            
+            // Redireccionar a /verify
+            window.location.href = "/verify";
+          }, 3000);
       } else {
         document.getElementById("loginError").classList.remove("d-none");
         document.getElementById("loginError").textContent = "Error en el servidor, intente luego mas tarde.";

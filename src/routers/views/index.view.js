@@ -1,8 +1,11 @@
 import CustomRouter from "../CustomRouter.js";
-import productManager from "../../data/mongo/managers/ProductsManager.mongo.js";
-import userManager from "../../data/mongo/managers/UsersManager.mongo.js";
-import cartContactManager from "../../data/mongo/managers/CartContactManager.mongo.js";
+//import productManager from "../../data/mongo/managers/ProductsManager.mongo.js";
+//import userManager from "../../data/mongo/managers/UsersManager.mongo.js";
+//import cartContactManager from "../../data/mongo/managers/CartContactManager.mongo.js";
 import { verifyToken } from "../../utils/token.js";
+import productsRepository from "../../repositories/products.rep.js";
+import usersRepository from "../../repositories/users.rep.js";
+import cartsContactRepository from "../../repositories/cartsContact.rep.js";
 
 class ViewsRouter extends CustomRouter {
   init() {
@@ -25,7 +28,7 @@ class ViewsRouter extends CustomRouter {
           filter.category = req.query.category;
         }
 
-        const products = await productManager.paginate({
+        const products = await productsRepository.paginateRepository({
           filter,
           sortAndPaginate,
         });
@@ -82,7 +85,7 @@ class ViewsRouter extends CustomRouter {
 
     this.read("/products/real", ["USER"], async (req, res, next) => {
       try {
-        const products = await productManager.read();
+        const products = await productsRepository.readRepository();
         return res.render("productsReal", {
           title: "¡Manantiales Market! - Carga tu Producto ",
           products: products,
@@ -93,9 +96,9 @@ class ViewsRouter extends CustomRouter {
     });
 
     this.read("/users/", ["USER"], async (req, res, next) => {
-      try {
-        const userId = req.user._id; // Obtener el id del usuario de los parámetros de user
-        const userFound = await userManager.readOne(userId); // Leer el usuario correspondiente
+      try {        
+        const userId = req.user.user_id ; // Obtener el id del usuario de los parámetros de user   
+        const userFound = await usersRepository.readOneRepository(userId); // Leer el usuario correspondiente
         const isOnline = req.user.online;
 
         if (!isOnline || !userFound) {
@@ -119,7 +122,7 @@ class ViewsRouter extends CustomRouter {
     this.read("/products/:pid", ["PUBLIC"], async (req, res, next) => {
       try {
         const productId = req.params.pid;
-        const productFound = await productManager.readOne(productId);
+        const productFound = await productsRepository.readOneRepository(productId);
         if (!productFound) {
           return res.status(404).send("Producto NO encontrado");
         }
@@ -165,6 +168,48 @@ class ViewsRouter extends CustomRouter {
       }
     });
 
+    this.read("/verify", ["PUBLIC"], async (req, res, next) => {
+      try {
+           
+        return res.render("verifyEmail", {
+          title: "¡Manantiales Market! - Verificá tu Correo"          
+        });
+      } catch (error) {
+        return next(error);
+      }
+    });
+    
+    this.create("/verify", ["PUBLIC"], async (req, res, next) => {
+      try {
+        const { email } = req.body;
+        const { verificationCode } = req.body;
+
+          
+        if (!email || !verificationCode) {
+          return res.status(400).send("User ID or verification code missing.");
+        }
+    
+        const user = await usersRepository.readByEmailRepository(email);
+        
+    
+        if (!user) {
+          return res.status(404).send("User not found.");
+        }
+        console.log(user.verifyCode);
+        console.log(verificationCode)
+            
+        if (user.verifyCode === verificationCode) {                   
+          await usersRepository.updateRepository(user._id, { verify: true });
+          return res.send("Account verified successfully.");
+        } else {
+          return res.status(400).send("El código de verificación y/o email es incorrecto.");
+        }
+      } catch (error) {
+        return next(error);
+      }
+    });
+    
+
     this.read("/login", ["PUBLIC"], async (req, res, next) => {
       try {
         return res.render("login", {
@@ -185,7 +230,7 @@ class ViewsRouter extends CustomRouter {
           filter.buyer_id = req.user.user_id;
         }
 
-        const buyerFound = await cartContactManager.paginate({
+        const buyerFound = await cartsContactRepository.paginateRepository({
           filter,
           sortAndPaginate,
         });

@@ -26,9 +26,9 @@ class ProductsRepository {
     }
   };
 
-  paginateRepository = async ({ filter, opts }) => {
+  paginateRepository = async ({ filter, sortAndPaginate }) => {
     try {
-      const all = await this.model.paginate({ filter, opts });
+      const all = await this.model.paginate({ filter, sortAndPaginate });
       return all;
     } catch (error) {
       throw error;
