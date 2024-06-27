@@ -1,4 +1,5 @@
 import environment from "./src/utils/env.utils.js";
+import compression from "express-compression";
 import argsUtil from "./src/utils/args.js";
 import express from "express";
 import dbConnection from "./src/utils/db.js";
@@ -49,6 +50,13 @@ app.use(express.static(join(__dirname, "public/img")));
 
 // Inicializamos Morgan
 app.use(morgan("dev"));
+
+// Middleware para comprimir y mejorar la transferencia del servidor
+app.use(
+  compression({
+  brotli: { enabled: true, zlib: {} },
+  })
+  );
 
 // Middleware para manejar JSON
 app.use(express.json());
