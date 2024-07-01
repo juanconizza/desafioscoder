@@ -73,10 +73,8 @@ class UserManager {
     }
   }
 
-  async update(id, newData) {
-    try {
-      console.log(id)
-      console.log(newData)      
+  async update(id, data) {
+    try {      
       // Leer los usuarios del archivo
       let users = JSON.parse(await fs.promises.readFile(this.#path, "utf-8"));
       
@@ -87,7 +85,7 @@ class UserManager {
       }
   
       // Actualizar los datos del usuario con los nuevos datos
-      users[index] = { ...users[index], ...newData };
+      users[index] = { ...users[index], ...data };
   
       // Escribir la lista de usuarios actualizada en el archivo
       await fs.promises.writeFile(this.#path, JSON.stringify(users, null, 2));

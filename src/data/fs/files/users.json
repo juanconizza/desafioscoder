@@ -1,3 +1,17 @@
 [
-  
+  {
+    "_id": "c23571eba8915fc34f7a70f3",
+    "name": "Juan Manuel",
+    "lastName": "Cámara",
+    "dni": "33162314",
+    "blockAndLot": "3401",
+    "phone": "3515921209",
+    "email": "juanconizza@gmail.com",
+    "password": "$2b$10$qboIuvMa7LVoxwsVlGjmf.UrM.qTtRhwSw7.baoj454WTjQ2tXRpq",
+    "role": 0,
+    "verify": true,
+    "verifyCode": "350222",
+    "createdAt": "2024-07-01T18:17:21.219Z",
+    "updatedAt": "2024-07-01T18:17:21.219Z"
+  }
 ]

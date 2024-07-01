@@ -17,7 +17,7 @@ import { join } from "path";
 import { upload } from "./src/middlewares/uploader.js";
 
 const app = express();
-const port = environment.PORT || argsUtil.p;
+const port = argsUtil.p || environment.PORT;
 // Iniciar el servidor con conexión a Mongodb
 const ready = async () => {
   console.log("server ready on port " + port);

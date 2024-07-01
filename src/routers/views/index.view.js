@@ -190,14 +190,11 @@ class ViewsRouter extends CustomRouter {
         }
     
         const user = await usersRepository.readByEmailRepository(email);
-        
-    
+
         if (!user) {
           return res.status(404).send("User not found.");
         }
-        console.log(user.verifyCode);
-        console.log(verificationCode)
-            
+
         if (user.verifyCode === verificationCode) {                   
           await usersRepository.updateRepository(user._id, { verify: true });
           return res.send("Account verified successfully.");
