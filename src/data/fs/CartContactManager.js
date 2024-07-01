@@ -1,69 +1,34 @@
-import fs from "fs"
-import { randomBytes } from "crypto";
+import fs from "fs";
 
-class CartContact {
-  constructor(
-    id,
-    user_id,
-    name,
-    lastName,
-    blockAndLot,
-    product_id,
-    photo,
-    quantity,
-    state,
-    total
-  ) {
-    this.id = id;
-    this.user_id = user_id;
-    this.name = name;
-    this.lastName = lastName;
-    this.blockAndLot = blockAndLot;
-    this.product_id = product_id;
-    this.photo = photo;
-    this.quantity = quantity;
-    this.state = state;
-    this.total = total;
-  }
-}
-
-export class CartContactManager {
-  static #path = "../fs/files/cartContact.json";
+class CartContactManager {
+  static #cartContactPath = "./src/data/fs/files/cartContact.json";
+  static #usersPath = "./src/data/fs/files/users.json";
+  static #productsPath = "./src/data/fs/files/products.json";
 
   async init() {
     try {
-      // Verificar si el archivo existe
-      await fs.promises.access(CartContactManager.#path);
+      await fs.promises.access(CartContactManager.#cartContactPath);
       console.log("File already Exists!");
     } catch (error) {
-      // Si el archivo no existe, crearlo con un array vacío
-      await fs.promises.writeFile(CartContactManager.#path, JSON.stringify([], null, 2)); // Escribir un array JSON vacío
+      await fs.promises.writeFile(
+        CartContactManager.#cartContactPath,
+        JSON.stringify([], null, 2)
+      );
       console.log("File Created!");
     }
-}
-
-
-  generateId() {
-    return randomBytes(12).toString("hex");
   }
 
   async create(data) {
     try {
-      const cartContact = JSON.parse(await fs.promises.readFile(CartContactManager.#path, "utf-8"));
-      const newCartContact = new CartContact(
-        this.generateId(),
-        data.user_id,
-        data.name,
-        data.lastName,
-        data.blockAndLot,
-        data.product_id,
-        data.photo || "default_picture.png", // Ruta de imagen por defecto si no se proporciona
-        data.quantity,
-        data.state || "pending", // Estado por defecto al momento de crear el cartContact
-        data.total,     
+      const cartContacts = JSON.parse(
+        await fs.promises.readFile(CartContactManager.#cartContactPath, "utf-8")
       );
-      cartContact.push(newCartContact);
-      await fs.promises.writeFile(CartContactManager.#path, JSON.stringify(cartContact, null, 2));
+      const newCartContact = data;
+      cartContacts.push(newCartContact);
+      await fs.promises.writeFile(
+        CartContactManager.#cartContactPath,
+        JSON.stringify(cartContacts, null, 2)
+      );
       return newCartContact;
     } catch (error) {
       console.error("Error trying to create cart contact:", error.message);
@@ -73,26 +38,102 @@ export class CartContactManager {
 
   async read() {
     try {
-      // Leer los carritos de contacto del archivo
-      const cartContact = JSON.parse(await fs.promises.readFile(CartContactManager.#path, "utf-8"));
-      return cartContact;
+      const cartContacts = JSON.parse(
+        await fs.promises.readFile(CartContactManager.#cartContactPath, "utf-8")
+      );
+      return this.populate(cartContacts);
     } catch (error) {
-      console.error("Error reading cart contact:", error.message);
+      console.error("Error reading cart contacts:", error.message);
       return [];
+    }
+  }
+
+  async paginate({ filter = {}, sortAndPaginate = {} }) {
+    try {      
+      const cartContacts = JSON.parse(
+        await fs.promises.readFile(CartContactManager.#cartContactPath, "utf-8")
+      );
+
+      let filteredContacts = cartContacts;
+      if (Object.keys(filter).length > 0) {
+        filteredContacts = cartContacts.filter(contact => {
+          return Object.keys(filter).every(key => contact[key] === filter[key]);
+        });
+      }
+
+      const total = filteredContacts.length;
+      const page = sortAndPaginate.page || 1;
+      const limit = sortAndPaginate.limit || 10;
+      const start = (page - 1) * limit;
+      const end = start + limit;
+      let data = filteredContacts.slice(start, end);
+
+      // Sorting logic
+      if (sortAndPaginate.sort) {
+        const [key, order] = sortAndPaginate.sort.split(':');
+        data = data.sort((a, b) => {
+          if (a[key] < b[key]) return order === 'asc' ? -1 : 1;
+          if (a[key] > b[key]) return order === 'asc' ? 1 : -1;
+          return 0;
+        });
+      }
+
+      const populatedData = await this.populate(data);
+
+      return {
+        data: populatedData,
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+      };
+    } catch (error) {
+      console.error("Error paginating cart contacts:", error.message);
+      return {
+        data: [],
+        total: 0,
+        page: sortAndPaginate.page || 1,
+        limit: sortAndPaginate.limit || 10,
+        totalPages: 0,
+      };
+    }
+  }
+
+  async populate(cartContacts) {
+    try {
+      const users = JSON.parse(await fs.promises.readFile(CartContactManager.#usersPath, "utf-8"));
+      const products = JSON.parse(await fs.promises.readFile(CartContactManager.#productsPath, "utf-8"));
+
+      return cartContacts.map(cartContact => {
+        const buyer = users.find(user => user._id === cartContact.buyer_id);
+        const seller = users.find(user => user._id === cartContact.seller_id);
+        const product = products.find(prod => prod._id === cartContact.product_id);
+
+        return {
+          ...cartContact,
+          buyer,
+          seller,
+          product,
+        };
+      });
+    } catch (error) {
+      console.error("Error populating cart contacts:", error.message);
+      return cartContacts;
     }
   }
 
   async readOne(id) {
     try {
-      // Leer los carritos de contacto del archivo
       const cartContacts = JSON.parse(
-        await fs.promises.readFile(CartContactManager.#path, "utf-8")
+        await fs.promises.readFile(CartContactManager.#cartContactPath, "utf-8")
       );
-      const cartContact = cartContacts.find((cartContact) => cartContact.id === id);
+      const cartContact = cartContacts.find(
+        (cartContact) => cartContact.id === id
+      );
       if (!cartContact) {
-        throw new Error(`Did NOT found the cart contact with ID ${id}.`);
+        throw new Error(`Did NOT find the cart contact with ID ${id}.`);
       }
-      return cartContact;
+      return this.populate([cartContact])[0];
     } catch (error) {
       console.error("Error reading cart contact:", error.message);
       return null;
@@ -101,51 +142,50 @@ export class CartContactManager {
 
   async update(id, newData) {
     try {
-      // Leer los carritos de contacto del archivo
       let cartContacts = JSON.parse(
-        await fs.promises.readFile(CartContactManager.#path, "utf-8")
+        await fs.promises.readFile(CartContactManager.#cartContactPath, "utf-8")
       );
-      
-      // Buscar el carrito de contacto con el ID proporcionado
-      const index = cartContacts.findIndex((cartContact) => cartContact.id === id);
+
+      const index = cartContacts.findIndex(
+        (cartContact) => cartContact.id === id
+      );
       if (index === -1) {
         throw new Error(`Did not find the cart contact with ID: ${id}.`);
       }
-      
-      // Actualizar las propiedades del producto con los nuevos datos
+
       cartContacts[index] = {
-        ...cartContacts[index], // Mantener las propiedades anteriores
-        ...newData // Actualizar con los nuevos datos
+        ...cartContacts[index],
+        ...newData,
       };
-      
-      // Escribir la lista de productos actualizada en el archivo
+
       await fs.promises.writeFile(
-        CartContactManager.#path,
+        CartContactManager.#cartContactPath,
         JSON.stringify(cartContacts, null, 2)
       );
-      
-      return cartContacts[index]; // Devolver el producto actualizado
+
+      return this.populate([cartContacts[index]])[0];
     } catch (error) {
       console.error("Error updating cart contact:", error.message);
       return null;
     }
-}
-
+  }
 
   async destroy(id) {
     try {
-      // Leer los carritos de contacto del archivo
       let cartContacts = JSON.parse(
-        await fs.promises.readFile(CartContactManager.#path, "utf-8")
+        await fs.promises.readFile(CartContactManager.#cartContactPath, "utf-8")
       );
-      const index = cartContacts.findIndex((cartContact) => cartContact.id === id);
+      const index = cartContacts.findIndex(
+        (cartContact) => cartContact.id === id
+      );
       if (index === -1) {
-        throw new Error(`No se encontró ningún carrito de contacto con el ID ${id}.`);
+        throw new Error(
+          `No se encontró ningún carrito de contacto con el ID ${id}.`
+        );
       }
       const deletedCartContact = cartContacts.splice(index, 1)[0];
-      // Escribir la lista de productos actualizada en el archivo
       await fs.promises.writeFile(
-        CartContactManager.#path,
+        CartContactManager.#cartContactPath,
         JSON.stringify(cartContacts, null, 2)
       );
       return deletedCartContact;
@@ -153,10 +193,15 @@ export class CartContactManager {
       console.error("Error deleting cart contact:", error.message);
       return null;
     }
-  }
+  }  
 }
 
+const cartContactManager = new CartContactManager();
+export default cartContactManager;
 
+
+
+/*
 // Definir 10 productos
 const cartContactData = [
     {
@@ -275,9 +320,9 @@ const cartContactData = [
   })();
  
 
+*/
 
-  
-//DEJAMOS LOS METODOS MANUALES PARA PROBAR EL CART CONTACT MANAGER: 
+//DEJAMOS LOS METODOS MANUALES PARA PROBAR EL CART CONTACT MANAGER:
 
 /*
 

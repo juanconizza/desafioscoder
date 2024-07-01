@@ -1,30 +1,5 @@
 import { randomBytes } from 'crypto';
 
-class CartContact {
-  constructor(
-    id,
-    user_id,
-    name,
-    lastName,
-    blockAndLot,
-    product_id,
-    photo,
-    quantity,
-    state,
-    total
-  ) {
-    this.id = id;
-    this.user_id = user_id;
-    this.name = name;
-    this.lastName = lastName;
-    this.blockAndLot = blockAndLot;
-    this.product_id = product_id;
-    this.photo = photo;
-    this.quantity = quantity;
-    this.state = state;
-    this.total = total;
-  }
-}
 
 class CartContactManager {
   static #cartContact = [];

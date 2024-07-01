@@ -1,6 +1,6 @@
 [
   {
-    "id": "1f8d33626cd4099e1e01c3a9",
+    "_id": "1f8d33626cd4099e1e01c3a9",
     "title": "Sofá de Cuero",
     "photo": "sofa_cuero.jpg",
     "category": "Muebles",
@@ -9,7 +9,7 @@
     "stock": 1
   },
   {
-    "id": "dd483ca53281b05cc2f7963c",
+    "_id": "dd483ca53281b05cc2f7963c",
     "title": "Mesa de Comedor de Hierro",
     "photo": "mesa_comedor.jpg",
     "category": "Muebles",
@@ -18,7 +18,7 @@
     "stock": 45
   },
   {
-    "id": "744bd377cbd83bf41d69c227",
+    "_id": "744bd377cbd83bf41d69c227",
     "title": "Televisor LED Samsung 55 Pulgadas",
     "photo": "tv_samsung.jpg",
     "category": "Electrónica",
@@ -27,7 +27,7 @@
     "stock": 1
   },
   {
-    "id": "a26e8dd2741d2baf55fc9adc",
+    "_id": "a26e8dd2741d2baf55fc9adc",
     "title": "Cámara Réflex Nikon D5600",
     "photo": "camara_nikon.jpg",
     "category": "Electrónica",
@@ -36,7 +36,7 @@
     "stock": 1
   },
   {
-    "id": "181f32d6527b76a54361dd98",
+    "_id": "181f32d6527b76a54361dd98",
     "title": "Mesa de Centro de Vidrio",
     "photo": "mesa_centro.jpg",
     "category": "Muebles",
@@ -45,7 +45,7 @@
     "stock": 1
   },
   {
-    "id": "081546f470d58b7805909a60",
+    "_id": "081546f470d58b7805909a60",
     "title": "Batidora de Mano Bosch",
     "photo": "batidora_bosch.jpg",
     "category": "Electrodomésticos",
@@ -54,7 +54,7 @@
     "stock": 1
   },
   {
-    "id": "74d56dbf88834d1b969bd63a",
+    "_id": "74d56dbf88834d1b969bd63a",
     "title": "Robot Aspirador Roomba 960",
     "photo": "roomba_960.jpg",
     "category": "Electrodomésticos",
@@ -63,7 +63,7 @@
     "stock": 1
   },
   {
-    "id": "bc666326c7e47fd8b23bd473",
+    "_id": "bc666326c7e47fd8b23bd473",
     "title": "Silla de Oficina Ergonómica",
     "photo": "silla_oficina.jpg",
     "category": "Muebles",
@@ -72,7 +72,7 @@
     "stock": 1
   },
   {
-    "id": "519c8732494e1e292dce8a4e",
+    "_id": "519c8732494e1e292dce8a4e",
     "title": "Licuadora Oster de Alta Velocidad",
     "photo": "licuadora_oster.jpg",
     "category": "Electrodomésticos",
@@ -81,7 +81,7 @@
     "stock": 1
   },
   {
-    "id": "797069df8850c5a1df4e2f36",
+    "_id": "797069df8850c5a1df4e2f36",
     "title": "Mesa de Noche de Roble",
     "photo": "mesa_noche.jpg",
     "category": "Muebles",
@@ -90,7 +90,7 @@
     "stock": 1
   },
   {
-    "id": "54c01484918512a68581b62d",
+    "_id": "54c01484918512a68581b62d",
     "title": "Aire Acondicionado Inverter LG 12000 BTU",
     "photo": "aire_acondicionado.jpg",
     "category": "Electrodomésticos",
@@ -99,7 +99,7 @@
     "stock": 1
   },
   {
-    "id": "d0e8439c5ddd2d6bd2e2fcda",
+    "_id": "d0e8439c5ddd2d6bd2e2fcda",
     "title": "Lavadora Samsung Carga Frontal 9 Kg",
     "photo": "lavadora_samsung.jpg",
     "category": "Electrodomésticos",
@@ -108,7 +108,7 @@
     "stock": 1
   },
   {
-    "id": "d33e066af91202446d2c8a16",
+    "_id": "d33e066af91202446d2c8a16",
     "title": "Sofá Cama Reversible con Almacenamiento",
     "photo": "sofa_cama.jpg",
     "category": "Muebles",
@@ -117,7 +117,7 @@
     "stock": 1
   },
   {
-    "id": "f11ffb6f6ddd379cfbbbd57d",
+    "_id": "f11ffb6f6ddd379cfbbbd57d",
     "title": "Mesa de Escritorio de Estilo Industrial",
     "photo": "escritorio_industrial.jpg",
     "category": "Muebles",
@@ -126,7 +126,7 @@
     "stock": 1
   },
   {
-    "id": "f1f62d1845e32f7bb5a90a37",
+    "_id": "f1f62d1845e32f7bb5a90a37",
     "title": "Reloj Xiaomi Neo Rojo",
     "photo": "reloj.jpg",
     "category": "Relojes",
@@ -135,7 +135,7 @@
     "stock": 1
   },
   {
-    "id": "e133e8671c243767b20a62a2",
+    "_id": "e133e8671c243767b20a62a2",
     "title": "Colchón Viscoelástico con Gel",
     "photo": "colchon_viscoelastico.jpg",
     "category": "Hogar",
@@ -144,7 +144,7 @@
     "stock": 1
   },
   {
-    "id": "bfb330ab4e025cacf321d128",
+    "_id": "bfb330ab4e025cacf321d128",
     "title": "Sistema de Sonido Envolvente 5.1",
     "photo": "sistema_sonido_51.jpg",
     "category": "Electrónica",
@@ -153,7 +153,7 @@
     "stock": 1
   },
   {
-    "id": "25c2225813898a86adbb47c9",
+    "_id": "25c2225813898a86adbb47c9",
     "title": "Juego de Comedor de Ratán Sintético",
     "photo": "comedor_ratan.jpg",
     "category": "Muebles",
@@ -162,7 +162,7 @@
     "stock": 1
   },
   {
-    "id": "55950f7a35648328cfb6f088",
+    "_id": "55950f7a35648328cfb6f088",
     "title": "Máquina de Ejercicio Multifuncional",
     "photo": "maquina_ejercicio.jpg",
     "category": "Deportes y Fitness",
@@ -171,7 +171,7 @@
     "stock": 1
   },
   {
-    "id": "1a2b3c4d5e6f7g8h9i0j",
+    "_id": "1a2b3c4d5e6f7g8h9i0j",
     "title": "Televisor LED Ultra HD 4K",
     "photo": "tv_led_4k.jpg",
     "category": "Electrónica",
@@ -180,7 +180,7 @@
     "stock": 1
   },
   {
-    "id": "2b3c4d5e6f7g8h9i0j1k",
+    "_id": "2b3c4d5e6f7g8h9i0j1k",
     "title": "Sofá Modular de Cuero",
     "photo": "sofa_modular_cuero.jpg",
     "category": "Hogar",
@@ -189,7 +189,7 @@
     "stock": 1
   },
   {
-    "id": "3c4d5e6f7g8h9i0j1k2l",
+    "_id": "3c4d5e6f7g8h9i0j1k2l",
     "title": "Lavadora de Carga Frontal",
     "photo": "lavadora_carga_frontal.jpg",
     "category": "Electrodomésticos",
@@ -198,7 +198,7 @@
     "stock": 1
   },
   {
-    "id": "4d5e6f7g8h9i0j1k2l3m",
+    "_id": "4d5e6f7g8h9i0j1k2l3m",
     "title": "Cámara Réflex Digital",
     "photo": "camara_reflex_digital.jpg",
     "category": "Fotografía",
@@ -207,7 +207,7 @@
     "stock": 1
   },
   {
-    "id": "5e6f7g8h9i0j1k2l3m4n",
+    "_id": "5e6f7g8h9i0j1k2l3m4n",
     "title": "Robot Aspirador Inteligente",
     "photo": "robot_aspirador_inteligente.jpg",
     "category": "Hogar",
@@ -216,7 +216,7 @@
     "stock": 1
   },
   {
-    "id": "6f7g8h9i0j1k2l3m4n5o",
+    "_id": "6f7g8h9i0j1k2l3m4n5o",
     "title": "Smartwatch con Monitor de Ritmo Cardíaco",
     "photo": "smartwatch_ritmo_cardiaco.jpg",
     "category": "Electrónica",
@@ -225,7 +225,7 @@
     "stock": 1
   },
   {
-    "id": "7g8h9i0j1k2l3m4n5o6p",
+    "_id": "7g8h9i0j1k2l3m4n5o6p",
     "title": "Bicicleta de Montaña Todo Terreno",
     "photo": "bicicleta_montana.jpg",
     "category": "Deportes y Fitness",
@@ -234,7 +234,7 @@
     "stock": 1
   },
   {
-    "id": "8h9i0j1k2l3m4n5o6p7q",
+    "_id": "8h9i0j1k2l3m4n5o6p7q",
     "title": "Teclado Mecánico para Gaming",
     "photo": "teclado_mecanico_gaming.jpg",
     "category": "Informática",
@@ -243,7 +243,7 @@
     "stock": 1
   },
   {
-    "id": "9i0j1k2l3m4n5o6p7q8r",
+    "_id": "9i0j1k2l3m4n5o6p7q8r",
     "title": "Auriculares Inalámbricos Bluetooth",
     "photo": "auriculares_inalambricos_bluetooth.jpg",
     "category": "Electrónica",
@@ -252,7 +252,7 @@
     "stock": 1
   },
   {
-    "id": "0j1k2l3m4n5o6p7q8r9s",
+    "_id": "0j1k2l3m4n5o6p7q8r9s",
     "title": "Monitor Curvo Ultrawide de 34 Pulgadas",
     "photo": "monitor_curvo_ultrawide.jpg",
     "category": "Informática",
@@ -261,7 +261,7 @@
     "stock": 1
   },
   {
-    "id": "1k2l3m4n5o6p7q8r9s0t",
+    "_id": "1k2l3m4n5o6p7q8r9s0t",
     "title": "Aspiradora sin Bolsa Multiusos",
     "photo": "aspiradora_sin_bolsa.jpg",
     "category": "Electrodomésticos",
@@ -270,7 +270,7 @@
     "stock": 1
   },
   {
-    "id": "2l3m4n5o6p7q8r9s0t1u",
+    "_id": "2l3m4n5o6p7q8r9s0t1u",
     "title": "Tablet Android de 10 Pulgadas",
     "photo": "tablet_android.jpg",
     "category": "Electrónica",
@@ -279,7 +279,7 @@
     "stock": 1
   },
   {
-    "id": "3m4n5o6p7q8r9s0t1u2v",
+    "_id": "3m4n5o6p7q8r9s0t1u2v",
     "title": "Silla de Escritorio Ergonómica",
     "photo": "silla_escritorio_ergonomica.jpg",
     "category": "Muebles",
@@ -288,7 +288,7 @@
     "stock": 1
   },
   {
-    "id": "5o6p7q8r",
+    "_id": "5o6p7q8r",
     "title": "Horno Eléctrico Multifunción",
     "photo": "horno_electrico.jpg",
     "category": "Electrodomésticos",
@@ -297,7 +297,7 @@
     "stock": 1
   },
   {
-    "id": "6p7q8r9s",
+    "_id": "6p7q8r9s",
     "title": "Mochila para Portátil de 15 Pulgadas",
     "photo": "mochila_portatil.jpg",
     "category": "Accesorios",
@@ -306,7 +306,7 @@
     "stock": 1
   },
   {
-    "id": "7q8r9s0t",
+    "_id": "7q8r9s0t",
     "title": "Cafetera Automática con Molinillo",
     "photo": "cafetera_automatica.jpg",
     "category": "Electrodomésticos",
@@ -315,7 +315,7 @@
     "stock": 1
   },
   {
-    "id": "8r9s0t1u",
+    "_id": "8r9s0t1u",
     "title": "Plancha de Vapor Profesional",
     "photo": "plancha_vapor_profesional.jpg",
     "category": "Electrodomésticos",
@@ -324,7 +324,7 @@
     "stock": 1
   },
   {
-    "id": "9s0t1u2v",
+    "_id": "9s0t1u2v",
     "title": "Batería Externa Portátil",
     "photo": "bateria_externa_portatil.jpg",
     "category": "Accesorios",
@@ -333,7 +333,7 @@
     "stock": 1
   },
   {
-    "id": "0t1u2v3w",
+    "_id": "0t1u2v3w",
     "title": "Sistema de Alarma para Hogar",
     "photo": "sistema_alarma_hogar.jpg",
     "category": "Seguridad",
@@ -342,7 +342,7 @@
     "stock": 1
   },
   {
-    "id": "1u2v3w4x",
+    "_id": "1u2v3w4x",
     "title": "Maletín de Viaje Rígido",
     "photo": "maletin_viaje_rigido.jpg",
     "category": "Equipaje",
@@ -351,7 +351,7 @@
     "stock": 1
   },
   {
-    "id": "d8a4f70104bbc3ad866d16d9",
+    "_id": "d8a4f70104bbc3ad866d16d9",
     "title": "Pelota de Futbol 5",
     "photo": "Pelota_de_Futbol_5.jpg",
     "category": "Deportes",
@@ -360,7 +360,7 @@
     "stock": "1"
   },
   {
-    "id": "97449527e8c8971d6de16d92",
+    "_id": "97449527e8c8971d6de16d92",
     "title": "Pelota de Baseball de Cuero",
     "photo": "Pelota-de-Baseball-de-Cuero_1712769848741.jpeg",
     "category": "Deportes",
@@ -369,21 +369,12 @@
     "stock": "1"
   },
   {
-    "id": "671ef73e082b03d610909a40",
-    "title": "Caja de Herramientas ",
-    "photo": "Caja-de-Herramientas-_1712775475534.jpeg",
-    "category": "Hogar",
-    "description": "Excelente caja de herramienta como nueva",
-    "price": "10000",
-    "stock": "1"
-  },
-  {
-    "id": "3fa78275f61bb264f485ca94",
+    "_id": "3fa78275f61bb264f485ca94",
     "title": "Iphone 12 Pro Max ",
     "photo": "Iphone-12-Pro-Max-_1712794970816.jpeg",
     "category": "Electronica",
     "description": "Excelente estado",
     "price": "850000",
     "stock": "1"
-  }
+  }  
 ]

@@ -1,6 +1,5 @@
 import CustomRouter from "../CustomRouter.js";
 import cartContactManager from "../../data/mongo/managers/CartContactManager.mongo.js";
-import passport from "passport";
 import mongoose from "mongoose";
 
 const { Types } = mongoose;
@@ -9,8 +8,7 @@ class TicketRouter extends CustomRouter {
   init() {
     this.read(
       "/",
-      ["USER"],
-      passport.authenticate("jwt", { session: false }),
+      ["USER"],      
       async (req, res, next) => {
         try {
           const filter = {};
@@ -21,7 +19,7 @@ class TicketRouter extends CustomRouter {
 
           const buyerFound = await cartContactManager.paginate({
             filter,
-          });
+          });          
 
           const cartInfo = buyerFound.docs;
           console.log('Cart Info:', cartInfo);

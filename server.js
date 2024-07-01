@@ -1,4 +1,6 @@
-import "dotenv/config.js"
+import environment from "./src/utils/env.utils.js";
+import compression from "express-compression";
+import argsUtil from "./src/utils/args.js";
 import express from "express";
 import dbConnection from "./src/utils/db.js";
 import { engine } from "express-handlebars";
@@ -15,7 +17,7 @@ import { join } from "path";
 import { upload } from "./src/middlewares/uploader.js";
 
 const app = express();
-const port = process.env.PORT;
+const port = argsUtil.p || environment.PORT;
 // Iniciar el servidor con conexión a Mongodb
 const ready = async () => {
   console.log("server ready on port " + port);
@@ -41,13 +43,20 @@ app.set("view engine", "handlebars");
 app.set("views", __dirname + "/src/views");
 
 //Configuración para Cookie con JWT
-app.use(cookieParser(process.env.SECRET_COOKIE));
+app.use(cookieParser(environment.SECRET_COOKIE));
 
 //Carpeta Public de Imagenes
 app.use(express.static(join(__dirname, "public/img")));
 
 // Inicializamos Morgan
 app.use(morgan("dev"));
+
+// Middleware para comprimir y mejorar la transferencia del servidor
+app.use(
+  compression({
+  brotli: { enabled: true, zlib: {} },
+  })
+  );
 
 // Middleware para manejar JSON
 app.use(express.json());

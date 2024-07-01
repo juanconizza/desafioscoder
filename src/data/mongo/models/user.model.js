@@ -13,6 +13,8 @@ const schema = new Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     role: { type: Number, default: 0 },
+    verify: { type: Boolean, default: false },
+    verifyCode: { type: String, required: true }
   },
   { timestamps: true }
 );

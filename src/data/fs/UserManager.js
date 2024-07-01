@@ -1,31 +1,6 @@
 import fs from "fs";
-import { randomBytes } from "crypto";
 
-class User {
-  constructor(
-    id,
-    name,
-    lastName,
-    dni,
-    blockAndLot,
-    phone,
-    email,
-    password,
-    role
-  ) {
-    this.id = id;
-    this.name = name;
-    this.lastName = lastName;
-    this.dni = dni;
-    this.blockAndLot = blockAndLot;
-    this.phone = phone;
-    this.email = email;
-    this.password = password;
-    this.role = role;
-  }
-}
-
-export class UserManager {
+class UserManager {
   #path = "./src/data/fs/files/users.json"; 
 
   async init() {
@@ -37,26 +12,12 @@ export class UserManager {
       await fs.promises.writeFile(this.#path, "[]");
     }
   }
-
-  generateId() {
-    return randomBytes(12).toString("hex");
-  }
-
+  
   async create(data) {
     try {
       // Leer los usuarios existentes del archivo
       const users = JSON.parse(await fs.promises.readFile(this.#path, "utf-8"));
-      const newUser = new User(
-        this.generateId(),
-        data.name,
-        data.lastName,
-        data.dni,
-        data.blockAndLot,
-        data.phone,
-        data.email,
-        data.password,
-        data.role
-      );
+      const newUser = data;
       // Agregar el nuevo usuario a la lista
       users.push(newUser);
       // Escribir la lista de usuarios actualizada en el archivo
@@ -84,7 +45,7 @@ export class UserManager {
     try {
       // Leer los usuarios del archivo
       const users = JSON.parse(await fs.promises.readFile(this.#path, "utf-8"));
-      const user = users.find((user) => user.id === id);
+      const user = users.find((user) => user._id === id);
       if (!user) {
         throw new Error(`Did NOT find any user with ID ${id}.`);
       }
@@ -96,19 +57,35 @@ export class UserManager {
     }
   }
 
-  async update(id, newData) {
+  async readByEmail(email) {
     try {
+      // Leer los usuarios del archivo
+      const users = JSON.parse(await fs.promises.readFile(this.#path, "utf-8"));
+      const user = users.find((user) => user.email === email);
+      if (!user) {
+        throw new Error(`Did NOT find any user with email ${email}.`);
+      }
+      console.log("User Found!");
+      return user;
+    } catch (error) {
+      console.error("Error reading user by email:", error.message);
+      return null;
+    }
+  }
+
+  async update(id, data) {
+    try {      
       // Leer los usuarios del archivo
       let users = JSON.parse(await fs.promises.readFile(this.#path, "utf-8"));
       
       // Buscar el usuario por su ID
-      const index = users.findIndex((user) => user.id === id);
+      const index = users.findIndex((user) => user._id === id);
       if (index === -1) {
         throw new Error(`No se encontró ningún usuario con el ID ${id}.`);
       }
   
       // Actualizar los datos del usuario con los nuevos datos
-      users[index] = { ...users[index], ...newData };
+      users[index] = { ...users[index], ...data };
   
       // Escribir la lista de usuarios actualizada en el archivo
       await fs.promises.writeFile(this.#path, JSON.stringify(users, null, 2));
@@ -120,13 +97,12 @@ export class UserManager {
       return null;
     }
   }
-  
 
   async destroy(id) {
     try {
       // Leer los usuarios del archivo
       let users = JSON.parse(await fs.promises.readFile(this.#path, "utf-8"));
-      const index = users.findIndex((user) => user.id === id);
+      const index = users.findIndex((user) => user._id === id);
       if (index === -1) {
         throw new Error(`Did NOT find any user with ID ${id}.`);
       }
@@ -141,6 +117,9 @@ export class UserManager {
     }
   }
 }
+
+const usersManager = new UserManager();
+export default usersManager;
 
 
 
