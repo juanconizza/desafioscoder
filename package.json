@@ -9,7 +9,8 @@
     "dev": "nodemon ./server.js --env dev --persistence mongo",
     "prod": "nodemon ./server.js -p 8082 --env=prod --persistence mongo",
     "memory": "nodemon ./server.js -p 8081 --env=prod --persistence memory",
-    "test": "node ./server.js -p 8083 --env=dev --persistence fs"
+    "test": "node ./server.js -p 8083 --env=dev --persistence fs",
+    "product": "node ./src/mocks/products.mock.js --env dev"
   },
   "keywords": [],
   "author": "",
@@ -37,6 +38,7 @@
     "socket.io": "^4.7.5"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
     "nodemon": "^3.1.0"
   }
 }
