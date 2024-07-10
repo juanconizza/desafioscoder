@@ -11,7 +11,8 @@ import socketCb from "./src/routers/index.socket.js";
 import router from "./src/routers/index.router.js";
 import errorHandler from "./src/middlewares/errorHandler.js";
 import pathHandler from "./src/middlewares/pathHandler.js";
-import morgan from "morgan";
+//import morgan from "morgan";
+import winston from "./src/middlewares/winston.js";
 import __dirname from "./pathhandler.js"
 import { join } from "path";
 import { upload } from "./src/middlewares/uploader.js";
@@ -49,7 +50,7 @@ app.use(cookieParser(environment.SECRET_COOKIE));
 app.use(express.static(join(__dirname, "public/img")));
 
 // Inicializamos Morgan
-app.use(morgan("dev"));
+//©app.use(morgan("dev"));
 
 // Middleware para comprimir y mejorar la transferencia del servidor
 app.use(
@@ -69,6 +70,9 @@ app.post("/upload", upload.single("photo"), (req, res) => {
   // Enviar el nombre del archivo como respuesta
   res.send(req.file.filename);
 });
+
+//Middleware de Winston para usar un custom log
+app.use(winston);
 
 // Middleware para usar el enturador y obligar al servidor a usar las rutas con "/"
 app.use("/", router);
