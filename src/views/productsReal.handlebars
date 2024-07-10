@@ -139,8 +139,8 @@
   const productForm = document.getElementById("productForm"); 
   productForm.addEventListener("submit", async (event) => { 
     event.preventDefault(); // Evitar la recarga de la página al enviar el formulario 
-    const formData = new FormData(productForm); 
-    const newProduct = { 
+    const formData = new FormData(productForm);
+    const newProduct = {
       title: formData.get("title"), 
       category: formData.get("category"), 
       description: formData.get("description"), 

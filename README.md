@@ -199,4 +199,8 @@ Mediante argunmentos y cambios de entorno se puede cambiar entre "npm run dev" o
 
 Luego también se incorporó la verificación vía email que sólo funciona con mongo debido a limitaciones de file system pero funciona correctamente. 
 
+# DESAFIO 10 - Branch: sprint10
 
+En este desafío se crearon 1000 productos con la función "npm run product" que ejecuta un script para crear de forma aleatoria información usando una dependencia de "fakers" para traer información aleatoria. 
+
+También se incorporó compresión al servidor. 
