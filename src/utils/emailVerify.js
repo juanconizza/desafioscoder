@@ -12,7 +12,7 @@ export default async function sendEmail(data) {
      auth: { user: G_MAIL, pass: G_PASS },
    });
 
-  console.log("La data que llega es" + data)
+  
    await transport.sendMail({
     from: `Manantiales Market<${G_MAIL}>`,
     to: data.to,
@@ -115,7 +115,7 @@ table[class=body] .article {
             <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; min-width: 100%; width: 100%;">
               <tr>
                 <td class="align-center" width="100%" style="font-family: sans-serif; font-size: 14px; vertical-align: top; text-align: center;" valign="top" align="center">
-                  <a href="#" style="color: #ec0867; text-decoration: underline;"><img src="https://i.ibb.co/W6DR8by/logo.png" height="90" alt="Manantiales Market Logo" style="border: none; -ms-interpolation-mode: bicubic; max-width: 100%;"></a>
+                  <a href="#" style="color: #ec0867; text-decoration: underline;"><img src="https://i.postimg.cc/bryWngnK/logo.png" height="90" alt="Manantiales Market Logo" style="border: none; -ms-interpolation-mode: bicubic; max-width: 100%;"></a>
                 </td>
               </tr>
             </table>

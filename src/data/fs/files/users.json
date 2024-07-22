@@ -7,10 +7,10 @@
     "blockAndLot": "3401",
     "phone": "3515921209",
     "email": "juanconizza@gmail.com",
-    "password": "$2b$10$qboIuvMa7LVoxwsVlGjmf.UrM.qTtRhwSw7.baoj454WTjQ2tXRpq",
+    "password": "$2b$10$oJ5WtL2Nfj30dhIkzT3Poe5dKo9xAIZxq3gDdNA7y7IryWDSsRQc.",
     "role": 0,
     "verify": true,
-    "verifyCode": "350222",
+    "verifyCode": null,
     "createdAt": "2024-07-01T18:17:21.219Z",
     "updatedAt": "2024-07-01T18:17:21.219Z"
   }

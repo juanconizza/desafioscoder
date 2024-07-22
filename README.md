@@ -211,3 +211,8 @@ En este desafío se implemento un Custom Logger utilizando la dependendencia "Wi
 
 Se condicionó que si se inicializa el servidor en entorno de desarollo sólo se muestra la consola con los diferentes Logs correspondientes. En cambio si se inicializa en producción entonces los errores se guardan también en un archivo dentro de utils/errors/errors.log
 
+# DESAFIO 12 - Branch sprint_12
+
+En este desafío se implementó la creación de las funciones y vistas para recuperar la contraseña mediante verificación con código por email. 
+
+Para esto se crearon 2 nuevos endpoints de tipo POST y PUT en la ruta api/sessions/password y con sus respectivas vistas en handlebars desde la pagina de login con el link "Olvidé Mi Contraseña".
