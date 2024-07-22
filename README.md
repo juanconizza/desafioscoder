@@ -199,8 +199,15 @@ Mediante argunmentos y cambios de entorno se puede cambiar entre "npm run dev" o
 
 Luego también se incorporó la verificación vía email que sólo funciona con mongo debido a limitaciones de file system pero funciona correctamente. 
 
-# DESAFIO 10 - Branch: sprint10
+# DESAFIO 10 - Branch: sprint_10
 
 En este desafío se crearon 1000 productos con la función "npm run product" que ejecuta un script para crear de forma aleatoria información usando una dependencia de "fakers" para traer información aleatoria. 
 
 También se incorporó compresión al servidor. 
+
+# DESAFIO 11 - Branch: sprint_11
+
+En este desafío se implemento un Custom Logger utilizando la dependendencia "Winston". Se creó un endpoint "api/loggers" donde se puede probar que el logger está funcionando correctamente. 
+
+Se condicionó que si se inicializa el servidor en entorno de desarollo sólo se muestra la consola con los diferentes Logs correspondientes. En cambio si se inicializa en producción entonces los errores se guardan también en un archivo dentro de utils/errors/errors.log
+
