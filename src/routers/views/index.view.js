@@ -217,6 +217,26 @@ class ViewsRouter extends CustomRouter {
       }
     });
 
+    this.read("/reset-password-step1", ["PUBLIC"], async (req, res, next) => {
+      try {
+        return res.render("reset-password-step1", {
+          title: "¡Manantiales Market! - Recuperar Contraseña ",
+        });
+      } catch (error) {
+        return next(error);
+      }
+    });
+
+    this.read("/reset-password-step2", ["PUBLIC"], async (req, res, next) => {
+      try {
+        return res.render("reset-password-step2", {
+          title: "¡Manantiales Market! - Crea tu Nueva Contraseña",
+        });
+      } catch (error) {
+        return next(error);
+      }
+    });
+
     this.read("/cart/", ["USER"], async (req, res, next) => {
       try {
         const filter = {};

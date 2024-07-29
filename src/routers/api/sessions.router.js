@@ -1,6 +1,13 @@
 import CustomRouter from "../CustomRouter.js";
 import passport from "../../middlewares/passport.js";
-import { register, login, auth, logout } from "../../controllers/sessions.controller.js";
+import {
+  register,
+  login,
+  auth,
+  logout,
+  resetPassword,
+  changePassword,
+} from "../../controllers/sessions.controller.js";
 
 class SessionRouter extends CustomRouter {
   init() {
@@ -18,11 +25,10 @@ class SessionRouter extends CustomRouter {
       login
     );
 
-    this.read(
-      "/",
-      ["USER"],      
-      auth
-    );
+    this.read("/", ["USER"], auth);
+
+    this.create("/password", ["PUBLIC"], resetPassword);
+    this.update("/password", ["PUBLIC"], changePassword);
 
     this.create("/logout", ["USER"], logout);
   }
