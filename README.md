@@ -216,3 +216,11 @@ Se condicionó que si se inicializa el servidor en entorno de desarollo sólo se
 En este desafío se implementó la creación de las funciones y vistas para recuperar la contraseña mediante verificación con código por email. 
 
 Para esto se crearon 2 nuevos endpoints de tipo POST y PUT en la ruta api/sessions/password y con sus respectivas vistas en handlebars desde la pagina de login con el link "Olvidé Mi Contraseña".
+
+# DESAFIO 13 - Branch sprint_13
+
+En este desafío se implmento  Swagger para crear la documentación de la API rest de los endpoints de los Productos. Proximamente se completará con los faltates de User, CartContact, entre otros. 
+
+La documentación puede verse en la url de localhost correspondiente y luego /api/docs 
+
+Recordar que en el caso que obtenga el error de "Bad Auth from Policies" debe loguearse con un usuario par probar correctamente la creación, modificacion y eliminación de un producto. 

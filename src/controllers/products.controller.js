@@ -6,7 +6,7 @@ import {
   readOneEmailService,
   updateService,
   destroyService,
-} from "../services/users.service.js";
+} from "../services/products.service.js";
 
 class ProductsController {
   readProducts = async (req, res, next) => {

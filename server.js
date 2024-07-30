@@ -9,6 +9,10 @@ import { Server } from "socket.io";
 import cookieParser from "cookie-parser";
 import socketCb from "./src/routers/index.socket.js";
 import router from "./src/routers/index.router.js";
+import swaggerOptions from "./src/utils/swagger.utils.js";
+import swaggerJSDoc from "swagger-jsdoc";
+import { serve, setup } from "swagger-ui-express";
+
 import errorHandler from "./src/middlewares/errorHandler.js";
 import pathHandler from "./src/middlewares/pathHandler.js";
 //import morgan from "morgan";
@@ -52,12 +56,18 @@ app.use(express.static(join(__dirname, "public/img")));
 // Inicializamos Morgan
 //©app.use(morgan("dev"));
 
+// Configuraciónde Middleware de Swagger para el endpoint correspondiente. 
+const specs = swaggerJSDoc(swaggerOptions);
+
 // Middleware para comprimir y mejorar la transferencia del servidor
 app.use(
   compression({
   brotli: { enabled: true, zlib: {} },
   })
   );
+
+// Endpoint de Swagger con la documentación.
+app.use("/api/docs", serve, setup(specs));
 
 // Middleware para manejar JSON
 app.use(express.json());
