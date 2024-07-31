@@ -113,12 +113,10 @@
   function renderProducts(products) { 
     const productContainer = document.getElementById("realTimeProducts"); 
     productContainer.innerHTML = ""; // Limpiar los productos anteriores
-
-    // Invertir el orden de los productos
-    const reversedProducts = products.reverse(); 
+    
 
     // Iterar sobre los productos y crear elementos para mostrarlos en la página
-    reversedProducts.forEach((product) => { 
+    products.forEach((product) => { 
       const productHtml = `
         <div class="col-md-3 mb-4">
           <div class="card">

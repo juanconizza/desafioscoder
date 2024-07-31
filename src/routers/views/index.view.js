@@ -14,6 +14,7 @@ class ViewsRouter extends CustomRouter {
       try {
         const filter = {};
         const sortAndPaginate = {};
+        sortAndPaginate.sort = { createdAt: -1 };
         //condicional para tomar el query de limit y utilizarlo.
         if (req.query.limit) {
           sortAndPaginate.limit = req.query.limit;
@@ -129,6 +130,9 @@ class ViewsRouter extends CustomRouter {
         if (!productFound) {
           return res.status(404).send("Producto NO encontrado");
         }
+        
+        //Leer el vendedor del producto
+        const seller = await usersRepository.readOneRepository(productFound.seller_id) 
 
         // Leer el token de la cookie firmada
         const token = req.signedCookies.token;
@@ -154,6 +158,7 @@ class ViewsRouter extends CustomRouter {
           productFound: productFound,
           isOnline: isOnline,
           user_id: user_id,
+          seller: seller,
         });
       } catch (error) {
         return next(error);
