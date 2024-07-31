@@ -19,7 +19,6 @@ import pathHandler from "./src/middlewares/pathHandler.js";
 import winston from "./src/middlewares/winston.js";
 import __dirname from "./pathhandler.js"
 import { join } from "path";
-import { upload } from "./src/middlewares/uploader.js";
 
 const app = express();
 const port = argsUtil.p || environment.PORT;
@@ -74,12 +73,6 @@ app.use(express.json());
 
 // Este middleware de Express analiza los cuerpos de las solicitudes entrantes en un formulario codificado en URL y los coloca en req.body.
 app.use(express.urlencoded({ extended: true }));
-
-// Ruta para procesar el formulario y subir la imagen en carga de producto
-app.post("/upload", upload.single("photo"), (req, res) => {
-  // Enviar el nombre del archivo como respuesta
-  res.send(req.file.filename);
-});
 
 //Middleware de Winston para usar un custom log
 app.use(winston);

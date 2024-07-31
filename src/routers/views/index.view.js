@@ -7,6 +7,7 @@ import productsRepository from "../../repositories/products.rep.js";
 import usersRepository from "../../repositories/users.rep.js";
 import cartsContactRepository from "../../repositories/cartsContact.rep.js";
 
+
 class ViewsRouter extends CustomRouter {
   init() {
     this.read("/", ["PUBLIC"], async (req, res, next) => {
@@ -96,8 +97,8 @@ class ViewsRouter extends CustomRouter {
     });
 
     this.read("/users/", ["USER"], async (req, res, next) => {
-      try {        
-        const userId = req.user.user_id ; // Obtener el id del usuario de los parámetros de user   
+      try {
+        const userId = req.user.user_id; // Obtener el id del usuario de los parámetros de user
         const userFound = await usersRepository.readOneRepository(userId); // Leer el usuario correspondiente
         const isOnline = req.user.online;
 
@@ -122,18 +123,20 @@ class ViewsRouter extends CustomRouter {
     this.read("/products/:pid", ["PUBLIC"], async (req, res, next) => {
       try {
         const productId = req.params.pid;
-        const productFound = await productsRepository.readOneRepository(productId);
+        const productFound = await productsRepository.readOneRepository(
+          productId
+        );
         if (!productFound) {
           return res.status(404).send("Producto NO encontrado");
         }
-    
+
         // Leer el token de la cookie firmada
         const token = req.signedCookies.token;
-    
+
         // Variables predeterminadas
         let isOnline = false;
         let user_id = null;
-    
+
         if (token) {
           try {
             const decoded = verifyToken(token);
@@ -145,7 +148,7 @@ class ViewsRouter extends CustomRouter {
             console.error("Error al verificar el token:", error);
           }
         }
-    
+
         return res.render("productDetail", {
           title: `¡Manantiales Market! - ${productFound.title}!`,
           productFound: productFound,
@@ -156,7 +159,6 @@ class ViewsRouter extends CustomRouter {
         return next(error);
       }
     });
-    
 
     this.read("/register", ["PUBLIC"], async (req, res, next) => {
       try {
@@ -170,42 +172,41 @@ class ViewsRouter extends CustomRouter {
 
     this.read("/verify", ["PUBLIC"], async (req, res, next) => {
       try {
-           
         return res.render("verifyEmail", {
-          title: "¡Manantiales Market! - Verificá tu Correo"          
+          title: "¡Manantiales Market! - Verificá tu Correo",
         });
       } catch (error) {
         return next(error);
       }
     });
-    
+
     this.create("/verify", ["PUBLIC"], async (req, res, next) => {
       try {
         const { email } = req.body;
         const { verificationCode } = req.body;
 
-          
         if (!email || !verificationCode) {
           return res.status(400).send("User ID or verification code missing.");
         }
-    
+
         const user = await usersRepository.readByEmailRepository(email);
 
         if (!user) {
           return res.status(404).send("User not found.");
         }
 
-        if (user.verifyCode === verificationCode) {                   
+        if (user.verifyCode === verificationCode) {
           await usersRepository.updateRepository(user._id, { verify: true });
           return res.send("Account verified successfully.");
         } else {
-          return res.status(400).send("El código de verificación y/o email es incorrecto.");
+          return res
+            .status(400)
+            .send("El código de verificación y/o email es incorrecto.");
         }
       } catch (error) {
         return next(error);
       }
     });
-    
 
     this.read("/login", ["PUBLIC"], async (req, res, next) => {
       try {

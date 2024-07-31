@@ -23,10 +23,6 @@ schema.pre("find", function () {
   this.populate("seller_id", "name lastName email blockAndLot _id");
 });
 
-// Con este pre usamos el metodo findOne para popular user_id con id, nombre, apellido, email y manzanaYLote de quien creo el producto.
-schema.pre("findOne", function () {
-  this.populate("seller_id", "name lastName email blockAndLot _id");
-});
 
 schema.plugin(mongoosePaginate);
 const Product = model(collection, schema);
