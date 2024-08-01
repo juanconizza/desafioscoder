@@ -8,15 +8,17 @@ import {
   updateProduct,
   deleteProduct,
 } from "../../controllers/products.controller.js";
+import isProductOwner from "../../middlewares/isProductOwner.js";
+import validateOwner from "../../middlewares/validateOwner.js";
 
 class ProductRouter extends CustomRouter {
   init() {
     this.read("/", ["PUBLIC"], readProducts);
     this.read("/paginate", ["PUBLIC"], readPaginatedProducts);
     this.read("/:pid", ["PUBLIC"], readProductById);
-    this.create("/", ["USER"], validateProductsProps, createProduct);
-    this.update("/:pid", ["USER"], validateProductsProps, updateProduct);
-    this.destroy("/:pid", ["USER"], deleteProduct);
+    this.create("/", ["USER"], validateProductsProps, isProductOwner, createProduct);
+    this.update("/:pid", ["USER"], validateProductsProps, validateOwner, isProductOwner, updateProduct);
+    this.destroy("/:pid", ["USER"], validateOwner, isProductOwner, deleteProduct);
   }
 }
 

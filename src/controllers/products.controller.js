@@ -98,7 +98,7 @@ class ProductsController {
 
   createProduct = async (req, res, next) => {
     try {
-      const data = req.body;
+      const data = req.body;      
       const newProduct = await createService(data);
       res.status(201).json({
         statusCode: 201,
