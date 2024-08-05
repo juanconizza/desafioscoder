@@ -1,0 +1,78 @@
+<div class="container mb-5 py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <h2 class="text-center mb-4">Inicio de Sesión</h2>
+      <form id="loginForm">
+        <div class="mb-3">
+          <label for="email" class="form-label">Correo Electrónico</label>
+          <input
+            type="email"
+            class="form-control"
+            id="email"
+            name="email"
+            placeholder="Ej: fer@gmail.com"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Contraseña</label>
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            name="password"
+            placeholder="Ej: Password789"
+            required
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+      </form>
+       <a href="/reset-password-step1" class="text-decoration-none text-dark d-block mt-3 text-center">Olvidé Mi Contraseña</a>
+      <div class="alert alert-danger mt-3 d-none" id="loginError" role="alert">
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById("loginForm").addEventListener("submit", async function(event) {
+    event.preventDefault();
+    
+    const formData = new FormData(event.target);
+    const email = formData.get("email");
+    const password = formData.get("password");
+    
+    try {
+      const response = await fetch("/api/sessions/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email, password })
+      });
+
+      responseData = await response.json()
+      console.log(responseData)      
+      
+      if (response.ok) {                     
+        window.location.href = `/users/`;        
+      } else if (response.status === 401) {
+        document.getElementById("loginError").classList.remove("d-none");
+        document.getElementById("loginError").textContent = "Error!, Verifique usuario y/o contraseña.";
+      } else if (response.status === 403) {
+        document.getElementById("loginError").classList.remove("d-none");
+        document.getElementById("loginError").textContent = "Cuenta No Verificada. Llevandoló a la ventana de verificación...";
+        setTimeout(() => {            
+            // Redireccionar a /verify
+            window.location.href = "/verify";
+          }, 3000);
+      } else {
+        document.getElementById("loginError").classList.remove("d-none");
+        document.getElementById("loginError").textContent = "Error en el servidor, intente luego mas tarde.";
+        throw new Error("Server Error");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  });
+</script>

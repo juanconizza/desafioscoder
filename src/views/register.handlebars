@@ -1,0 +1,118 @@
+<div class="container mb-5 py-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <h2 class="text-center mb-4">Registro de Usuario</h2>
+        <form id="registrationForm">
+          <div class="mb-3">
+            <label for="name" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="name" name="name" placeholder="Ej: Fernando" required>
+            <div class="alert alert-danger mt-3 d-none" id="nameError"></div>
+          </div>
+          <div class="mb-3">
+            <label for="lastName" class="form-label">Apellido</label>
+            <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Ej: Rabellini" required>
+            <div class="alert alert-danger mt-3 d-none" id="lastNameError"></div>
+          </div>
+          <div class="mb-3">
+            <label for="dni" class="form-label">DNI</label>
+            <input type="text" class="form-control" id="dni" name="dni" placeholder="Ej: 33162314" required>
+            <div class="alert alert-danger mt-3 d-none" id="dniError"></div>
+          </div>
+          <div class="mb-3">
+            <label for="blockAndLot" class="form-label">Manzana y Lote</label>
+            <input type="text" class="form-control" id="blockAndLot" name="blockAndLot" placeholder="Ej: 3445" required>
+            <div class="alert alert-danger mt-3 d-none" id="blockAndLotError"></div>
+          </div>
+          <div class="mb-3">
+            <label for="phone" class="form-label">Teléfono</label>
+            <input type="tel" class="form-control" id="phone" name="phone" placeholder="Ej: 3515921209" required>
+            <div class="alert alert-danger mt-3 d-none" id="phoneError"></div>
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Correo Electrónico</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="Ej: fer@gmail.com" required>
+            <div class="alert alert-danger mt-3 d-none" id="emailError"></div>
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Contraseña</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Ej: Password789" required>
+            <div class="alert alert-danger mt-3 d-none" id="passwordError"></div>
+          </div>
+          <button type="submit" class="btn btn-primary">Registrarse</button>
+        </form>
+          <div class="alert alert-danger mt-3 d-none" id="mongoError"></div>   
+          <div class="alert alert-success mt-3 d-none" id="successMessage" role="alert">      
+          </div>        
+      </div>
+    </div>
+  </div>
+
+  
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const registrationForm = document.getElementById("registrationForm");
+    const successMessage = document.getElementById("successMessage");
+    const mongoError = document.getElementById("mongoError");
+
+    registrationForm.addEventListener("submit", async function (event) {
+      event.preventDefault();
+
+      // Limpiar los mensajes de error existentes
+      const errorElements = registrationForm.querySelectorAll(".alert-danger");
+      errorElements.forEach(errorElement => {
+        errorElement.textContent = "";
+        errorElement.classList.add("d-none");
+      });
+
+      const formData = new FormData(registrationForm);
+      const requestBody = {};
+      formData.forEach((value, key) => {
+        requestBody[key] = value;
+      });
+
+      try {
+        const response = await fetch("/api/sessions/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestBody),
+        });
+        console.log(response)
+
+        const responseData = await response.json();
+        
+        console.log("responseData" +responseData)
+        
+        if (response.status === 201) {
+          // Usuario registrado correctamente
+          successMessage.textContent = "Usuario registrado correctamente. Verifique su Correo Electrónico";
+
+          // Mostrar mensaje de éxito
+          successMessage.classList.remove("d-none");          
+            registrationForm.reset();
+
+          // Resetear formulario después de 3 segundos
+          setTimeout(() => {            
+            // Redireccionar a /verify
+            window.location.href = "/verify";
+          }, 3000);
+        } else if (response.status === 500) {
+          // Error de Mongo
+          mongoError.textContent = "Error de Validación, Revise los Campos";
+          mongoError.classList.remove("d-none");
+        } else {
+          // Mostrar errores según vengan desde el servidor
+          const errors = responseData.errors; // Accede directamente a la propiedad 'errors'
+          Object.keys(errors).forEach((key) => {
+            const errorElement = document.getElementById(`${key}Error`);
+            errorElement.textContent = errors[key];
+            errorElement.classList.remove("d-none"); 
+          });
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    });
+  });
+</script>
