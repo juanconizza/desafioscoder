@@ -1,0 +1,47 @@
+config:
+  target: "http://localhost:8080/api"
+  phases:
+    - duration: 10
+      arrivalRate: 30
+  defaults:
+    headers:
+      content-type: "application/json"
+scenarios:
+  - flow:
+      - post:
+          url: "/sessions/login"
+          json:
+            email: "juanconizza@gmail.com"
+            password: "Audio123"
+          capture:
+            - header: "set-cookie"
+              as: "cookies"
+          validate:
+            statusCode: 200
+      - log: "Logged in successfully"
+      - post:
+          url: "/products"
+          headers:
+            Cookie: "{{ cookies }}"
+          json:
+            title: "Producto de Prueba Testing"
+            photo: "default_picture.png"
+            category: "Electrónica"
+            description: ""
+            price: 5000
+            stock: 3
+          validate:
+            statusCode: 201
+      - log: "Product created successfully"
+      - get:
+          url: "/products/paginate?limit=1&page=1"
+          validate:
+            statusCode: 200
+      - log: "Fetched products successfully"
+      - post:
+          url: "/sessions/logout"
+          headers:
+            Cookie: "{{ cookies }}"
+          validate:
+            statusCode: 200
+      - log: "Logged out successfully"

@@ -21,7 +21,7 @@ import __dirname from "./pathhandler.js"
 import { join } from "path";
 
 const app = express();
-const port = argsUtil.p || environment.PORT;
+const port = environment.PORT || argsUtil.p;
 // Iniciar el servidor con conexión a Mongodb
 const ready = async () => {
   console.log("server ready on port " + port);

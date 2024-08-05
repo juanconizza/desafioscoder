@@ -1,6 +1,5 @@
 import { config } from "dotenv";
 import argsUtil from "../utils/args.js";
-
 const { env } = argsUtil;
 
 //si env es dev debo usar env.dev
