@@ -6,7 +6,7 @@ const collection = "products";
 
 const schema = new Schema({
   //Relacionamos la colección users para traernos información del usuario que creo el producto.
-  seller_id: {type: Types.ObjectId, ref: "users", index: true, required: false},
+  seller_id: {type: Types.ObjectId, ref: "users", index: true, required: true},
   title: { type: String, required: true, index: true},
   photo: { type: String, default: "default_picture.png" },
   category: { type: String, required: true, index: true },
@@ -23,10 +23,6 @@ schema.pre("find", function () {
   this.populate("seller_id", "name lastName email blockAndLot _id");
 });
 
-// Con este pre usamos el metodo findOne para popular user_id con id, nombre, apellido, email y manzanaYLote de quien creo el producto.
-schema.pre("findOne", function () {
-  this.populate("seller_id", "name lastName email blockAndLot _id");
-});
 
 schema.plugin(mongoosePaginate);
 const Product = model(collection, schema);

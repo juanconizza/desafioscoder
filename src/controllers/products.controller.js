@@ -6,7 +6,7 @@ import {
   readOneEmailService,
   updateService,
   destroyService,
-} from "../services/users.service.js";
+} from "../services/products.service.js";
 
 class ProductsController {
   readProducts = async (req, res, next) => {
@@ -98,7 +98,7 @@ class ProductsController {
 
   createProduct = async (req, res, next) => {
     try {
-      const data = req.body;
+      const data = req.body;      
       const newProduct = await createService(data);
       res.status(201).json({
         statusCode: 201,

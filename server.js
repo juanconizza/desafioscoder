@@ -9,13 +9,16 @@ import { Server } from "socket.io";
 import cookieParser from "cookie-parser";
 import socketCb from "./src/routers/index.socket.js";
 import router from "./src/routers/index.router.js";
+import swaggerOptions from "./src/utils/swagger.utils.js";
+import swaggerJSDoc from "swagger-jsdoc";
+import { serve, setup } from "swagger-ui-express";
+
 import errorHandler from "./src/middlewares/errorHandler.js";
 import pathHandler from "./src/middlewares/pathHandler.js";
 //import morgan from "morgan";
 import winston from "./src/middlewares/winston.js";
 import __dirname from "./pathhandler.js"
 import { join } from "path";
-import { upload } from "./src/middlewares/uploader.js";
 
 const app = express();
 const port = argsUtil.p || environment.PORT;
@@ -52,6 +55,9 @@ app.use(express.static(join(__dirname, "public/img")));
 // Inicializamos Morgan
 //©app.use(morgan("dev"));
 
+// Configuraciónde Middleware de Swagger para el endpoint correspondiente. 
+const specs = swaggerJSDoc(swaggerOptions);
+
 // Middleware para comprimir y mejorar la transferencia del servidor
 app.use(
   compression({
@@ -59,17 +65,14 @@ app.use(
   })
   );
 
+// Endpoint de Swagger con la documentación.
+app.use("/api/docs", serve, setup(specs));
+
 // Middleware para manejar JSON
 app.use(express.json());
 
 // Este middleware de Express analiza los cuerpos de las solicitudes entrantes en un formulario codificado en URL y los coloca en req.body.
 app.use(express.urlencoded({ extended: true }));
-
-// Ruta para procesar el formulario y subir la imagen en carga de producto
-app.post("/upload", upload.single("photo"), (req, res) => {
-  // Enviar el nombre del archivo como respuesta
-  res.send(req.file.filename);
-});
 
 //Middleware de Winston para usar un custom log
 app.use(winston);

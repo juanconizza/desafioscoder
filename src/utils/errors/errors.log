@@ -1,2 +1,9 @@
 2024-07-10 15:14:25 [31mFATAL[39m: Este es un mensaje de log FATAL
-2024-07-10 15:14:25 [33mERROR[39m: Este es un mensaje de log ERROR
+2024-07-10 15:14:25 [33mERROR[39m: Este es un mensaje de log ERROR2024-07-30 16:39:26 [33mERROR[39m: 500 - Cast to ObjectId failed for value "Caja-de-Herramientas_1719418653133.jpeg" (type string) at path "_id" for model "products" - /products/Caja-de-Herramientas_1719418653133.jpeg - GET - ::1
+2024-07-30 16:39:26 [33mERROR[39m: 500 - Cast to ObjectId failed for value "Caja-de-Herramientas_1719418895694.jpeg" (type string) at path "_id" for model "products" - /products/Caja-de-Herramientas_1719418895694.jpeg - GET - ::1
+2024-07-30 16:40:42 [33mERROR[39m: 500 - Cast to ObjectId failed for value "Caja-de-Herramientas_1719243472650.jpeg" (type string) at path "_id" for model "products" - /products/Caja-de-Herramientas_1719243472650.jpeg - GET - ::1
+2024-07-31 13:46:28 [33mERROR[39m: 401 - Invalid credentials - /api/sessions/login - POST - ::1
+2024-07-31 13:47:09 [33mERROR[39m: 500 - E11000 duplicate key error collection: manantialesmarket.users index: phone_1 dup key: { phone: 3515921209.0 } - /api/sessions/register - POST - ::1
+2024-07-31 15:13:13 [33mERROR[39m: 500 - carts_contact validation failed: seller_id: Cast to ObjectId failed for value "" (type string) at path "seller_id" because of "BSONError" - /api/cart-contact - POST - ::1
+2024-07-31 15:13:16 [33mERROR[39m: 500 - carts_contact validation failed: seller_id: Cast to ObjectId failed for value "" (type string) at path "seller_id" because of "BSONError" - /api/cart-contact - POST - ::1
+2024-07-31 15:13:17 [33mERROR[39m: 500 - carts_contact validation failed: seller_id: Cast to ObjectId failed for value "" (type string) at path "seller_id" because of "BSONError" - /api/cart-contact - POST - ::1

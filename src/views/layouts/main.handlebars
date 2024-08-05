@@ -116,8 +116,8 @@
       const cartLink = document.getElementById("cartLink");
       const userId = responseData.user_id;
       cartLink.href = `/cart/`;
-    } else if (responseData.statusCode === 401) {
-      // Si la respuesta es 401, ocultar logoutDiv, cartDiv y newProduct
+    } else{
+      // Si la respuesta da error.
       document.getElementById("logoutDiv").classList.add("d-none");
       document.getElementById("cartDiv").classList.add("d-none");
       document.getElementById("newProduct").classList.add("d-none");

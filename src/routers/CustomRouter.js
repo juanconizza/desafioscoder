@@ -25,6 +25,7 @@ class CustomRouter {
       }
     });
   }
+  //De momento no se están utilizando las respuestas personalizadas pero se deja como posibilidad. 
   response = (req, res, next) => {
     res.message200 = (message) => res.json({ statusCode: 200, message });
     res.response200 = (response) => res.json({ statusCode: 200, response });

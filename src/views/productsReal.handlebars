@@ -113,12 +113,10 @@
   function renderProducts(products) { 
     const productContainer = document.getElementById("realTimeProducts"); 
     productContainer.innerHTML = ""; // Limpiar los productos anteriores
-
-    // Invertir el orden de los productos
-    const reversedProducts = products.reverse(); 
+    
 
     // Iterar sobre los productos y crear elementos para mostrarlos en la página
-    reversedProducts.forEach((product) => { 
+    products.forEach((product) => { 
       const productHtml = `
         <div class="col-md-3 mb-4">
           <div class="card">
@@ -149,15 +147,20 @@
     }; 
     try { 
       // Enviar la imagen al servidor y obtener la URL de la imagen guardada 
-      const response = await fetch("/upload", { 
-        method: "POST", 
-        body: formData
-      }); 
-      if (response.ok) { 
-        // Obtener la URL de la imagen del servidor 
-        const imageUrl = await response.text(); 
-        // Agregar la URL de la imagen al objeto del nuevo producto 
-        newProduct.photo = imageUrl; 
+      const response = await fetch("/api/upload", {
+      method: "POST",
+      body: formData,
+      credentials: "include" 
+    });
+      if (response.ok) {
+      const result = await response.json();
+      const imageUrl = result.filename;
+      const seller_id = result.user_id;
+
+      // Agregar la URL de la imagen y el seller_id al objeto del nuevo producto
+      newProduct.photo = imageUrl;
+      newProduct.seller_id = seller_id;
+      
         const successMessage = document.getElementById("successMessage"); 
         successMessage.classList.remove("d-none"); 
         successMessage.classList.add("d-block"); 

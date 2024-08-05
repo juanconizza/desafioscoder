@@ -22,7 +22,7 @@
           <div class="card-body pb-0">
             <div class="d-flex justify-content-between">
               <p class="text-dark">Precio: ${{productFound.price}}</p>
-              <p class="text-dark">Vendedor: "ACÁ VA VENDEDOR A FUTURO"</p>
+              <p class="text-dark">Vendedor: {{seller.name}}</p>
             </div>
             <p class="small text-muted">STOCK: {{productFound.stock}}</p>
           </div>
@@ -69,9 +69,9 @@
       addToCartBtn.addEventListener("click", async () => {
         const product_id = "{{productFound._id}}";
         const buyer_id = "{{user_id}}";
-        const seller_id = "66298c2971a5c48e51f7ad5e";
+        const seller_id = "{{productFound.seller_id}}";
         const quantity = 1;
-  
+        console.log(seller_id)
         const response = await fetch("/api/cart-contact", {
           method: "POST",
           headers: {
