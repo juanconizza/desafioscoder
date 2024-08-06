@@ -70,8 +70,7 @@
         const product_id = "{{productFound._id}}";
         const buyer_id = "{{user_id}}";
         const seller_id = "{{productFound.seller_id}}";
-        const quantity = 1;
-        console.log(seller_id)
+        const quantity = 1;        
         const response = await fetch("/api/cart-contact", {
           method: "POST",
           headers: {
