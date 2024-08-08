@@ -7,7 +7,6 @@ import productsRepository from "../../repositories/products.rep.js";
 import usersRepository from "../../repositories/users.rep.js";
 import cartsContactRepository from "../../repositories/cartsContact.rep.js";
 
-
 class ViewsRouter extends CustomRouter {
   init() {
     this.read("/", ["PUBLIC"], async (req, res, next) => {
@@ -101,6 +100,9 @@ class ViewsRouter extends CustomRouter {
       try {
         const userId = req.user.user_id; // Obtener el id del usuario de los parámetros de user
         const userFound = await usersRepository.readOneRepository(userId); // Leer el usuario correspondiente
+        const userProducts = await productsRepository.readRepository({
+          seller_id: userId,
+        }); // Leer los productos publicados por el usuario
         const isOnline = req.user.online;
 
         if (!isOnline || !userFound) {
@@ -109,11 +111,12 @@ class ViewsRouter extends CustomRouter {
         }
 
         const { name } = userFound; // Obtener el nombre del usuario
-
-        // Renderizar la vista del panel de usuario con los datos del usuario
+        console.log(userProducts);
+        // Renderizar la vista del panel de usuario con los datos del usuario y sus productos
         return res.render("userPanel", {
           title: `¡Manantiales Market! - Bienvenido a tu Panel ${name}!`,
           userLogged: userFound,
+          userProducts: userProducts, 
         });
       } catch (error) {
         // Manejar errores
@@ -130,9 +133,11 @@ class ViewsRouter extends CustomRouter {
         if (!productFound) {
           return res.status(404).send("Producto NO encontrado");
         }
-        
+
         //Leer el vendedor del producto
-        const seller = await usersRepository.readOneRepository(productFound.seller_id) 
+        const seller = await usersRepository.readOneRepository(
+          productFound.seller_id
+        );
 
         // Leer el token de la cookie firmada
         const token = req.signedCookies.token;
