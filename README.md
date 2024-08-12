@@ -230,3 +230,4 @@ Recordar que en el caso que obtenga el error de "Bad Auth from Policies" debe lo
 En este desafío se implementó una librería llamada supertest para realizar testing avanzados de un flujo del CRUD de product. El mismo puede probarse levantando el servidor con "npm run dev" y en otra terminal con "npm run supertest". 
 
 También se impmentaron pruebas de stress del servidor mediante el uso de la librería Artillery el cual puede probarse levantando el servidor con "npm run dev" y en otra terminal usando "npm run stress". Luego con "npm run report" puede verse un html con el reporte y graficas de la prueba de stress. 
+git 

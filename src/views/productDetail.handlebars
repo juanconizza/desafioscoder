@@ -69,6 +69,7 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", function() {
+<<<<<<< HEAD
   const addToCartBtn = document.getElementById("addToCartBtn");
   const addToCartMessage = document.getElementById("addToCartMessage");
   const failAddToCartMessage = document.getElementById("failAddToCartMessage");
@@ -110,5 +111,42 @@
     });
   }
 });
+=======
+    const addToCartBtn = document.getElementById("addToCartBtn");
+    const addToCartMessage = document.getElementById("addToCartMessage");
+
+    if (addToCartBtn) {
+      addToCartBtn.addEventListener("click", async () => {
+        const product_id = "{{productFound._id}}";
+        const buyer_id = "{{user_id}}";
+        const seller_id = "{{productFound.seller_id}}";
+        const quantity = 1;
+        console.log(seller_id)
+        const response = await fetch("/api/cart-contact", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            product_id,
+            buyer_id,
+            seller_id,
+            quantity
+          })
+        });
+        const responseData = response.json()
+        console.log(responseData);
+  
+        if (response.ok) {
+          // El producto se agregó al carrito exitosamente
+          addToCartMessage.style.display = "block";
+        } else {
+          // Hubo un error al agregar el producto al carrito
+          addToCartMessage.style.display = "none";
+        }
+      });
+    }
+  });
+>>>>>>> main
 </script>
 
