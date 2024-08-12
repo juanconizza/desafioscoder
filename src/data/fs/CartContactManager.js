@@ -78,10 +78,11 @@ class CartContactManager {
         });
       }
 
-      const populatedData = await this.populate(data);
+      const populatedData = await this.populate(data);      
+      
 
       return {
-        data: populatedData,
+        docs: populatedData,
         total,
         page,
         limit,
@@ -90,7 +91,7 @@ class CartContactManager {
     } catch (error) {
       console.error("Error paginating cart contacts:", error.message);
       return {
-        data: [],
+        docs: [],
         total: 0,
         page: sortAndPaginate.page || 1,
         limit: sortAndPaginate.limit || 10,

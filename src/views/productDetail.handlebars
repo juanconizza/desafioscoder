@@ -33,16 +33,23 @@
                </div>
           <hr class="my-0" />
           <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center pb-2 mb-1">
-          <a href="/" class="text-dark fw-bold">Atrás</a>
-           {{#if isOnline}}
-            <button id="addToCartBtn" type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary">Agregar al Carrito</button>
-            <div id="addToCartMessage" class="text-success fw-bold" style="display: none;">Producto agregado al carrito!</div>
-            {{else}}
-            <p>Debes iniciar sesión para agregar este producto al carrito.</p>
-            {{/if}}
-              </div>
-          </div>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <a href="/" class="btn btn-secondary">Atrás</a>
+
+    {{#if isOnline}}
+    <button id="addToCartBtn" type="button" class="btn btn-primary">Agregar al Carrito</button>
+    {{else}}
+    <p class="text-danger mb-0">Debes iniciar sesión para agregar este producto al carrito.</p>
+    {{/if}}
+  </div>
+
+  {{#if isOnline}}
+  <div class="text-center">
+    <p id="addToCartMessage" class="text-success fw-bold" style="display: none;">¡Producto agregado al carrito!</p>
+    <p id="failAddToCartMessage" class="text-danger fw-bold" style="display: none;">No puedes agregar tu propio producto al carrito.</p>
+  </div>
+  {{/if}}
+</div>
         </div>
       </div>
     </div>
@@ -62,6 +69,49 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", function() {
+<<<<<<< HEAD
+  const addToCartBtn = document.getElementById("addToCartBtn");
+  const addToCartMessage = document.getElementById("addToCartMessage");
+  const failAddToCartMessage = document.getElementById("failAddToCartMessage");
+
+  if (addToCartBtn) {
+    addToCartBtn.addEventListener("click", async () => {
+      const product_id = "{{productFound._id}}";
+      const buyer_id = "{{user_id}}";
+      const seller_id = "{{productFound.seller_id}}";
+      const quantity = 1;        
+      const response = await fetch("/api/cart-contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          product_id,
+          buyer_id,
+          seller_id,
+          quantity
+        })
+      });
+      const responseData = await response.json();
+      console.log(responseData);
+
+      if (response.ok) {
+        // El producto se agregó al carrito exitosamente
+        addToCartMessage.style.display = "block";
+        failAddToCartMessage.style.display = "none";
+      } else if (response.status === 400) {
+        // Mostrar mensaje de error si la respuesta es 400
+        failAddToCartMessage.style.display = "block";
+        addToCartMessage.style.display = "none";
+      } else {
+        // Manejar otros errores
+        failAddToCartMessage.style.display = "none";
+        addToCartMessage.style.display = "none";
+      }
+    });
+  }
+});
+=======
     const addToCartBtn = document.getElementById("addToCartBtn");
     const addToCartMessage = document.getElementById("addToCartMessage");
 
@@ -97,5 +147,6 @@
       });
     }
   });
+>>>>>>> main
 </script>
 

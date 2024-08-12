@@ -50,7 +50,7 @@ class ProductManager {
       }
 
       // Ordenar productos
-      if (sortAndPaginate.sort) {
+      if (typeof sortAndPaginate.sort === 'string') {
         const [sortField, sortOrder] = sortAndPaginate.sort.split(' ');
         filteredProducts.sort((a, b) => {
           if (a[sortField] < b[sortField]) return sortOrder === 'asc' ? -1 : 1;

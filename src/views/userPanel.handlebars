@@ -2,8 +2,8 @@
 <div class="container mt-2 mb-5">
   <div class="row">
     <!-- Columna para la información del usuario -->
-    <div class="col-md-4">
-      <h3 class="mb-4">¡Bienvenido, {{userLogged.name}} {{userLogged.lastName}}!</h3>
+    <div class="col-md-4 col-lg-3">
+      <h3 class="mb-4 text-center">¡Bienvenid@ <br>{{userLogged.name}}!</h3>
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">Tu Información:</h5>
@@ -17,14 +17,30 @@
         </div>
       </div>
     </div>
+    
     <!-- Columna para los productos -->
-    <div class="col-md-7">
-      <!-- Espacio para mostrar los productos -->
-      <h3 class="mb-4">Tus Productos Publicados</h3>
-      <!-- Aquí puedes colocar la lógica para mostrar los productos -->
+    <div class="col-md-8 col-lg-9">
+      <h3 class="mb-5 pb-2 text-center">Tus Productos Publicados</h3>
+      <div class="row">
+        <!-- Productos del Usuario -->
+        {{#each userProducts}}
+        <div class="col-sm-6 col-lg-4 mb-4">
+          <div class="card h-100">
+            <img src="/products/{{this.photo}}" class="card-img-top" alt="{{this.title}}">
+            <div class="card-body">
+              <h5 class="card-title">{{this.title}}</h5>
+              <p class="card-text">Precio:${{this.price}} </p>
+              <a href="/misproductos/{{this._id}}" class="btn btn-primary">Ver más</a>
+            </div>
+          </div>
+        </div>
+        {{/each}}
+        <!-- Productos del Usuario -->       
+      </div>
     </div>
   </div>
 </div>
+
 {{else}}
 <div class="container mt-5">
   <div class="row justify-content-center">
