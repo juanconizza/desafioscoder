@@ -44,6 +44,15 @@ class ProductsRepository {
     }
   };
 
+  readByRepository = async (obj) => {
+    try {
+      const one = await this.model.readBy(obj);
+      return one;
+    } catch (error) {
+      throw error;
+    }
+  };
+
   readByEmailRepository = async (email) => {
     try {
       const one = await this.model.readByEmail(email);

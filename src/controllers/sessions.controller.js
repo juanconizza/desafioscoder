@@ -28,9 +28,8 @@ class SessionsController {
         signed: true,
       };
       return res
-        .cookie("token", req.user.token, cookieOptions)
-        .status(200)
-        .json({ message: "Logged in!" });
+        .cookie("token", req.user.token, cookieOptions)    
+        .json({ statusCode: 200, message: "Logged in!" });
     } catch (error) {
       return next(error);
     }
@@ -104,11 +103,9 @@ class SessionsController {
       // Validar la contraseña con la expresión regular
       const passwordRegex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
       if (!passwordRegex.test(newPassword)) {
-        return res
-          .status(400)
-          .json({
-            message: `"Contraseña" debe tener al menos 8 caracteres y 1 letra mayúscula y al menos 1 número.`,
-          });
+        return res.status(400).json({
+          message: `"Contraseña" debe tener al menos 8 caracteres y 1 letra mayúscula y al menos 1 número.`,
+        });
       }
 
       // Verificar si el usuario existe

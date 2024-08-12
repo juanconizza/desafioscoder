@@ -1,4 +1,5 @@
 import CustomRouter from "../CustomRouter.js";
+import sameBuyerAndSeller from "../../middlewares/sameBuyerAndSeller.js";
 import {
   readCartContacts,
   readPaginatedCartContacts,
@@ -14,7 +15,7 @@ class CartContactRouter extends CustomRouter {
     this.read("/", ["USER"], readCartContacts);
     this.read("/paginate", ["USER"], readPaginatedCartContacts);
     this.read("/:cid", ["USER"], readCartContactById);
-    this.create("/", ["USER"], createCartContact);
+    this.create("/", ["USER"], sameBuyerAndSeller, createCartContact);
     this.update("/:cid", ["USER"], updateCartContact);
     this.destroy("/:cid", ["USER"], deleteCartContact);
     this.destroy("/all", ["USER"], deleteAllCartContacts);
