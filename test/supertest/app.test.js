@@ -4,6 +4,8 @@ import environment from "../../src/utils/env.utils.js";
 import usersRepository from "../../src/repositories/users.rep.js";
 import productsRepository from "../../src/repositories/products.rep.js";
 
+// PARA PODER USAR EL SUPERTEST Debe modificar en el dto en la propiedad verify agregar "data.verify || false".
+
 const requester = supertest(`http://localhost:${environment.PORT}/api`);
 
 describe("Testing de MANANTIALES MARKET API", function () {

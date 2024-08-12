@@ -21,7 +21,7 @@ class UsersDTO {
     this.email = data.email;
     this.password = data.password;
     this.role = data.role || 0;
-    this.verify = data.verify || false; //TODO Luego de los testings quitar el data.verify    
+    this.verify = false; 
     this.verifyCode = generateRandom6DigitNumber().toString(); 
 
     persistence !== "mongo" && (this.createdAt = new Date());
