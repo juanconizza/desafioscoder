@@ -116,7 +116,7 @@ class ViewsRouter extends CustomRouter {
         return res.render("userPanel", {
           title: `¡Manantiales Market! - Bienvenido a tu Panel ${name}!`,
           userLogged: userFound,
-          userProducts: userProducts, 
+          userProducts: userProducts,
         });
       } catch (error) {
         // Manejar errores
@@ -130,11 +130,12 @@ class ViewsRouter extends CustomRouter {
         const productFound = await productsRepository.readOneRepository(
           productId
         );
+
         if (!productFound) {
           return res.status(404).send("Producto NO encontrado");
-        }
+        }        
 
-        //Leer el vendedor del producto
+        // Leer el vendedor del producto
         const seller = await usersRepository.readOneRepository(
           productFound.seller_id
         );
@@ -145,15 +146,19 @@ class ViewsRouter extends CustomRouter {
         // Variables predeterminadas
         let isOnline = false;
         let user_id = null;
+        let isOwner = false;
 
         if (token) {
           try {
             const decoded = verifyToken(token);
             const { user_id: decodedUserId, online } = decoded;
             isOnline = online;
-            user_id = decodedUserId;
+            user_id = decodedUserId;            
+            // Verificar si el usuario es el propietario del producto
+            if (user_id && productFound.seller_id.toString() === user_id) {
+              isOwner = true;              
+            }
           } catch (error) {
-            // Manejar error de verificación de token si es necesario
             console.error("Error al verificar el token:", error);
           }
         }
@@ -164,6 +169,7 @@ class ViewsRouter extends CustomRouter {
           isOnline: isOnline,
           user_id: user_id,
           seller: seller,
+          isOwner: isOwner,
         });
       } catch (error) {
         return next(error);

@@ -1,8 +1,5 @@
 import CustomRouter from "../CustomRouter.js";
-<<<<<<< HEAD
 import sameBuyerAndSeller from "../../middlewares/sameBuyerAndSeller.js";
-=======
->>>>>>> main
 import {
   readCartContacts,
   readPaginatedCartContacts,
