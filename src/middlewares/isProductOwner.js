@@ -13,6 +13,11 @@ function isProductOwner(req, res, next) {
         // Decodifica el token
         const decodedToken = verifyToken(req.signedCookies.token);
 
+        // Verifica si el usuario es ADMIN
+        if (decodedToken.role === 1) {
+            return next(); // Si es ADMIN, omite las verificaciones y sigue
+        }
+  
         // Verifica si el token tiene la propiedad user_id
         if (!decodedToken || !decodedToken.user_id) {
             return res.status(401).json({

@@ -23,7 +23,7 @@
 </div>
     <div class="row mt-4 mb-2">
       <div class="col-md-6 mb-5">
-        <button class="btn btn-success" onclick="checkout()">Contactar</button>
+        <button class="btn btn-success" onclick="checkout()">Comprar</button>
         <button class="btn btn-secondary" onclick="clearCart()">Vaciar Carrito</button>
       </div>
     </div>    
@@ -72,10 +72,66 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // Función para procesar el pago y contactar al vendedor
-  function checkout() {
-    // Agregar aquí la lógica para procesar el pago y contactar al vendedor
-    console.log('Procesando el pago y contactando al vendedor...');
+ 
+  async function checkout() { 
+  
+  try {
+    // Obtener el total de la compra
+    const totalAmount = document.getElementById('totalAmount').innerText;
+    const cartInfo = {{{json cartInfo}}}; // Convertir cartInfo a un objeto JavaScript
+    
+    // Agrupar los productos por vendedor
+    const groupedBySeller = cartInfo.reduce((acc, item) => {
+      const sellerId = item.seller_id._id;
+      if (!acc[sellerId]) {
+        acc[sellerId] = {
+          seller_id: item.seller_id._id,
+          products: [],
+        };
+      }
+      acc[sellerId].products.push({
+        product_id: item.product_id._id,
+        quantity: item.quantity,
+      });
+      return acc;
+    }, {});
+
+    // Convertir el objeto agrupado en un array de vendedores
+    const sellers = Object.values(groupedBySeller);
+
+    console.log(sellers)
+
+    // Estructurar los datos para la solicitud POST
+    const purchaseData = {
+      buyer_id: cartInfo[0].buyer_id._id,  
+      sellers: sellers,
+      total_purchase: parseFloat(totalAmount),
+      state: 'success', 
+    };   
+
+
+    // Enviar la solicitud POST al endpoint /api/purchase
+    const response = await fetch('/api/purchase', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(purchaseData),
+    });
+
+    if (response.ok) {
+      // Redirigir o mostrar un mensaje de éxito
+      console.log('Compra realizada con éxito');
+      // Puedes redirigir a una página de éxito, por ejemplo:
+      // window.location.href = '/success';
+      clearCart();
+    } else {
+      console.error('Error al procesar la compra:', response.statusText);
+    }
+  } catch (error) {
+    console.error('Error al procesar la compra:', error.message);
   }
+}
 
   // Función para cancelar la compra y vaciar el carrito
       async function clearCart() {

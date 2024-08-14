@@ -56,12 +56,14 @@ switch (persistence) {
     const { default: usersManagerMongo } = await import(
       "./mongo/managers/UsersManager.mongo.js"
     );
+    const { default: purchaseManagerMongo } = await import("./mongo/managers/PurchasesManager.mongo.js")    
     //se tienen que traer TODOS los manager de todos los recursos y ya tienen que estar HOMOLOGADOS
     //una vez que logré importar los managers, lleno el objeto dao con los recursos correspondientes
     dao = {
       users: usersManagerMongo,
       products: productsManagerMongo,
       cartsContact: cartsContactManagerMongo,
+      purchase: purchaseManagerMongo,            
     };
     break;
 }

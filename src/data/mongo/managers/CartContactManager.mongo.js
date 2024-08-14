@@ -1,5 +1,5 @@
-import User from "../models/cartContact.model.js"
+import CartContact from "../models/cartContact.model.js"
 import Manager from "../Manager.mongo.js";
 
-const cartContactManager = new Manager(User);
+const cartContactManager = new Manager(CartContact);
 export default cartContactManager;

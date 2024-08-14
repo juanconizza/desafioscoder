@@ -5,3 +5,5 @@
 2 - Crear la condicion que sólo el seller_id que creo un producto pueda ser el que lo elimine o edite o un superUser tambien (policies). 
 
 3-  Luego de los testings quitar el data.verify del dto para que siempre lo establezca en false.    
+
+4- Completar la Documentación de Swagger para todos los recursos.

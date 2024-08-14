@@ -16,9 +16,9 @@ class ProductRouter extends CustomRouter {
     this.read("/", ["PUBLIC"], readProducts);
     this.read("/paginate", ["PUBLIC"], readPaginatedProducts);
     this.read("/:pid", ["PUBLIC"], readProductById);
-    this.create("/", ["USER"], validateProductsProps, isProductOwner, createProduct);
-    this.update("/:pid", ["USER"], validateOwner, isProductOwner, updateProduct);
-    this.destroy("/:pid", ["USER"], validateOwner, isProductOwner, deleteProduct);
+    this.create("/", ["USER","ADMIN"], validateProductsProps, isProductOwner, createProduct);
+    this.update("/:pid", ["USER","ADMIN"], validateOwner, isProductOwner, updateProduct);
+    this.destroy("/:pid", ["USER","ADMIN"], validateOwner, isProductOwner, deleteProduct);
   }
 }
 

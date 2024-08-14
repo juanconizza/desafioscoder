@@ -4,6 +4,7 @@ import argsUtil from "./src/utils/args.js";
 import express from "express";
 import dbConnection from "./src/utils/db.js";
 import { engine } from "express-handlebars";
+import handlebars from 'handlebars';
 import { createServer } from "http";
 import { Server } from "socket.io";
 import cookieParser from "cookie-parser";
@@ -34,14 +35,20 @@ nodeServer.listen(port, ready);
 const socketServer = new Server(nodeServer);
 socketServer.on("connection", socketCb);
 
+
 //Configuramos el motor de plantillas de handlebars
 app.engine("handlebars", engine({ 
   runtimeOptions: {
   allowedProtoMethods: true,
   allowProtoMethodsByDefault: true,
   allowedProtoProperties: true,
-  allowProtoPropertiesByDefault: true}  
+  allowProtoPropertiesByDefault: true}    
 }));
+
+// Registrar el helper `json`
+handlebars.registerHelper('json', function(context) {
+  return JSON.stringify(context);
+});
   
 app.set("view engine", "handlebars");
 app.set("views", __dirname + "/src/views");

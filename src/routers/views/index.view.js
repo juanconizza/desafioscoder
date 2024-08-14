@@ -269,7 +269,7 @@ class ViewsRouter extends CustomRouter {
           sortAndPaginate,
         });
 
-        const cartInfo = buyerFound.docs;
+        const cartInfo = buyerFound.docs;        
 
         if (!buyerFound) {
           // Si el producto no existe, devolver un error 404
