@@ -99,9 +99,9 @@ import {
     // Crear una nueva compra
     createPurchase = async (req, res, next) => {
       try {        
-        const data = req.body;
+        const data = req.purchaseData;
         const newPurchase = await createService(data);
-  
+    
         res.status(201).json({
           statusCode: 201,
           response: newPurchase,

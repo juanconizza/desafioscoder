@@ -133,7 +133,7 @@ class ViewsRouter extends CustomRouter {
 
         if (!productFound) {
           return res.status(404).send("Producto NO encontrado");
-        }        
+        }
 
         // Leer el vendedor del producto
         const seller = await usersRepository.readOneRepository(
@@ -153,10 +153,10 @@ class ViewsRouter extends CustomRouter {
             const decoded = verifyToken(token);
             const { user_id: decodedUserId, online } = decoded;
             isOnline = online;
-            user_id = decodedUserId;            
+            user_id = decodedUserId;
             // Verificar si el usuario es el propietario del producto
             if (user_id && productFound.seller_id.toString() === user_id) {
-              isOwner = true;              
+              isOwner = true;
             }
           } catch (error) {
             console.error("Error al verificar el token:", error);
@@ -254,7 +254,7 @@ class ViewsRouter extends CustomRouter {
       }
     });
 
-    this.read("/cart/", ["USER"], async (req, res, next) => {
+    this.read("/cart", ["USER"], async (req, res, next) => {
       try {
         const filter = {};
         const sortAndPaginate = {};
@@ -269,7 +269,7 @@ class ViewsRouter extends CustomRouter {
           sortAndPaginate,
         });
 
-        const cartInfo = buyerFound.docs;        
+        const cartInfo = buyerFound.docs;
 
         if (!buyerFound) {
           // Si el producto no existe, devolver un error 404
@@ -279,6 +279,26 @@ class ViewsRouter extends CustomRouter {
         return res.render("cart", {
           title: "¡Manantiales Market! - Carrito",
           cartInfo: cartInfo,
+        });
+      } catch (error) {
+        return next(error);
+      }
+    });
+
+    this.read("/miscompras", ["USER"], async (req, res, next) => {
+      try {
+        return res.render("miscompras", {
+          title: "¡Manantiales Market! - Mis Compras",
+        });
+      } catch (error) {
+        return next(error);
+      }
+    });
+
+    this.read("/misventas", ["USER"], async (req, res, next) => {
+      try {
+        return res.render("misventas", {
+          title: "¡Manantiales Market! - Mis Ventas",
         });
       } catch (error) {
         return next(error);
