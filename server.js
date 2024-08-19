@@ -4,7 +4,9 @@ import argsUtil from "./src/utils/args.js";
 import express from "express";
 import dbConnection from "./src/utils/db.js";
 import { engine } from "express-handlebars";
-import handlebars from 'handlebars';
+import handlebars from "handlebars";
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import cookieParser from "cookie-parser";
@@ -18,7 +20,7 @@ import errorHandler from "./src/middlewares/errorHandler.js";
 import pathHandler from "./src/middlewares/pathHandler.js";
 //import morgan from "morgan";
 import winston from "./src/middlewares/winston.js";
-import __dirname from "./pathhandler.js"
+import __dirname from "./pathhandler.js";
 import { join } from "path";
 
 const app = express();
@@ -35,21 +37,30 @@ nodeServer.listen(port, ready);
 const socketServer = new Server(nodeServer);
 socketServer.on("connection", socketCb);
 
-
 //Configuramos el motor de plantillas de handlebars
-app.engine("handlebars", engine({ 
-  runtimeOptions: {
-  allowedProtoMethods: true,
-  allowProtoMethodsByDefault: true,
-  allowedProtoProperties: true,
-  allowProtoPropertiesByDefault: true}    
-}));
+app.engine(
+  "handlebars",
+  engine({
+    runtimeOptions: {
+      allowedProtoMethods: true,
+      allowProtoMethodsByDefault: true,
+      allowedProtoProperties: true,
+      allowProtoPropertiesByDefault: true,
+    },
+  })
+);
 
-// Registrar el helper `json`
-handlebars.registerHelper('json', function(context) {
-  return JSON.stringify(context);
+// Registrar el helper `equals`
+handlebars.registerHelper("equals", (a, b) => a === b);
+// Registrar el helper "Convert Date"
+handlebars.registerHelper("formatDate", (dateString) => {
+  const date = new Date(dateString);
+  const formattedDate = format(date, "dd MMMM yyyy", { locale: es });
+  const [day, month, year] = formattedDate.split(" ");
+  const capitalizedMonth = month.charAt(0).toUpperCase() + month.slice(1);
+  return `${day} de ${capitalizedMonth} de ${year}`;
 });
-  
+
 app.set("view engine", "handlebars");
 app.set("views", __dirname + "/src/views");
 
@@ -62,15 +73,15 @@ app.use(express.static(join(__dirname, "public/img")));
 // Inicializamos Morgan
 //©app.use(morgan("dev"));
 
-// Configuraciónde Middleware de Swagger para el endpoint correspondiente. 
+// Configuraciónde Middleware de Swagger para el endpoint correspondiente.
 const specs = swaggerJSDoc(swaggerOptions);
 
 // Middleware para comprimir y mejorar la transferencia del servidor
 app.use(
   compression({
-  brotli: { enabled: true, zlib: {} },
+    brotli: { enabled: true, zlib: {} },
   })
-  );
+);
 
 // Endpoint de Swagger con la documentación.
 app.use("/api/docs", serve, setup(specs));

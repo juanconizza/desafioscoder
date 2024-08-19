@@ -29,8 +29,8 @@ const purchaseSchema = new Schema(
 
 // Middleware para popular los campos antes de realizar una búsqueda o consulta
 purchaseSchema.pre("find", function () {
-  this.populate("buyer_id", "name lastName blockAndLot _id");
-  this.populate("sellers.seller_id", "name lastName blockAndLot _id");
+  this.populate("buyer_id", "name phone lastName blockAndLot _id");
+  this.populate("sellers.seller_id", "name phone lastName blockAndLot _id");
   this.populate("sellers.products.product_id", "title photo price _id");
 });
 
