@@ -321,7 +321,7 @@ class ViewsRouter extends CustomRouter {
       try {
         const filter = {};
         const sortAndPaginate = {};
-    
+
         // Filtrar las ventas por el seller_id en el array de sellers
         if (req.user.user_id) {
           filter.sellers = {
@@ -330,40 +330,44 @@ class ViewsRouter extends CustomRouter {
             },
           };
         }
-    
+
         const sellerFound = await purchaseRepository.paginateRepository({
           filter,
           sortAndPaginate,
         });
-    
-        if (!sellerFound || sellerFound.docs.length === 0) {
-          // Si no hay ventas encontradas, devolver un error 404
-          return res.status(404).send("No Tienes Ventas");
-        }
-          
+
         const purchasesWithProductsSold = sellerFound.docs.map((purchase) => {
           const productsSold = [];
+          let totalBySeller = 0;
+
           purchase.sellers.forEach((seller) => {
-            if (seller.seller_id._id.toString() === req.user.user_id.toString()) {
+            if (
+              seller.seller_id._id.toString() === req.user.user_id.toString()
+            ) {
               productsSold.push(...seller.products);
+
+              // Sumar el total de los productos vendidos por este vendedor
+              seller.products.forEach((product) => {
+                totalBySeller += product.product_id.price * product.quantity;
+              });
             }
-          });        
+          });
+
           return {
-            ...purchase._doc,  
+            ...purchase._doc, // Obtener el objeto plano si se usa Mongoose
             productsSold,
+            totalBySeller,
           };
-        });      
-    
+        });
+
         return res.render("mysales", {
           title: "¡Manantiales Market! - Mis Ventas",
-          purchaseInfo: purchasesWithProductsSold, 
+          purchaseInfo: purchasesWithProductsSold, // Enviar la lista de compras con la nueva propiedad
         });
       } catch (error) {
         return next(error);
       }
     });
-    
-    
   }
 }
 
