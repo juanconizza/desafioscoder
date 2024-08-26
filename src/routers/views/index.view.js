@@ -85,7 +85,7 @@ class ViewsRouter extends CustomRouter {
       }
     });
 
-    this.read("/products/real", ["USER"], async (req, res, next) => {
+    this.read("/products/new", ["USER", "ADMIN"], async (req, res, next) => {
       try {
         const products = await productsRepository.readRepository();
         return res.render("productsReal", {
@@ -97,7 +97,7 @@ class ViewsRouter extends CustomRouter {
       }
     });
 
-    this.read("/users/", ["USER"], async (req, res, next) => {
+    this.read("/users/", ["USER", "ADMIN"], async (req, res, next) => {
       try {
         const userId = req.user.user_id; // Obtener el id del usuario de los parámetros de user
         const userFound = await usersRepository.readOneRepository(userId); // Leer el usuario correspondiente
@@ -151,12 +151,12 @@ class ViewsRouter extends CustomRouter {
 
         if (token) {
           try {
-            const decoded = verifyToken(token);
-            const { user_id: decodedUserId, online } = decoded;
+            const decoded = verifyToken(token);           
+            const { user_id: decodedUserId, online, role } = decoded;
             isOnline = online;
-            user_id = decodedUserId;
-            // Verificar si el usuario es el propietario del producto
-            if (user_id && productFound.seller_id.toString() === user_id) {
+            user_id = decodedUserId;     
+            // Verificar si el usuario es el propietario del producto o ADMIN
+            if (user_id && productFound.seller_id.toString() === user_id || role === 1) {
               isOwner = true;
             }
           } catch (error) {
@@ -255,7 +255,7 @@ class ViewsRouter extends CustomRouter {
       }
     });
 
-    this.read("/cart", ["USER"], async (req, res, next) => {
+    this.read("/cart", ["USER", "ADMIN"], async (req, res, next) => {
       try {
         const filter = {};
         const sortAndPaginate = {};
@@ -286,7 +286,7 @@ class ViewsRouter extends CustomRouter {
       }
     });
 
-    this.read("/miscompras", ["USER"], async (req, res, next) => {
+    this.read("/miscompras", ["USER", "ADMIN"], async (req, res, next) => {
       try {
         const filter = {};
         const sortAndPaginate = {};
@@ -317,7 +317,7 @@ class ViewsRouter extends CustomRouter {
       }
     });
 
-    this.read("/misventas", ["USER"], async (req, res, next) => {
+    this.read("/misventas", ["USER", "ADMIN"], async (req, res, next) => {
       try {
         const filter = {};
         const sortAndPaginate = {};
@@ -368,6 +368,27 @@ class ViewsRouter extends CustomRouter {
         return next(error);
       }
     });
+    
+    this.read("/gracias", ["USER", "ADMIN"], async (req, res, next) => {
+      try {
+        return res.render("thanks", {
+          title: "¡Manantiales Market! - Gracias por su Compra! ",
+        });
+      } catch (error) {
+        return next(error);
+      }
+    });
+
+    this.read("/cancelada", ["USER", "ADMIN"], async (req, res, next) => {
+      try {
+        return res.render("cancel", {
+          title: "¡Manantiales Market! - Compra Cancelada ",
+        });
+      } catch (error) {
+        return next(error);
+      }
+    });
+      
   }
 }
 

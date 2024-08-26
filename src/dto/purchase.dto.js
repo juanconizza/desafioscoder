@@ -10,7 +10,7 @@ class PurchaseDTO {
     }
 
     this.buyer_id = data.buyer_id;
-    this.sellers = data.sellers || [];  // Asegúrate de que 'sellers' sea un array
+    this.sellers = data.sellers || [];  
     this.total_purchase = data.total_purchase;
     this.state = data.state || "pending";
     

@@ -12,16 +12,26 @@ async function sumPurchase(req, res, next) {
     });
 
     const cartInfo = buyerFound.docs;
-
     let totalPurchase = 0;
 
-    const groupedBySeller = cartInfo.reduce((acc, item) => {
-      const sellerId = item.seller_id._id;
+    const itemsForStripe = cartInfo.map(item => {
       const quantity = item.quantity;
       const price = item.product_id.price;
+      const title = item.product_id.title;
       const subtotal = quantity * price;
 
       totalPurchase += subtotal;
+
+      return {
+        title,
+        quantity,
+        price, 
+      };
+    });
+
+    const groupedBySeller = cartInfo.reduce((acc, item) => {
+      const sellerId = item.seller_id._id;
+      const subtotal = item.quantity * item.product_id.price;
 
       if (!acc[sellerId]) {
         acc[sellerId] = {
@@ -38,15 +48,14 @@ async function sumPurchase(req, res, next) {
       return acc;
     }, {});
 
-    // Convertir el objeto agrupado en un array de vendedores
     const sellers = Object.values(groupedBySeller);
 
-    // Estructurar los datos para el DTO
     const purchaseData = {
       buyer_id: req.user.user_id,
       sellers: sellers,
       total_purchase: totalPurchase,
       state: "success",
+      itemsForStripe, 
     };
 
     req.purchaseData = purchaseData;

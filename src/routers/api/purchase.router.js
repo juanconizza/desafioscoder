@@ -1,4 +1,5 @@
 import CustomRouter from "../CustomRouter.js";
+import sumPurchase from "../../middlewares/sumPurchase.js";
 import {
     readPurchases,
     readPaginatedPurchases,
@@ -8,17 +9,17 @@ import {
     deletePurchase,
     deleteAllPurchases,
 } from "../../controllers/purchases.controller.js";
-import sumPurchase from "../../middlewares/sumPurchase.js";
+
 
 class PurchaseRouter extends CustomRouter {
   init() {
-    this.read("/", ["USER"], readPurchases);
-    this.read("/paginate", ["USER"], readPaginatedPurchases);
-    this.read("/:pid", ["USER"], readPurchaseById);
-    this.create("/", ["USER"], sumPurchase, createPurchase);
-    this.update("/:pid", ["USER"], updatePurchase);
-    this.destroy("/:pid", ["USER"], deletePurchase);
-    this.destroy("/all", ["USER"], deleteAllPurchases);
+    this.read("/", ["USER", "ADMIN"], readPurchases);
+    this.read("/paginate", ["USER", "ADMIN"], readPaginatedPurchases);
+    this.read("/:pid", ["USER", "ADMIN"], readPurchaseById);
+    this.create("/", ["USER", "ADMIN"], sumPurchase, createPurchase); 
+    this.update("/:pid", ["USER", "ADMIN"], updatePurchase);
+    this.destroy("/:pid", ["USER", "ADMIN"], deletePurchase);
+    this.destroy("/all", ["USER", "ADMIN"], deleteAllPurchases);
   }
 }
 

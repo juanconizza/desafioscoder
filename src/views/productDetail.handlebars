@@ -1,5 +1,5 @@
 {{#if productFound}}
-<section style="background-color: #eee;">
+<section>
   <div class="container py-5 mb-5">
     <div class="row justify-content-center">
       <div class="col-md-8 col-lg-6 col-xl-6">
@@ -92,18 +92,38 @@
             <div class="d-flex justify-content-between align-items-center mb-3">
               <a href="/" class="btn btn-secondary">Atrás</a>
               {{#if isOnline}}
+              {{#if isOwner}}
+               <button class="btn btn-danger ms-3 delete-btn" data-product-id="{{productFound._id}}">Eliminar Producto</button>
+               {{/if}}
               <button id="addToCartBtn" type="button" class="btn btn-primary">Agregar al Carrito</button>
               {{else}}
               <p class="text-danger mb-0">Debes iniciar sesión para agregar este producto al carrito.</p>
               {{/if}}
             </div>
-
             {{#if isOnline}}
             <div class="text-center">
               <p id="addToCartMessage" class="text-success fw-bold" style="display: none;">¡Producto agregado al carrito!</p>
               <p id="failAddToCartMessage" class="text-danger fw-bold" style="display: none;">No puedes agregar tu propio producto al carrito.</p>
             </div>
             {{/if}}
+               <!-- Modal de Confirmación de Eliminar un Producto -->
+      <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="deleteConfirmLabel">Confirmar Eliminación</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              ¿Estás seguro de que deseas eliminar este producto? Esta acción no se puede deshacer.
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <button type="button" id="confirmDeleteBtn" class="btn btn-danger">Eliminar</button>
+            </div>
+          </div>
+        </div>
+      </div> 
           </div>
         </div>
       </div>
@@ -231,4 +251,67 @@
     });
   }
 });
+
+ document.addEventListener('DOMContentLoaded', () => {
+    let productIdToDelete = null;
+    
+    // Selecciona todos los botones de eliminación
+    const deleteButtons = document.querySelectorAll('.delete-btn');
+    
+    // Referencia al botón de confirmación del modal
+    const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+
+    // Itera sobre cada botón para agregar un evento de clic
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', (event) => {
+            productIdToDelete = button.getAttribute('data-product-id');
+
+            // Mostrar el modal de confirmación
+            const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+            deleteModal.show();
+        });
+    });
+
+    // Manejar la confirmación de eliminación
+    confirmDeleteBtn.addEventListener('click', async () => {
+        if (productIdToDelete) {
+            try {
+                // Realiza la solicitud DELETE al servidor
+                const response = await fetch(`/api/products/${productIdToDelete}`, {
+                    method: 'DELETE',
+                });
+
+                if (response.ok) {               
+                              // Crear una alerta de Bootstrap
+                const alertDiv = document.createElement('div');
+                alertDiv.className = 'alert alert-success text-center fixed-top alert-dismissible fade show';
+                alertDiv.role = 'alert';
+                alertDiv.innerHTML = `
+                    Producto eliminado con éxito.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                `;
+                
+                // Selecciona la sección donde deseas insertar la alerta
+                const sectionElement = document.querySelector('section');
+
+                // Insertar la alerta en la parte superior de la sección
+                sectionElement.insertBefore(alertDiv, sectionElement.firstChild);
+                
+                // Redirige a la página de inicio después de 3 segundos
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 3000);
+                } else {
+                    alert('Hubo un problema al eliminar el producto. Por favor, inténtalo de nuevo.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Ocurrió un error inesperado.');
+            }
+        }
+        // Ocultar el modal
+        bootstrap.Modal.getInstance(document.getElementById('deleteConfirmModal')).hide();
+    });
+});
+
 </script>

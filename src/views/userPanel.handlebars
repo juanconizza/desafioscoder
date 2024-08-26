@@ -1,4 +1,5 @@
 {{#if userLogged}}
+<section>
 <div class="container mt-2 mb-5">
   <div class="row">
     <!-- Columna para la información del usuario -->
@@ -44,7 +45,7 @@
           <p class="text-center">No tienes productos publicados</p>
         </div>
         <div class="col-12 d-flex justify-content-center">
-          <a href="/products/real" class="btn btn-primary">Publicar</a>
+          <a href="/products/new" class="btn btn-primary">Publicar</a>
         </div>
         {{/if}}
         <!-- Productos del Usuario -->
@@ -82,7 +83,7 @@
   </div>
 </div>
 {{/if}}
-
+</section>
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
@@ -116,7 +117,18 @@
 
           if (response.ok) {
             // Elimina el card del producto del DOM
-            document.querySelector(`[data-product-id="${productIdToDelete}"]`).closest('.col-sm-6').remove();            
+            document.querySelector(`[data-product-id="${productIdToDelete}"]`).closest('.col-sm-6').remove();
+
+            // Crear una alerta de Bootstrap
+                const alertDiv = document.createElement('div');
+                alertDiv.className = 'alert alert-success text-center fixed-top alert-dismissible fade show';
+                alertDiv.role = 'alert';
+                alertDiv.innerHTML = `
+                    Producto eliminado con éxito.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                `;
+                const sectionElement = document.querySelector('section');             
+                sectionElement.insertBefore(alertDiv, sectionElement.firstChild);
           } else {
             alert('Hubo un problema al eliminar el producto. Por favor, inténtalo de nuevo.');
           }

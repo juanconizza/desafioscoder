@@ -32,7 +32,9 @@ switch (persistence) {
     const { default: productsManagerFs } = await import(
       "./fs/ProductManager.js"
     );
-    const { default: cartsContactManagerFs } = await import("./fs/CartContactManager.js");
+    const { default: cartsContactManagerFs } = await import(
+      "./fs/CartContactManager.js"
+    );
     const { default: usersManagerFs } = await import("./fs/UserManager.js");
     //se tienen que traer TODOS los manager de todos los recursos y ya tienen que estar HOMOLOGADOS
     //una vez que logré importar los managers, lleno el objeto dao con los recursos correspondientes
@@ -56,14 +58,17 @@ switch (persistence) {
     const { default: usersManagerMongo } = await import(
       "./mongo/managers/UsersManager.mongo.js"
     );
-    const { default: purchaseManagerMongo } = await import("./mongo/managers/PurchasesManager.mongo.js")    
+    const { default: purchaseManagerMongo } = await import(
+      "./mongo/managers/PurchasesManager.mongo.js"
+    );    
+   
     //se tienen que traer TODOS los manager de todos los recursos y ya tienen que estar HOMOLOGADOS
     //una vez que logré importar los managers, lleno el objeto dao con los recursos correspondientes
     dao = {
       users: usersManagerMongo,
       products: productsManagerMongo,
       cartsContact: cartsContactManagerMongo,
-      purchase: purchaseManagerMongo,            
+      purchase: purchaseManagerMongo,     
     };
     break;
 }

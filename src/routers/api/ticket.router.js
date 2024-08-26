@@ -6,7 +6,7 @@ const { Types } = mongoose;
 
 class TicketRouter extends CustomRouter {
   init() {
-    this.read("/", ["USER"], async (req, res, next) => {
+    this.read("/", ["USER", "ADMIN"], async (req, res, next) => {
       try {
         const filter = {};
         if (req.user.user_id) {

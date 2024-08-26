@@ -6,6 +6,8 @@ import {
     updateService,
     destroyService,
   } from "../services/purchases.service.js";
+
+  import stripeService from "../services/stripe.service.js"
   
   class PurchasesController {
     // Leer todas las compras con filtrado opcional por estado
@@ -96,16 +98,24 @@ import {
       }
     };
   
-    // Crear una nueva compra
+    // Crear una nueva compra con pasarela de pagos Stripe
     createPurchase = async (req, res, next) => {
-      try {        
+      try {
+        // Obtener los items para Stripe desde el middleware
+        const itemsForStripe = req.purchaseData.itemsForStripe;
+  
+        // Crear la sesión de pago en Stripe
+        const stripeSession = await stripeService.createCheckoutSession(itemsForStripe);
+  
+        // Crear la compra en la base de datos
         const data = req.purchaseData;
         const newPurchase = await createService(data);
-    
+  
         res.status(201).json({
           statusCode: 201,
           response: newPurchase,
           message: "Purchase created successfully!",
+          stripeSessionUrl: stripeSession.url,
         });
       } catch (error) {
         return next(error);
