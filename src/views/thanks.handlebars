@@ -1,1 +1,92 @@
-COMPRA CONFIRMADA!
+<div class="container mt-5">
+    <div class="text-center">
+        <h1 class="display-4">¡Gracias por tu compra!</h1>
+        <p class="lead">Tu transacción ha sido completada con éxito.</p>
+        <p class="text-muted">Estamos procesando tu pedido y te notificaremos cuando esté en camino.</p>
+        <div id="loadingSpinner" class="spinner-border text-primary mt-4" role="status"></div>
+        
+        <div id="confirmationMessage" class="alert alert-success mt-4 mx-auto" style="display: none;">
+            Tu pedido ha sido verificado y se ha creado correctamente.
+        </div>
+        <div id="errorMessage" class="alert alert-danger mt-4 mx-auto" style="display: none;">
+            Hubo un error al verificar tu pedido. Por favor, contacta al soporte.
+        </div>
+        
+        <a id="continueShoppingBtn" href="/miscompras" class="btn btn-primary mt-4 mx-auto" style="display: none;">Contactar al Vendedor</a>
+    </div>
+</div>
+
+<script>
+    // Función para leer cookies
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Leer el sessionId de la cookie
+        const sessionId = getCookie('stripeSessionId');
+
+        if (sessionId) {
+            fetch('/api/purchase/verify-payment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ sessionId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Ocultar el spinner de carga
+                document.getElementById('loadingSpinner').style.display = 'none';
+
+                if (data.success) {
+                    // Mostrar el mensaje de confirmación
+                    document.getElementById('confirmationMessage').style.display = 'block';
+
+                    // Llamar al endpoint para eliminar el carrito del usuario
+                    return fetch('/api/cart-contact/all', {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                } else {
+                    // Mostrar el mensaje de error
+                    document.getElementById('errorMessage').innerText = data.message || 'Hubo un error al verificar tu pedido. Por favor, contacta al soporte.';
+                    document.getElementById('errorMessage').style.display = 'block';
+                    // Mostrar el botón para continuar comprando
+                    document.getElementById('continueShoppingBtn').style.display = 'block';
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Opcional: Manejar la respuesta de la eliminación del carrito si es necesario
+                    console.log('Carrito eliminado correctamente');
+                } else {
+                    // Opcional: Manejar errores en la eliminación del carrito
+                    console.error('Error al eliminar el carrito');
+                }
+
+                // Mostrar el botón para continuar comprando
+                document.getElementById('continueShoppingBtn').style.display = 'block';
+            })
+            .catch(error => {
+                console.error('Error al verificar el pago:', error);
+
+                // Ocultar el spinner de carga y mostrar el mensaje de error
+                document.getElementById('loadingSpinner').style.display = 'none';
+                document.getElementById('errorMessage').innerText = 'Hubo un error al verificar tu pedido. Por favor, contacta al soporte.';
+                document.getElementById('errorMessage').style.display = 'block';
+                document.getElementById('continueShoppingBtn').style.display = 'block';
+            });
+        } else {
+            // Si no hay sessionId, mostrar mensaje de error
+            document.getElementById('loadingSpinner').style.display = 'none';
+            document.getElementById('errorMessage').innerText = 'No se encontró la sesión de pago.';
+            document.getElementById('errorMessage').style.display = 'block';
+            document.getElementById('continueShoppingBtn').style.display = 'block';
+        }
+    });
+</script>

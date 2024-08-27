@@ -1,5 +1,8 @@
 import CustomRouter from "../CustomRouter.js";
 import sumPurchase from "../../middlewares/sumPurchase.js";
+import createStripeSession from "../../middlewares/createStripeSession.js";
+import verifyStripePayment from "../../middlewares/verifyStripePayment.js";
+
 import {
     readPurchases,
     readPaginatedPurchases,
@@ -16,7 +19,8 @@ class PurchaseRouter extends CustomRouter {
     this.read("/", ["USER", "ADMIN"], readPurchases);
     this.read("/paginate", ["USER", "ADMIN"], readPaginatedPurchases);
     this.read("/:pid", ["USER", "ADMIN"], readPurchaseById);
-    this.create("/", ["USER", "ADMIN"], sumPurchase, createPurchase); 
+    this.create("/", ["USER", "ADMIN"], sumPurchase, createStripeSession);
+    this.create("/verify-payment", ["USER", "ADMIN"], sumPurchase, verifyStripePayment, createPurchase);
     this.update("/:pid", ["USER", "ADMIN"], updatePurchase);
     this.destroy("/:pid", ["USER", "ADMIN"], deletePurchase);
     this.destroy("/all", ["USER", "ADMIN"], deleteAllPurchases);

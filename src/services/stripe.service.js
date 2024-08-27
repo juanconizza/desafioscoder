@@ -1,13 +1,12 @@
 import Stripe from 'stripe';
 import environment from '../utils/env.utils.js';
 
-const { STRIPE_SECRET_KEY } = environment;
+const { STRIPE_SECRET_KEY, CLIENT_URL } = environment;
 const stripe = new Stripe(STRIPE_SECRET_KEY);
 
 class StripeService {
   createCheckoutSession = async (items) => {
     try {
-      console.log(items)
       const session = await stripe.checkout.sessions.create({
         payment_method_types: ['card'],
         line_items: items.map(item => ({
@@ -21,11 +20,9 @@ class StripeService {
           quantity: item.quantity,
         })),
         mode: 'payment',
-        success_url: `http://localhost:8080/gracias`,
-        cancel_url: `http://localhost:8080/cancelada`,
-      });
-
-      console.log("Return de Session: "+ session)
+        success_url: `${CLIENT_URL}/gracias`,
+        cancel_url: `${CLIENT_URL}/cancelada`,
+      });      
 
       return session;
     } catch (error) {

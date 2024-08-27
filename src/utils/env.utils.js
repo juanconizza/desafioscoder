@@ -17,6 +17,7 @@ const environment = {
   G_MAIL: process.env.G_MAIL,
   G_PASS: process.env.G_PASS,
   STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
+  CLIENT_URL: process.env.CLIENT_URL,
 };
 
 export default environment;

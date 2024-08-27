@@ -101,26 +101,19 @@ import {
     // Crear una nueva compra con pasarela de pagos Stripe
     createPurchase = async (req, res, next) => {
       try {
-        // Obtener los items para Stripe desde el middleware
-        const itemsForStripe = req.purchaseData.itemsForStripe;
-  
-        // Crear la sesión de pago en Stripe
-        const stripeSession = await stripeService.createCheckoutSession(itemsForStripe);
-  
         // Crear la compra en la base de datos
         const data = req.purchaseData;
         const newPurchase = await createService(data);
-  
+    
         res.status(201).json({
-          statusCode: 201,
+          success: true,
           response: newPurchase,
-          message: "Purchase created successfully!",
-          stripeSessionUrl: stripeSession.url,
+          message: "Purchase created successfully!"     
         });
       } catch (error) {
         return next(error);
       }
-    };
+    };    
   
     // Actualizar una compra existente por ID
     updatePurchase = async (req, res, next) => {
