@@ -12,7 +12,7 @@ class UserRouter extends CustomRouter {
   init() {
     this.read("/", ["ADMIN"], readUsers);
     this.read("/:uid", ["USER, ADMIN"], readUserById);
-    this.create("/", ["ADMIN"], validateUsersProps, createUser);
+    this.create("/", ["ADMIN"], createUser);
     this.update("/:uid", ["ADMIN"], updateUser);
     this.destroy("/:uid", ["ADMIN"], deleteUser);
   }
