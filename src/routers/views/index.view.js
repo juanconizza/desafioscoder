@@ -6,6 +6,8 @@ import { verifyToken } from "../../utils/token.js";
 import productsRepository from "../../repositories/products.rep.js";
 import usersRepository from "../../repositories/users.rep.js";
 import cartsContactRepository from "../../repositories/cartsContact.rep.js";
+import purchaseRepository from "../../repositories/purchases.rep.js";
+
 
 class ViewsRouter extends CustomRouter {
   init() {
@@ -84,7 +86,7 @@ class ViewsRouter extends CustomRouter {
       }
     });
 
-    this.read("/products/real", ["USER"], async (req, res, next) => {
+    this.read("/products/new", ["USER", "ADMIN"], async (req, res, next) => {
       try {
         const products = await productsRepository.readRepository();
         return res.render("productsReal", {
@@ -96,7 +98,7 @@ class ViewsRouter extends CustomRouter {
       }
     });
 
-    this.read("/users/", ["USER"], async (req, res, next) => {
+    this.read("/users/", ["USER", "ADMIN"], async (req, res, next) => {
       try {
         const userId = req.user.user_id; // Obtener el id del usuario de los parámetros de user
         const userFound = await usersRepository.readOneRepository(userId); // Leer el usuario correspondiente
@@ -111,12 +113,13 @@ class ViewsRouter extends CustomRouter {
         }
 
         const { name } = userFound; // Obtener el nombre del usuario
-        console.log(userProducts);
+
         // Renderizar la vista del panel de usuario con los datos del usuario y sus productos
         return res.render("userPanel", {
           title: `¡Manantiales Market! - Bienvenido a tu Panel ${name}!`,
           userLogged: userFound,
-          userProducts: userProducts, 
+          userProducts: userProducts,
+
         });
       } catch (error) {
         // Manejar errores
@@ -130,11 +133,14 @@ class ViewsRouter extends CustomRouter {
         const productFound = await productsRepository.readOneRepository(
           productId
         );
+
         if (!productFound) {
           return res.status(404).send("Producto NO encontrado");
         }
 
-        //Leer el vendedor del producto
+
+        // Leer el vendedor del producto
+        
         const seller = await usersRepository.readOneRepository(
           productFound.seller_id
         );
@@ -145,15 +151,19 @@ class ViewsRouter extends CustomRouter {
         // Variables predeterminadas
         let isOnline = false;
         let user_id = null;
+        let isOwner = false;
 
         if (token) {
           try {
-            const decoded = verifyToken(token);
-            const { user_id: decodedUserId, online } = decoded;
+            const decoded = verifyToken(token);           
+            const { user_id: decodedUserId, online, role } = decoded;
             isOnline = online;
-            user_id = decodedUserId;
+            user_id = decodedUserId;     
+            // Verificar si el usuario es el propietario del producto o ADMIN
+            if (user_id && productFound.seller_id.toString() === user_id || role === 1) {
+              isOwner = true;
+            }
           } catch (error) {
-            // Manejar error de verificación de token si es necesario
             console.error("Error al verificar el token:", error);
           }
         }
@@ -164,6 +174,7 @@ class ViewsRouter extends CustomRouter {
           isOnline: isOnline,
           user_id: user_id,
           seller: seller,
+          isOwner: isOwner,
         });
       } catch (error) {
         return next(error);
@@ -248,7 +259,7 @@ class ViewsRouter extends CustomRouter {
       }
     });
 
-    this.read("/cart/", ["USER"], async (req, res, next) => {
+    this.read("/cart", ["USER", "ADMIN"], async (req, res, next) => {
       try {
         const filter = {};
         const sortAndPaginate = {};
@@ -278,6 +289,110 @@ class ViewsRouter extends CustomRouter {
         return next(error);
       }
     });
+
+    this.read("/miscompras", ["USER", "ADMIN"], async (req, res, next) => {
+      try {
+        const filter = {};
+        const sortAndPaginate = {};
+
+        //condicional para tomar el params del comprador y utilizarlo como filtro.
+        if (req.user.user_id) {
+          filter.buyer_id = req.user.user_id;
+        }
+
+        const buyerFound = await purchaseRepository.paginateRepository({
+          filter,
+          sortAndPaginate,
+        });
+
+        const purchaseInfo = buyerFound.docs;
+
+        if (!buyerFound) {
+          // Si el producto no existe, devolver un error 404
+          return res.status(404).send("Carrito NO encontrado");
+        }
+
+        return res.render("mypurchases", {
+          title: "¡Manantiales Market! - Mis Compras",
+          purchaseInfo: purchaseInfo,
+        });
+      } catch (error) {
+        return next(error);
+      }
+    });
+
+    this.read("/misventas", ["USER", "ADMIN"], async (req, res, next) => {
+      try {
+        const filter = {};
+        const sortAndPaginate = {};
+
+        // Filtrar las ventas por el seller_id en el array de sellers
+        if (req.user.user_id) {
+          filter.sellers = {
+            $elemMatch: {
+              seller_id: req.user.user_id,
+            },
+          };
+        }
+
+        const sellerFound = await purchaseRepository.paginateRepository({
+          filter,
+          sortAndPaginate,
+        });
+
+        const purchasesWithProductsSold = sellerFound.docs.map((purchase) => {
+          const productsSold = [];
+          let totalBySeller = 0;
+
+          purchase.sellers.forEach((seller) => {
+            if (
+              seller.seller_id._id.toString() === req.user.user_id.toString()
+            ) {
+              productsSold.push(...seller.products);
+
+              // Sumar el total de los productos vendidos por este vendedor
+              seller.products.forEach((product) => {
+                totalBySeller += product.product_id.price * product.quantity;
+              });
+            }
+          });
+
+          return {
+            ...purchase._doc, // Obtener el objeto plano si se usa Mongoose
+            productsSold,
+            totalBySeller,
+          };
+        });
+
+        return res.render("mysales", {
+          title: "¡Manantiales Market! - Mis Ventas",
+          purchaseInfo: purchasesWithProductsSold, // Enviar la lista de compras con la nueva propiedad
+        });
+      } catch (error) {
+        return next(error);
+      }
+    });
+    
+    this.read("/gracias", ["USER", "ADMIN"], async (req, res, next) => {
+      try {
+        return res.render("thanks", {
+          title: "¡Manantiales Market! - Gracias por su Compra! ",
+        });
+      } catch (error) {
+        return next(error);
+      }
+    });
+
+    this.read("/cancelada", ["USER", "ADMIN"], async (req, res, next) => {
+      try {
+        return res.render("cancel", {
+          title: "¡Manantiales Market! - Compra Cancelada ",
+        });
+      } catch (error) {
+        return next(error);
+      }
+    });
+      
   }
 }
 

@@ -23,7 +23,7 @@
 </div>
     <div class="row mt-4 mb-2">
       <div class="col-md-6 mb-5">
-        <button class="btn btn-success" onclick="checkout()">Contactar</button>
+        <button class="btn btn-success" onclick="checkout()">Comprar</button>
         <button class="btn btn-secondary" onclick="clearCart()">Vaciar Carrito</button>
       </div>
     </div>    
@@ -35,8 +35,10 @@
 </div>
 
 
+<script src="https://js.stripe.com/v3/"></script>
 <script>
 
+// Función para llamar al monto total del carrito. 
 document.addEventListener("DOMContentLoaded", async () => {
     try {
       const response = await fetch('/api/tickets');
@@ -72,10 +74,40 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // Función para procesar el pago y contactar al vendedor
-  function checkout() {
-    // Agregar aquí la lógica para procesar el pago y contactar al vendedor
-    console.log('Procesando el pago y contactando al vendedor...');
+ 
+  async function checkout() {
+  try {
+    const response = await fetch('/api/purchase', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log('Datos recibidos del backend:', data); // Agrega esto para ver lo que se recibe
+
+      // Inicializar Stripe con la clave pública
+      const stripe = Stripe('pk_test_51PpwcJJ6qMsLzW23OuKLMHonqWADCwZkG9S5GGqzldzHr2rb6EUslWW7GENSwmeFj7y7lU6zho2fI3wWtnLPdiEN00TkBVA8xS');
+
+      // Redirigir al usuario a la página de pago de Stripe
+      const { stripeSessionUrl } = data;
+
+      if (stripeSessionUrl) {
+        window.location.href = stripeSessionUrl;
+      } else {
+        console.error('URL de la sesión de Stripe no recibida.');
+      }
+    } else {
+      const errorData = await response.json();
+      console.error('Error al procesar la compra:', errorData);
+    }
+  } catch (error) {
+    console.error('Error al procesar la compra:', error.message);
   }
+}
+
 
   // Función para cancelar la compra y vaciar el carrito
       async function clearCart() {
@@ -85,8 +117,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
 
       responseData = response.json()
-
-      console.log(responseData)
 
       if (response.ok) {
         // Si la solicitud se realizó con éxito, recargar la página o realizar otra acción

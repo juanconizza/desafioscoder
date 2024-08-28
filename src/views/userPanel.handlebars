@@ -1,4 +1,5 @@
 {{#if userLogged}}
+<section>
 <div class="container mt-2 mb-5">
   <div class="row">
     <!-- Columna para la información del usuario -->
@@ -23,6 +24,8 @@
       <h3 class="mb-5 pb-2 text-center">Tus Productos Publicados</h3>
       <div class="row">
         <!-- Productos del Usuario -->
+
+        {{#if userProducts }}
         {{#each userProducts}}
         <div class="col-sm-6 col-lg-4 mb-4">
           <div class="card h-100">
@@ -30,12 +33,41 @@
             <div class="card-body">
               <h5 class="card-title">{{this.title}}</h5>
               <p class="card-text">Precio:${{this.price}} </p>
-              <a href="/misproductos/{{this._id}}" class="btn btn-primary">Ver más</a>
+              <div class="col-12 d-flex justify-content-center">
+              <a href="/products/{{this._id}}" class="btn btn-primary">Ver / Editar</a>
+              <button class="btn btn-danger ms-3 delete-btn" data-product-id="{{this._id}}">Eliminar</button>
+              </div>           
             </div>
           </div>
         </div>
         {{/each}}
-        <!-- Productos del Usuario -->       
+        {{else}}
+            <div class="col-12 d-flex justify-content-center">
+          <p class="text-center">No tienes productos publicados</p>
+        </div>
+        <div class="col-12 d-flex justify-content-center">
+          <a href="/products/new" class="btn btn-primary">Publicar</a>
+        </div>
+        {{/if}}
+        <!-- Productos del Usuario -->
+        <!-- Modal de Confirmación de Eliminar un Producto -->
+      <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="deleteConfirmLabel">Confirmar Eliminación</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              ¿Estás seguro de que deseas eliminar este producto? Esta acción no se puede deshacer.
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <button type="button" id="confirmDeleteBtn" class="btn btn-danger">Eliminar</button>
+            </div>
+          </div>
+        </div>
+      </div> 
       </div>
     </div>
   </div>
@@ -52,3 +84,62 @@
   </div>
 </div>
 {{/if}}
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    let productIdToDelete = null;
+    
+    // Selecciona todos los botones de eliminación
+    const deleteButtons = document.querySelectorAll('.delete-btn');
+    
+    // Referencia al botón de confirmación del modal
+    const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+
+    // Itera sobre cada botón para agregar un evento de clic
+    deleteButtons.forEach(button => {
+      button.addEventListener('click', (event) => {
+        productIdToDelete = button.getAttribute('data-product-id');
+
+        // Mostrar el modal de confirmación
+        const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+        deleteModal.show();
+      });
+    });
+
+    // Manejar la confirmación de eliminación
+    confirmDeleteBtn.addEventListener('click', async () => {
+      if (productIdToDelete) {
+        try {
+          // Realiza la solicitud DELETE al servidor
+          const response = await fetch(`/api/products/${productIdToDelete}`, {
+            method: 'DELETE',
+          });
+
+          if (response.ok) {
+            // Elimina el card del producto del DOM
+            document.querySelector(`[data-product-id="${productIdToDelete}"]`).closest('.col-sm-6').remove();
+
+            // Crear una alerta de Bootstrap
+                const alertDiv = document.createElement('div');
+                alertDiv.className = 'alert alert-success text-center fixed-top alert-dismissible fade show';
+                alertDiv.role = 'alert';
+                alertDiv.innerHTML = `
+                    Producto eliminado con éxito.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                `;
+                const sectionElement = document.querySelector('section');             
+                sectionElement.insertBefore(alertDiv, sectionElement.firstChild);
+          } else {
+            alert('Hubo un problema al eliminar el producto. Por favor, inténtalo de nuevo.');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          alert('Ocurrió un error inesperado.');
+        }
+      }
+      // Ocultar el modal
+      bootstrap.Modal.getInstance(document.getElementById('deleteConfirmModal')).hide();
+    });
+  });
+</script>

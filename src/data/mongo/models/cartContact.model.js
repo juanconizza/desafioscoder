@@ -4,7 +4,7 @@ import mongoosePaginate from "mongoose-paginate-v2";
 
 const collection = "carts_contact";
 
-// Este modelo lo que va a crear es un objeto con la información del usuarios vendedores, el usuario comprador y lo productos que agregó al carrito para luego a partir de esto desplegar la cantidad X de chats para interactuar entre comprador y vendedor/es.
+// Este modelo lo que va a crear es un objeto con la información del usuarios vendedores, el usuario comprador y lo productos que agregó al carrito. 
 
 const schema = new Schema(
   {
@@ -16,8 +16,7 @@ const schema = new Schema(
         type: String,
         enum: ['pending', 'connected', 'success', 'failed'],
         default: 'pending'
-      },
-    total_purchase: { type: Number },
+      },   
   },
   { timestamps: true }
 );
