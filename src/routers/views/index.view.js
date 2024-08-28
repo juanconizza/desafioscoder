@@ -7,10 +7,6 @@ import productsRepository from "../../repositories/products.rep.js";
 import usersRepository from "../../repositories/users.rep.js";
 import cartsContactRepository from "../../repositories/cartsContact.rep.js";
 import purchaseRepository from "../../repositories/purchases.rep.js";
-<<<<<<< HEAD
-=======
-
->>>>>>> dev
 
 class ViewsRouter extends CustomRouter {
   init() {
@@ -141,8 +137,7 @@ class ViewsRouter extends CustomRouter {
         }
 
 
-        // Leer el vendedor del producto
-        
+        // Leer el vendedor del producto        
         const seller = await usersRepository.readOneRepository(
           productFound.seller_id
         );
