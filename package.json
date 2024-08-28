@@ -14,15 +14,6 @@
     "supertest": "mocha ./test/supertest --env=dev",
     "stress": "artillery run ./test/artillery/stressTest.yaml -o ./test/artillery/stressTest.json",
     "report": "artillery report ./test/artillery/stressTest.json"
-    "dev": "nodemon ./server.js -p 8080 --env=dev  --persistence mongo",
-    "prod": "nodemon ./server.js -p 8082 --env=prod --persistence mongo",
-    "memory": "nodemon ./server.js -p 8081 --env=prod --persistence memory",
-    "test": "node ./server.js -p 8083 --env=dev --persistence fs",
-    "product": "node ./src/mocks/products.mock.js --env dev",
-    "supertest": "mocha ./test/supertest --env=dev",
-    "stress": "artillery run ./test/artillery/stressTest.yaml -o ./test/artillery/stressTest.json",
-    "report": "artillery report ./test/artillery/stressTest.json"
-
   },
   "keywords": [],
   "author": "",

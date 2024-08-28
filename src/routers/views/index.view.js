@@ -8,7 +8,6 @@ import usersRepository from "../../repositories/users.rep.js";
 import cartsContactRepository from "../../repositories/cartsContact.rep.js";
 import purchaseRepository from "../../repositories/purchases.rep.js";
 
-
 class ViewsRouter extends CustomRouter {
   init() {
     this.read("/", ["PUBLIC"], async (req, res, next) => {
@@ -119,7 +118,6 @@ class ViewsRouter extends CustomRouter {
           title: `¡Manantiales Market! - Bienvenido a tu Panel ${name}!`,
           userLogged: userFound,
           userProducts: userProducts,
-
         });
       } catch (error) {
         // Manejar errores
@@ -138,9 +136,7 @@ class ViewsRouter extends CustomRouter {
           return res.status(404).send("Producto NO encontrado");
         }
 
-
         // Leer el vendedor del producto
-        
         const seller = await usersRepository.readOneRepository(
           productFound.seller_id
         );
