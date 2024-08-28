@@ -15,7 +15,6 @@ export default async (socket) => {
     filter,
     sortAndPaginate,
   });
-  console.log(productsPaginate);
   // Emitir la lista de productos al cliente cuando se conecta
   socket.emit("products", productsPaginate.docs);
 

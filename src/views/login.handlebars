@@ -51,8 +51,7 @@
         body: JSON.stringify({ email, password })
       });
 
-      responseData = await response.json()
-      console.log(responseData)      
+      responseData = await response.json()        
       
       if (response.ok) {                     
         window.location.href = `/users/`;        

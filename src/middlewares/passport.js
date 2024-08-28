@@ -49,9 +49,8 @@ passport.use("register",
 
         // Creamos el usuario
         const dataDTO = new UsersDTO(req.body)
-        const user = await usersRepository.createRepository(dataDTO);
-        
-        console.log(user);
+        const user = await usersRepository.createRepository(dataDTO);        
+       
         // Enviamos el email con código verificador
         await sendEmail({
           to: user.email,

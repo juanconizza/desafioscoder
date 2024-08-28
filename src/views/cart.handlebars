@@ -86,7 +86,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (response.ok) {
       const data = await response.json();
-      console.log('Datos recibidos del backend:', data); // Agrega esto para ver lo que se recibe
 
       // Inicializar Stripe con la clave pública
       const stripe = Stripe('pk_test_51PpwcJJ6qMsLzW23OuKLMHonqWADCwZkG9S5GGqzldzHr2rb6EUslWW7GENSwmeFj7y7lU6zho2fI3wWtnLPdiEN00TkBVA8xS');

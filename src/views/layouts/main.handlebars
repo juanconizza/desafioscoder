@@ -111,8 +111,7 @@
       credentials: "include"  
     });
 
-    const responseData = await response.json();
-    console.log(responseData);
+    const responseData = await response.json();    
 
     if (responseData.statusCode === 200) {
       // Si la respuesta es 200, ocultar loginDiv y register
