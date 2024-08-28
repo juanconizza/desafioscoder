@@ -24,6 +24,7 @@
       <h3 class="mb-5 pb-2 text-center">Tus Productos Publicados</h3>
       <div class="row">
         <!-- Productos del Usuario -->
+
         {{#if userProducts }}
         {{#each userProducts}}
         <div class="col-sm-6 col-lg-4 mb-4">
@@ -35,7 +36,7 @@
               <div class="col-12 d-flex justify-content-center">
               <a href="/products/{{this._id}}" class="btn btn-primary">Ver / Editar</a>
               <button class="btn btn-danger ms-3 delete-btn" data-product-id="{{this._id}}">Eliminar</button>
-              </div>              
+              </div>           
             </div>
           </div>
         </div>
