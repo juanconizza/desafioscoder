@@ -111,8 +111,7 @@
       credentials: "include"  
     });
 
-    const responseData = await response.json();
-    console.log(responseData);
+    const responseData = await response.json();    
 
     if (responseData.statusCode === 200) {
       // Si la respuesta es 200, ocultar loginDiv y register
@@ -129,9 +128,7 @@
       document.getElementById("cartDiv").classList.add("d-none");
       document.getElementById("newProduct").classList.add("d-none");
       document.getElementById("purchases").classList.add("d-none");
-      document.getElementById("sells").classList.add("d-none");
-
-      
+      document.getElementById("sells").classList.add("d-none");     
     }
   } catch (error) {
     console.error("Error:", error);

@@ -48,19 +48,7 @@
                 // Mostrar el botón para continuar comprando
                 document.getElementById('continueShoppingBtn').style.display = 'block';
             }
-        })
-        .then(response => {
-            if (response.ok) {
-                // Opcional: Manejar la respuesta de la eliminación del carrito si es necesario
-                console.log('Carrito eliminado correctamente');
-            } else {
-                // Opcional: Manejar errores en la eliminación del carrito
-                console.error('Error al eliminar el carrito');
-            }
-
-            // Mostrar el botón para continuar comprando
-            document.getElementById('continueShoppingBtn').style.display = 'block';
-        })
+        })        
         .catch(error => {
             console.error('Error al verificar el pago:', error);
 

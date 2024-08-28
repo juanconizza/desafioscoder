@@ -230,7 +230,6 @@ Recordar que en el caso que obtenga el error de "Bad Auth from Policies" debe lo
 En este desafío se implementó una librería llamada supertest para realizar testing avanzados de un flujo del CRUD de product. El mismo puede probarse levantando el servidor con "npm run dev" y en otra terminal con "npm run supertest". 
 
 También se impmentaron pruebas de stress del servidor mediante el uso de la librería Artillery el cual puede probarse levantando el servidor con "npm run dev" y en otra terminal usando "npm run stress". Luego con "npm run report" puede verse un html con el reporte y graficas de la prueba de stress. 
-git 
 
 # DESAFIO 15 - Branch sprint_15
 
@@ -245,6 +244,10 @@ Código de seguridad: 123
 Luego de esto se muestra la pantalla de gracias y se verifica que el pago sea correcto, si es así podemos contactar a el o los vendedores dentro de la sección "Compras".
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
+>>>>>>> dev
+=======
+
 >>>>>>> dev
