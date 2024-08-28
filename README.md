@@ -242,12 +242,3 @@ Fecha Vencimiento: 03/25 o cualquiera posterios a la actual
 Código de seguridad: 123
 
 Luego de esto se muestra la pantalla de gracias y se verifica que el pago sea correcto, si es así podemos contactar a el o los vendedores dentro de la sección "Compras".
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
->>>>>>> dev
-=======
-
->>>>>>> dev
