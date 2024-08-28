@@ -144,6 +144,7 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", function() {
+
     const fields = [
       { divId: 'titleDiv', inputId: 'editTitle', svgId: 'editSvgTitle', propertyName: 'title' },
       { divId: 'priceDiv', inputId: 'editPrice', svgId: 'editSvgPrice', propertyName: 'price' },
@@ -152,6 +153,48 @@
     ];
 
     const descriptionCont = document.getElementById("descriptionContent");
+
+  const addToCartBtn = document.getElementById("addToCartBtn");
+  const addToCartMessage = document.getElementById("addToCartMessage");
+  const failAddToCartMessage = document.getElementById("failAddToCartMessage");
+
+  if (addToCartBtn) {
+    addToCartBtn.addEventListener("click", async () => {
+      const product_id = "{{productFound._id}}";
+      const buyer_id = "{{user_id}}";
+      const seller_id = "{{productFound.seller_id}}";
+      const quantity = 1;        
+      const response = await fetch("/api/cart-contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          product_id,
+          buyer_id,
+          seller_id,
+          quantity
+        })
+      });
+      const responseData = await response.json();
+      console.log(responseData);
+
+      if (response.ok) {
+        // El producto se agregó al carrito exitosamente
+        addToCartMessage.style.display = "block";
+        failAddToCartMessage.style.display = "none";
+      } else if (response.status === 400) {
+        // Mostrar mensaje de error si la respuesta es 400
+        failAddToCartMessage.style.display = "block";
+        addToCartMessage.style.display = "none";
+      } else {
+        // Manejar otros errores
+        failAddToCartMessage.style.display = "none";
+        addToCartMessage.style.display = "none";
+      }
+    });
+  }
+});
 
     fields.forEach(({ divId, inputId, svgId, propertyName }) => {
       const div = document.getElementById(divId);
@@ -206,6 +249,8 @@
       });
     });
   });
+</script>
+
 
 
   document.addEventListener("DOMContentLoaded", function() {
