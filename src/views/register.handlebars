@@ -38,7 +38,13 @@
             <input type="password" class="form-control" id="password" name="password" placeholder="Ej: Password789" required>
             <div class="alert alert-danger mt-3 d-none" id="passwordError"></div>
           </div>
-          <button type="submit" class="btn btn-primary">Registrarse</button>
+          <button id="registerButton" type="submit" class="btn btn-primary">Registrarse</button>
+          <!-- Spinner de Bootstrap -->
+      <div id="spinner" class="d-none text-center mt-3">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Cargando...</span>
+        </div>
+      </div>
         </form>
           <div class="alert alert-danger mt-3 d-none" id="mongoError"></div>   
           <div class="alert alert-success mt-3 d-none" id="successMessage" role="alert">      
@@ -53,9 +59,16 @@
     const registrationForm = document.getElementById("registrationForm");
     const successMessage = document.getElementById("successMessage");
     const mongoError = document.getElementById("mongoError");
+    const registerButton = document.getElementById('registerButton');
+    const spinner = document.getElementById('spinner');
+  
 
     registrationForm.addEventListener("submit", async function (event) {
       event.preventDefault();
+
+      // Mostrar el spinner y ocultar el botón de registro
+  spinner.classList.remove('d-none');
+  registerButton.classList.add('d-none');
 
       // Limpiar los mensajes de error existentes
       const errorElements = registrationForm.querySelectorAll(".alert-danger");
@@ -78,14 +91,12 @@
           },
           body: JSON.stringify(requestBody),
         });
-        console.log(response)
-
-        const responseData = await response.json();
-        
-        console.log("responseData" +responseData)
-        
+      
+        const responseData = await response.json();     
+            
         if (response.status === 201) {
           // Usuario registrado correctamente
+          spinner.classList.add('d-none');
           successMessage.textContent = "Usuario registrado correctamente. Verifique su Correo Electrónico";
 
           // Mostrar mensaje de éxito
@@ -99,10 +110,14 @@
           }, 3000);
         } else if (response.status === 500) {
           // Error de Mongo
+          registerButton.classList.remove('d-none');
+          spinner.classList.add('d-none');
           mongoError.textContent = "Error de Validación, Revise los Campos";
           mongoError.classList.remove("d-none");
         } else {
           // Mostrar errores según vengan desde el servidor
+          spinner.classList.add('d-none');
+          registerButton.classList.remove('d-none');
           const errors = responseData.errors; // Accede directamente a la propiedad 'errors'
           Object.keys(errors).forEach((key) => {
             const errorElement = document.getElementById(`${key}Error`);

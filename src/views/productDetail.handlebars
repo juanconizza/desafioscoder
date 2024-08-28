@@ -1,75 +1,215 @@
 {{#if productFound}}
-<section style="background-color: #eee;">
+<section>
   <div class="container py-5 mb-5">
     <div class="row justify-content-center">
       <div class="col-md-8 col-lg-6 col-xl-6">
         <div class="card" style="border-radius: 15px;">
-          <div class="bg-image hover-overlay ripple ripple-surface ripple-surface-light text-center"
+          <div class="bg-image hover-overlay ripple ripple-surface ripple-surface-light text-center mt-3"
             data-mdb-ripple-color="light">
             <img src="{{productFound.photo}}"
-              class="img-fluid"
-              alt="{{productFound.tittle}}" />
-            </div>
+              class="img-fluid" style="max-height: 300px; width: auto; border-radius: 15px;"
+              alt="{{productFound.title}}" />
+          </div>
           <div class="card-body pb-0">
             <div class="d-flex justify-content-between">
               <div>
-                <p class="text-dark">{{productFound.title}}</p>
-                <p class="small text-muted">{{productFound.category}}</p>
+                <div id="titleDiv" class="d-flex align-items-center">
+                  <p class="text-dark mb-0 me-2">{{productFound.title}}</p>
+                  {{#if isOwner}}
+                  <span>
+                    <svg id="editSvgTitle" style="height: 30px; width:auto; cursor:pointer;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M21.2799 6.40005L11.7399 15.94C10.7899 16.89 7.96987 17.33 7.33987 16.7C6.70987 16.07 7.13987 13.25 8.08987 12.3L17.6399 2.75002C17.8754 2.49308 18.1605 2.28654 18.4781 2.14284C18.7956 1.99914 19.139 1.92124 19.4875 1.9139C19.8359 1.90657 20.1823 1.96991 20.5056 2.10012C20.8289 2.23033 21.1225 2.42473 21.3686 2.67153C21.6147 2.91833 21.8083 3.21243 21.9376 3.53609C22.0669 3.85976 22.1294 4.20626 22.1211 4.55471C22.1128 4.90316 22.0339 5.24635 21.8894 5.5635C21.7448 5.88065 21.5375 6.16524 21.2799 6.40005V6.40005Z" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M11 4H6C4.93913 4 3.92178 4.42142 3.17163 5.17157C2.42149 5.92172 2 6.93913 2 8V18C2 19.0609 2.42149 20.0783 3.17163 20.8284C3.92178 21.5786 4.93913 22 6 22H17C19.21 22 20 20.2 20 18V13" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                  </span>
+                  {{/if}}
+                </div>
+                <div class="d-flex align-items-center mt-2">
+                  <input type="text" id="editTitle" style="display: none;">
+                  <button class="ms-3 btn btn-primary" style="display: none;">Guardar</button>
+                </div>
+                <p class="small text-muted mt-2">{{productFound.category}}</p>
               </div>
             </div>
           </div>
+
           <hr class="my-0" />
           <div class="card-body pb-0">
-            <div class="d-flex justify-content-between">
-              <p class="text-dark">Precio: ${{productFound.price}}</p>
-              <p class="text-dark">Vendedor: {{seller.name}}</p>
+          <div class="d-flex justify-content-between">
+            <div>
+              <div id="priceDiv" class="d-flex align-items-center">
+                <p class="text-dark">Precio: ${{productFound.price}}</p>
+                {{#if isOwner}}
+                <span class="ms-2 pb-3">
+                  <svg id="editSvgPrice" style="height: 30px; width:auto; cursor:pointer;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M21.2799 6.40005L11.7399 15.94C10.7899 16.89 7.96987 17.33 7.33987 16.7C6.70987 16.07 7.13987 13.25 8.08987 12.3L17.6399 2.75002C17.8754 2.49308 18.1605 2.28654 18.4781 2.14284C18.7956 1.99914 19.139 1.92124 19.4875 1.9139C19.8359 1.90657 20.1823 1.96991 20.5056 2.10012C20.8289 2.23033 21.1225 2.42473 21.3686 2.67153C21.6147 2.91833 21.8083 3.21243 21.9376 3.53609C22.0669 3.85976 22.1294 4.20626 22.1211 4.55471C22.1128 4.90316 22.0339 5.24635 21.8894 5.5635C21.7448 5.88065 21.5375 6.16524 21.2799 6.40005V6.40005Z" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M11 4H6C4.93913 4 3.92178 4.42142 3.17163 5.17157C2.42149 5.92172 2 6.93913 2 8V18C2 19.0609 2.42149 20.0783 3.17163 20.8284C3.92178 21.5786 4.93913 22 6 22H17C19.21 22 20 20.2 20 18V13" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                </span>
+                {{/if}}
+              </div>
+              <div class="d-flex align-items-center">
+              <input type="text" id="editPrice" style="display: none;">
+              <button class="ms-3 btn btn-primary" style="display: none;">Guardar</button>
+              </div>
+              <div id="stockDiv" class="d-flex align-items-center mt-2">
+                <p class="small text-muted">
+                  STOCK: {{productFound.stock}}
+                  {{#if isOwner}}
+                  <span class="ms-2 pb-1">
+                    <svg id="editSvgStock" style="height: 30px; width:auto; cursor:pointer;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M21.2799 6.40005L11.7399 15.94C10.7899 16.89 7.96987 17.33 7.33987 16.7C6.70987 16.07 7.13987 13.25 8.08987 12.3L17.6399 2.75002C17.8754 2.49308 18.1605 2.28654 18.4781 2.14284C18.7956 1.99914 19.139 1.92124 19.4875 1.9139C19.8359 1.90657 20.1823 1.96991 20.5056 2.10012C20.8289 2.23033 21.1225 2.42473 21.3686 2.67153C21.6147 2.91833 21.8083 3.21243 21.9376 3.53609C22.0669 3.85976 22.1294 4.20626 22.1211 4.55471C22.1128 4.90316 22.0339 5.24635 21.8894 5.5635C21.7448 5.88065 21.5375 6.16524 21.2799 6.40005V6.40005Z" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M11 4H6C4.93913 4 3.92178 4.42142 3.17163 5.17157C2.42149 5.92172 2 6.93913 2 8V18C2 19.0609 2.42149 20.0783 3.17163 20.8284C3.92178 21.5786 4.93913 22 6 22H17C19.21 22 20 20.2 20 18V13" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                  </span>
+                  {{/if}}
+                </p>
+              </div>
+              <div class="d-flex align-items-center">
+              <input type="text" id="editStock" style="display: none;">
+              <button class="ms-3 btn btn-primary" style="display: none;">Guardar</button>
+              </div>
             </div>
-            <p class="small text-muted">STOCK: {{productFound.stock}}</p>
+            <div>
+              <p class="text-dark text-end">Vendedor: {{seller.name}}</p>
+            </div>
           </div>
+        </div>
+
           <hr class="my-0" />
-          <div class="card-body pb-0">
-                    <p class="text-dark">Descripción:</p>
-              <p>{{productFound.description}}</p>
-               </div>
+
+         <div class="card-body pb-0">
+          <div id="descriptionDiv">
+            <div class="d-flex align-items-center">
+                <p id="descriptionText" class="text-dark mb-0">Descripción:</p>
+                {{#if isOwner}}
+                <span class="ms-2">
+                    <svg id="editSvgDescription" style="height: 30px; width:auto; cursor:pointer;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M21.2799 6.40005L11.7399 15.94C10.7899 16.89 7.96987 17.33 7.33987 16.7C6.70987 16.07 7.13987 13.25 8.08987 12.3L17.6399 2.75002C17.8754 2.49308 18.1605 2.28654 18.4781 2.14284C18.7956 1.99914 19.139 1.92124 19.4875 1.9139C19.8359 1.90657 20.1823 1.96991 20.5056 2.10012C20.8289 2.23033 21.1225 2.42473 21.3686 2.67153C21.6147 2.91833 21.8083 3.21243 21.9376 3.53609C22.0669 3.85976 22.1294 4.20626 22.1211 4.55471C22.1128 4.90316 22.0339 5.24635 21.8894 5.5635C21.7448 5.88065 21.5375 6.16524 21.2799 6.40005V6.40005Z" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M11 4H6C4.93913 4 3.92178 4.42142 3.17163 5.17157C2.42149 5.92172 2 6.93913 2 8V18C2 19.0609 2.42149 20.0783 3.17163 20.8284C3.92178 21.5786 4.93913 22 6 22H17C19.21 22 20 20.2 20 18V13" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                </span>
+                {{/if}}
+            </div>
+            <p id="descriptionContent" class="mt-2">{{productFound.description}}</p>
+            </div>
+        </div>
+          <div class="d-flex align-items-center ms-3 mb-2">                
+          <textarea id="editDescription" style="display: none; width:100%; height: 100px;"></textarea>
+          <button id="saveDescriptionBtn" class="ms-3 btn btn-primary" style="display: none;">Guardar</button>
+          </div>
+
           <hr class="my-0" />
           <div class="card-body">
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <a href="/" class="btn btn-secondary">Atrás</a>
-
-    {{#if isOnline}}
-    <button id="addToCartBtn" type="button" class="btn btn-primary">Agregar al Carrito</button>
-    {{else}}
-    <p class="text-danger mb-0">Debes iniciar sesión para agregar este producto al carrito.</p>
-    {{/if}}
-  </div>
-
-  {{#if isOnline}}
-  <div class="text-center">
-    <p id="addToCartMessage" class="text-success fw-bold" style="display: none;">¡Producto agregado al carrito!</p>
-    <p id="failAddToCartMessage" class="text-danger fw-bold" style="display: none;">No puedes agregar tu propio producto al carrito.</p>
-  </div>
-  {{/if}}
-</div>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <a href="/" class="btn btn-secondary">Atrás</a>
+              {{#if isOnline}}
+              {{#if isOwner}}
+               <button class="btn btn-danger ms-3 delete-btn" data-product-id="{{productFound._id}}">Eliminar Producto</button>
+               {{/if}}
+              <button id="addToCartBtn" type="button" class="btn btn-primary">Agregar al Carrito</button>
+              {{else}}
+              <p class="text-danger mb-0">Debes iniciar sesión para agregar este producto al carrito.</p>
+              {{/if}}
+            </div>
+            {{#if isOnline}}
+            <div class="text-center">
+              <p id="addToCartMessage" class="text-success fw-bold" style="display: none;">¡Producto agregado al carrito!</p>
+              <p id="failAddToCartMessage" class="text-danger fw-bold" style="display: none;">No puedes agregar tu propio producto al carrito.</p>
+            </div>
+            {{/if}}
+               <!-- Modal de Confirmación de Eliminar un Producto -->
+      <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="deleteConfirmLabel">Confirmar Eliminación</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              ¿Estás seguro de que deseas eliminar este producto? Esta acción no se puede deshacer.
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <button type="button" id="confirmDeleteBtn" class="btn btn-danger">Eliminar</button>
+            </div>
+          </div>
+        </div>
+      </div> 
+          </div>
         </div>
       </div>
     </div>
   </div>
   {{else}}
-<div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-md-6">
-      <div class="alert alert-danger" role="alert">
-        El producto no existe o no se encontró la información.
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="alert alert-danger" role="alert">
+          El producto no existe o no se encontró la información.
+        </div>
       </div>
     </div>
   </div>
-</div>
-{{/if}}
+  {{/if}}
 </section>
 
 <script>
   document.addEventListener("DOMContentLoaded", function() {
-<<<<<<< HEAD
+    const fields = [
+      { divId: 'titleDiv', inputId: 'editTitle', svgId: 'editSvgTitle', propertyName: 'title' },
+      { divId: 'priceDiv', inputId: 'editPrice', svgId: 'editSvgPrice', propertyName: 'price' },
+      { divId: 'stockDiv', inputId: 'editStock', svgId: 'editSvgStock', propertyName: 'stock' },
+      { divId: 'descriptionDiv', inputId: 'editDescription', svgId: 'editSvgDescription', propertyName: 'description' }
+    ];
+
+    const descriptionCont = document.getElementById("descriptionContent");
+
+    fields.forEach(({ divId, inputId, svgId, propertyName }) => {
+      const div = document.getElementById(divId);
+      const input = document.getElementById(inputId);
+      const svg = document.getElementById(svgId);
+
+       if (svg) {
+            svg.addEventListener("click", () => {
+                
+                if (propertyName === 'description') {
+                    input.value = descriptionCont.innerText;
+                } else {
+                    input.value = div.querySelector("p").innerText.replace(/Precio: \$/, '').replace(/STOCK: /, '');
+                }                
+                div.classList.add("d-none");
+                input.style.display = "block";
+                input.nextElementSibling.style.display = "block";
+            });
+        }
+
+      input.nextElementSibling.addEventListener("click", async () => {
+        const value = input.value.trim();        
+        const product_id = "{{productFound._id}}";
+
+        const response = await fetch(`/api/products/${product_id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ [propertyName]: value })
+        });
+
+            if (response.ok) {
+          if (propertyName === 'title') {
+              div.querySelector("p").innerText = value;
+          } else if (propertyName === 'price') {
+              div.querySelector("p").innerText = `Precio: $${value}`;
+          } else if (propertyName === 'stock') {
+              div.querySelector("p").innerText = `STOCK: ${value}`;
+          } else if (propertyName === 'description') {
+              div.querySelector("p").innerText = `Descripción:`;
+              descriptionCont.innerText = value;
+          }
+
+          input.style.display = "none";
+          input.nextElementSibling.style.display = "none";
+          div.classList.remove("d-none");
+      } else {
+          console.error("Error al actualizar el producto");
+      }
+
+      });
+    });
+  });
+
+
+  document.addEventListener("DOMContentLoaded", function() {
+
   const addToCartBtn = document.getElementById("addToCartBtn");
   const addToCartMessage = document.getElementById("addToCartMessage");
   const failAddToCartMessage = document.getElementById("failAddToCartMessage");
@@ -111,42 +251,67 @@
     });
   }
 });
-=======
-    const addToCartBtn = document.getElementById("addToCartBtn");
-    const addToCartMessage = document.getElementById("addToCartMessage");
 
-    if (addToCartBtn) {
-      addToCartBtn.addEventListener("click", async () => {
-        const product_id = "{{productFound._id}}";
-        const buyer_id = "{{user_id}}";
-        const seller_id = "{{productFound.seller_id}}";
-        const quantity = 1;
-        console.log(seller_id)
-        const response = await fetch("/api/cart-contact", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            product_id,
-            buyer_id,
-            seller_id,
-            quantity
-          })
+ document.addEventListener('DOMContentLoaded', () => {
+    let productIdToDelete = null;
+    
+    // Selecciona todos los botones de eliminación
+    const deleteButtons = document.querySelectorAll('.delete-btn');
+    
+    // Referencia al botón de confirmación del modal
+    const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+
+    // Itera sobre cada botón para agregar un evento de clic
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', (event) => {
+            productIdToDelete = button.getAttribute('data-product-id');
+
+            // Mostrar el modal de confirmación
+            const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+            deleteModal.show();
         });
-        const responseData = response.json()
-        console.log(responseData);
-  
-        if (response.ok) {
-          // El producto se agregó al carrito exitosamente
-          addToCartMessage.style.display = "block";
-        } else {
-          // Hubo un error al agregar el producto al carrito
-          addToCartMessage.style.display = "none";
-        }
-      });
-    }
-  });
->>>>>>> main
-</script>
+    });
 
+    // Manejar la confirmación de eliminación
+    confirmDeleteBtn.addEventListener('click', async () => {
+        if (productIdToDelete) {
+            try {
+                // Realiza la solicitud DELETE al servidor
+                const response = await fetch(`/api/products/${productIdToDelete}`, {
+                    method: 'DELETE',
+                });
+
+                if (response.ok) {               
+                              // Crear una alerta de Bootstrap
+                const alertDiv = document.createElement('div');
+                alertDiv.className = 'alert alert-success text-center fixed-top alert-dismissible fade show';
+                alertDiv.role = 'alert';
+                alertDiv.innerHTML = `
+                    Producto eliminado con éxito.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                `;
+                
+                // Selecciona la sección donde deseas insertar la alerta
+                const sectionElement = document.querySelector('section');
+
+                // Insertar la alerta en la parte superior de la sección
+                sectionElement.insertBefore(alertDiv, sectionElement.firstChild);
+                
+                // Redirige a la página de inicio después de 3 segundos
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 3000);
+                } else {
+                    alert('Hubo un problema al eliminar el producto. Por favor, inténtalo de nuevo.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Ocurrió un error inesperado.');
+            }
+        }
+        // Ocultar el modal
+        bootstrap.Modal.getInstance(document.getElementById('deleteConfirmModal')).hide();
+    });
+});
+
+</script>

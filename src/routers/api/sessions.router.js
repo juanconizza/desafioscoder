@@ -25,12 +25,12 @@ class SessionRouter extends CustomRouter {
       login
     );
 
-    this.read("/", ["USER"], auth);
+    this.read("/", ["USER", "ADMIN"], auth);
 
     this.create("/password", ["PUBLIC"], resetPassword);
     this.update("/password", ["PUBLIC"], changePassword);
 
-    this.create("/logout", ["USER"], logout);
+    this.create("/logout", ["USER", "ADMIN"], logout);
   }
 }
 

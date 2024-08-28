@@ -15,7 +15,9 @@ const environment = {
   SECRET_JWT: process.env.SECRET_JWT,
   SECRET: process.env.SECRET,
   G_MAIL: process.env.G_MAIL,
-  G_PASS: process.env.G_PASS, 
+  G_PASS: process.env.G_PASS,
+  STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
+  CLIENT_URL: process.env.CLIENT_URL,
 };
 
 export default environment;

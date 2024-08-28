@@ -4,7 +4,7 @@ import { verifyToken } from "../../utils/token.js";
 
 class UploadImageRouter extends CustomRouter {
   init() {
-    this.create("/", ["USER"], upload.single("photo"), async (req, res) => {
+    this.create("/", ["USER", "ADMIN"], upload.single("photo"), async (req, res) => {
       const token = req.signedCookies.token;
 
       if (!token) {
