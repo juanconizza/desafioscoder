@@ -12,9 +12,9 @@ import {
 
 class CartContactRouter extends CustomRouter {
   init() {
-    this.read("/", ["USER", "ADMIN"], readCartContacts);
-    this.read("/paginate", ["USER", "ADMIN"], readPaginatedCartContacts);
-    this.read("/:cid", ["USER", "ADMIN"], readCartContactById);
+    this.read("/", ["ADMIN"], readCartContacts);
+    this.read("/paginate", ["ADMIN"], readPaginatedCartContacts);
+    this.read("/:cid", ["ADMIN"], readCartContactById);
     this.create("/", ["USER", "ADMIN"], sameBuyerAndSeller, createCartContact);
     this.update("/:cid", ["USER", "ADMIN"], updateCartContact);
     this.destroy("/:cid", ["USER", "ADMIN"], deleteCartContact);

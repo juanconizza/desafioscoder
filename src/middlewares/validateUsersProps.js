@@ -1,5 +1,5 @@
 export default function validateUsersProps(data) {
-
+  
   const errors = {};
   
   // Verificar si las propiedades obligatorias están presentes

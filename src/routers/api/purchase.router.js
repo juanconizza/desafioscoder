@@ -16,14 +16,14 @@ import {
 
 class PurchaseRouter extends CustomRouter {
   init() {
-    this.read("/", ["USER", "ADMIN"], readPurchases);
-    this.read("/paginate", ["USER", "ADMIN"], readPaginatedPurchases);
-    this.read("/:pid", ["USER", "ADMIN"], readPurchaseById);
+    this.read("/", ["ADMIN"], readPurchases);
+    this.read("/paginate", ["ADMIN"], readPaginatedPurchases);
+    this.read("/:pid", ["ADMIN"], readPurchaseById);
     this.create("/", ["USER", "ADMIN"], sumPurchase, createStripeSession);
     this.create("/verify-payment", ["USER", "ADMIN"], sumPurchase, verifyStripePayment, createPurchase);
-    this.update("/:pid", ["USER", "ADMIN"], updatePurchase);
-    this.destroy("/:pid", ["USER", "ADMIN"], deletePurchase);
-    this.destroy("/all", ["USER", "ADMIN"], deleteAllPurchases);
+    this.update("/:pid", ["ADMIN"], updatePurchase);
+    this.destroy("/:pid", ["ADMIN"], deletePurchase);
+    this.destroy("/all", ["ADMIN"], deleteAllPurchases);
   }
 }
 
