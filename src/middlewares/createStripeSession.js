@@ -14,7 +14,7 @@ const createStripeSession = async (req, res, next) => {
 
     // Crear una cookie para el sessionId
     res.cookie('stripeSessionId', session.id, {
-      httpOnly: false, 
+      httpOnly: true, 
       secure: process.env.NODE_ENV === 'production',
       maxAge: 15 * 60 * 1000 
     });

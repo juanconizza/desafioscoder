@@ -231,3 +231,16 @@ En este desafío se implementó una librería llamada supertest para realizar te
 
 También se impmentaron pruebas de stress del servidor mediante el uso de la librería Artillery el cual puede probarse levantando el servidor con "npm run dev" y en otra terminal usando "npm run stress". Luego con "npm run report" puede verse un html con el reporte y graficas de la prueba de stress. 
 git 
+
+# DESAFIO 15 - Branch sprint_15
+
+En este desafío se implementó la pasarela de pagos de Stripe para procesar los pagos del carrito generando la lógica para verificar si los pagos fueron correctos y luego así crear la orden correspondiente. Se utilizaron cookies como medida de seguridad para evitar ataques de tipo cross-site-scripting. 
+
+La tarjeta de prueba para procesar pagos es: 
+
+Número de tarjeta: 4242 4242 4242 4242
+Fecha Vencimiento: 03/25 o cualquiera posterios a la actual
+Código de seguridad: 123
+
+Luego de esto se muestra la pantalla de gracias y se verifica que el pago sea correcto, si es así podemos contactar a el o los vendedores dentro de la sección "Compras".
+
