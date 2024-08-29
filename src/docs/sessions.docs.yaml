@@ -1,0 +1,512 @@
+openapi: 3.0.0
+info:
+  title: API Sessions
+  description: API para sesiones de usuario, incluyendo registro, inicio de sesión, autenticación, restablecimiento de contraseña y cierre de sesión.
+  version: 1.0.0
+
+paths:
+  /api/sessions/register:
+    post:
+      tags:
+        - Sessions
+      summary: Registra un nuevo usuario
+      description: Registra un nuevo usuario con la información personal y las credenciales.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - lastName
+                - dni
+                - blockAndLot
+                - phone
+                - email
+                - password
+              properties:
+                name:
+                  type: string
+                  example: Maria
+                lastName:
+                  type: string
+                  example: Garcia
+                dni:
+                  type: integer
+                  example: 16234566
+                blockAndLot:
+                  type: string
+                  example: "3402"
+                phone:
+                  type: integer
+                  example: 3516953315
+                email:
+                  type: string
+                  example: mariagarcia33@gmail.com
+                password:
+                  type: string
+                  example: Maria123
+                role:
+                  type: integer
+                  enum: [0, 1]
+                  default: 0
+                  example: 0
+      responses:
+        '201':
+          description: User created successfully!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 201
+                  message:
+                    type: string
+                    example: User created successfully!
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Validation error
+                  errors:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        example: "\"name\" es un campo requerido."
+                      lastName:
+                        type: string
+                        example: "\"lastName\" es un campo requerido."
+                      dni:
+                        type: string
+                        example: "\"DNI\" debe ser un número sin puntos."
+                      blockAndLot:
+                        type: string
+                        example: "\"Manzana y Lote\" debe estar en formato MMLL donde MM es número de Manzana y LL número de Lote"
+                      phone:
+                        type: string
+                        example: "\"Teléfono\" debe ser un número de 10 dígitos."
+                      email:
+                        type: string
+                        example: "\"email\" debe ser válido."
+                      password:
+                        type: string
+                        example: "\"Contraseña\" debe tener al menos 8 caracteres y 1 letra mayusculas y al menos 1 número."
+        '401':
+          description: Email already registered
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Email already registered! Use another one
+                  errors:
+                    type: object
+                    properties:
+                      email:
+                        type: string
+                        example: El email ingresado ya fue registrado, utilice otro
+        '500':
+          description: Error del Servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: inter
+                    example: 500
+                  message:
+                    type: string
+                    example: Internal Server Error
+  
+  /api/sessions/login:
+    post:
+      tags:
+        - Sessions
+      summary: Iniciar sesión de usuario
+      description: Permite iniciar sesión a un usuario con su email y contraseña.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  example: user@example.com
+                password:
+                  type: string
+                  example: Password123
+            examples:
+              admin:
+                summary: Ejemplo de inicio de sesión como administrador
+                value:
+                  email: juanconizza@gmail.com
+                  password: Audio123
+              verifiedUser:
+                summary: Ejemplo de inicio de sesión como usuario verificado
+                value:
+                  email: tecnoemprendetv@gmail.com
+                  password: Audio123
+              unverifiedUser:
+                summary: Ejemplo de inicio de sesión como usuario no verificado
+                value:
+                  email: mariagarcia33@gmail.com
+                  password: Maria123
+      responses:
+        '200':
+          description: Inicio de sesión exitoso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Logged in!
+          headers:
+            Set-Cookie:
+              description: El token JWT almacenado en una cookie
+              schema:
+                type: string
+        '401':
+          description: Credenciales inválidas
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Invalid credentials
+                  errors:
+                    type: object
+                    example: {}
+        '403':
+          description: Cuenta no verificada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Account not verified
+                  errors:
+                    type: object
+                    example: {}
+        '500':
+          description: Error del Servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: inter
+                    example: 500
+                  message:
+                    type: string
+                    example: Internal Server Error
+  
+  /api/sessions:
+    get:
+      tags:
+        - Sessions
+      summary: Verifica que un usuario esté autenticado o no.
+      description: Verifica que un usuario esté online o no.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: El usuario está online y autenticado.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Is Online!
+                  user_id:
+                    type: string
+                    example: 64ef21dcef57d0a1b0023c79
+        '401':
+          description: Usuario no autenticado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 401
+                  message:
+                    type: string
+                    example: Bad auth from policies!
+        '500':
+          description: Error del Servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+                    example: Internal Server Error
+  
+  /api/sessions/password:
+    post:
+      tags:
+        - Sessions
+      summary: Solicitar restablecimiento de contraseña
+      description: Solicita un restablecimiento de contraseña enviando un código de verificación al correo electrónico del usuario.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+              properties:
+                email:
+                  type: string
+                  example: user@example.com
+            examples:
+              foundUser:
+                summary: Usuario encontrado
+                value:
+                  email: juanconizza@gmail.com
+              notFoundUser:
+                summary: Usuario no encontrado
+                value:
+                  email: usuario-no-encontrado@example.com
+      responses:
+        '200':
+          description: Correo de restablecimiento de contraseña enviado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Reset password email sent
+        '404':
+          description: Usuario no encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: User not found
+        '500':
+          description: Error del Servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+                    example: Internal Server Error
+
+    put:
+      tags:
+        - Sessions
+      summary: Cambiar contraseña
+      description: Cambia la contraseña del usuario utilizando el código de verificación enviado a su correo electrónico.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - verifyCode
+                - newPassword
+                - confirmPassword
+              properties:
+                email:
+                  type: string
+                  example: user@example.com
+                verifyCode:
+                  type: string
+                  example: "123456"
+                newPassword:
+                  type: string
+                  example: NewPassword123
+                confirmPassword:
+                  type: string
+                  example: NewPassword123
+            examples:
+              validRequest:
+                summary: Solicitud válida
+                value:
+                  email: juanconizza@gmail.com
+                  verifyCode: "123456"
+                  newPassword: NewPassword123
+                  confirmPassword: NewPassword123
+              invalidPasswords:
+                summary: Contraseñas no coinciden
+                value:
+                  email: juanconizza@gmail.com
+                  verifyCode: "123456"
+                  newPassword: NewPassword123
+                  confirmPassword: DifferentPassword123
+              invalidPasswordFormat:
+                summary: Formato de contraseña inválido
+                value:
+                  email: juanconizza@gmail.com
+                  verifyCode: "123456"
+                  newPassword: short
+                  confirmPassword: short
+              userNotFound:
+                summary: Usuario no encontrado
+                value:
+                  email: usuario-no-encontrado@example.com
+                  verifyCode: "123456"
+                  newPassword: NewPassword123
+                  confirmPassword: NewPassword123
+      responses:
+        '200':
+          description: Contraseña cambiada exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Contraseña Cambiada con Éxito
+        '400':
+          description: Las contraseñas no coinciden o formato de contraseña inválido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Las contraseñas no coinciden o formato de contraseña inválido"
+                examples:
+                  passwordsMismatch:
+                    summary: Las contraseñas no coinciden
+                    value:
+                      message: "Las contraseñas no coinciden"
+                  invalidPasswordFormat:
+                    summary: Formato de contraseña inválido
+                    value:
+                      message: "Contraseña debe tener al menos 8 caracteres y 1 letra mayuscula y al menos 1 número."
+                  invalidVerifyCode:
+                    summary: Código de verificación inválido
+                    value:
+                      message: "El código de verificación es inválido"
+        '404':
+          description: Usuario no encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Usuario no encontrado
+                examples:
+                  userNotFound:
+                    summary: Usuario no encontrado
+                    value:
+                      message: "Usuario no encontrado"
+        '500':
+          description: Error del Servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+                    example: Internal Server Error    
+
+  /api/sessions/logout:
+    post:
+      tags:
+        - Sessions
+      summary: Cierra la sesión de un usuario
+      description: Cierra la sesión de un usuario al eliminar la cookie del token JWT.
+      responses:
+        '200':
+          description: Cierre de sesión exitoso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Signed out!
+        '401':
+          description: Error de autenticación
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 401
+                  message:
+                    type: string
+                    example: Bad auth from policies!
+        '500':
+          description: Error del Servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+                    example: Internal Server Error
+
+
