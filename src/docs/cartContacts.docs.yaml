@@ -1,0 +1,72 @@
+components:
+  schemas:
+    CartContact:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "64e37b2f7e7f0c001f3a5c6e"
+        buyer_id:
+          type: object
+          properties:
+            _id:
+              type: string
+              example: "64e37b2f7e7f0c001f3a5c6f"
+            name:
+              type: string
+              example: "Juan"
+            lastName:
+              type: string
+              example: "Pérez"
+            blockAndLot:
+              type: string
+              example: "1234"
+        seller_id:
+          type: object
+          properties:
+            _id:
+              type: string
+              example: "64e37b2f7e7f0c001f3a5c70"
+            name:
+              type: string
+              example: "Ana"
+            lastName:
+              type: string
+              example: "García"
+            blockAndLot:
+              type: string
+              example: "5678"
+        product_id:
+          type: object
+          properties:
+            _id:
+              type: string
+              example: "64e37b2f7e7f0c001f3a5c71"
+            title:
+              type: string
+              example: "Producto Ejemplo"
+            photo:
+              type: string
+              example: "http://example.com/photo.jpg"
+            price:
+              type: number
+              format: float
+              example: 99.99
+            stock:
+              type: number
+              example: 10
+        quantity:
+          type: integer
+          example: 2
+        state:
+          type: string
+          enum: ['pending', 'connected', 'success', 'failed']
+          default: 'pending'
+        createdAt:
+          type: string
+          format: date-time
+          example: "2024-08-29T16:04:17.915Z"
+        updatedAt:
+          type: string
+          format: date-time
+          example: "2024-08-29T16:04:17.915Z"

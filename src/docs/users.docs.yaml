@@ -67,7 +67,7 @@ paths:
       parameters:
         - name: role
           in: query
-          description: Filtro opcional para el rol del usuario. 0= User 1= Admin
+          description: Filtro opcional para el rol del usuario. 0 = User, 1 = Admin
           required: false
           schema:
             type: integer
@@ -145,6 +145,104 @@ paths:
                   message:
                     type: string
                     example: "No users to display"
+        '500':
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+                    example: "Internal Server Error"
+
+    post:
+      tags:
+        - Users
+      summary: Crear un nuevo usuario (solo administradores)
+      description: Crea un nuevo usuario en el sistema. **Este endpoint es solo para uso administrativo. Los usuarios normales deben registrarse a través de `/api/sessions/register`.**
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "Juan"
+                lastName:
+                  type: string
+                  example: "Ejemplo"
+                dni:
+                  type: integer
+                  example: 33456123
+                blockAndLot:
+                  type: string
+                  example: "3401"
+                phone:
+                  type: integer
+                  example: 3515451278
+                email:
+                  type: string
+                  example: "juanejemplo@gmail.com"
+                password:
+                  type: string
+                  example: "Password78910"
+              required:
+                - name
+                - lastName
+                - dni
+                - blockAndLot
+                - phone
+                - email
+                - password
+      responses:
+        '201':
+          description: Usuario creado exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 201
+                  response:
+                    type: string
+                    example: "66d0c65aa57a12a9acda70a1"
+                  message:
+                    type: string
+                    example: "User created successfully!"
+        '403':
+          description: Prohibido - Solo administradores
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 403
+                  message:
+                    type: string
+                    example: "Forbidden. Insufficient permissions"
+        '401':
+          description: Autenticación fallida
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 401
+                  message:
+                    type: string
+                    example: "Bad auth from policies!"
         '500':
           description: Error del servidor
           content:
