@@ -143,16 +143,7 @@
 </section>
 
 <script>
-  document.addEventListener("DOMContentLoaded", function() {
-    const fields = [
-      { divId: 'titleDiv', inputId: 'editTitle', svgId: 'editSvgTitle', propertyName: 'title' },
-      { divId: 'priceDiv', inputId: 'editPrice', svgId: 'editSvgPrice', propertyName: 'price' },
-      { divId: 'stockDiv', inputId: 'editStock', svgId: 'editSvgStock', propertyName: 'stock' },
-      { divId: 'descriptionDiv', inputId: 'editDescription', svgId: 'editSvgDescription', propertyName: 'description' }
-    ];
-
-    const descriptionCont = document.getElementById("descriptionContent");
-
+  document.addEventListener("DOMContentLoaded", function() {    
   const addToCartBtn = document.getElementById("addToCartBtn");
   const addToCartMessage = document.getElementById("addToCartMessage");
   const failAddToCartMessage = document.getElementById("failAddToCartMessage");
@@ -193,105 +184,69 @@
     });
   }
 });
-
-    fields.forEach(({ divId, inputId, svgId, propertyName }) => {
-      const div = document.getElementById(divId);
-      const input = document.getElementById(inputId);
-      const svg = document.getElementById(svgId);
-
-       if (svg) {
-            svg.addEventListener("click", () => {
-                
-                if (propertyName === 'description') {
-                    input.value = descriptionCont.innerText;
-                } else {
-                    input.value = div.querySelector("p").innerText.replace(/Precio: \$/, '').replace(/STOCK: /, '');
-                }                
-                div.classList.add("d-none");
-                input.style.display = "block";
-                input.nextElementSibling.style.display = "block";
-            });
-        }
-
-      input.nextElementSibling.addEventListener("click", async () => {
-        const value = input.value.trim();        
-        const product_id = "{{productFound._id}}";
-
-        const response = await fetch(`/api/products/${product_id}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ [propertyName]: value })
-        });
-
-            if (response.ok) {
-          if (propertyName === 'title') {
-              div.querySelector("p").innerText = value;
-          } else if (propertyName === 'price') {
-              div.querySelector("p").innerText = `Precio: $${value}`;
-          } else if (propertyName === 'stock') {
-              div.querySelector("p").innerText = `STOCK: ${value}`;
-          } else if (propertyName === 'description') {
-              div.querySelector("p").innerText = `Descripción:`;
-              descriptionCont.innerText = value;
-          }
-
-          input.style.display = "none";
-          input.nextElementSibling.style.display = "none";
-          div.classList.remove("d-none");
-      } else {
-          console.error("Error al actualizar el producto");
-      }
-
-      });
-    });
-  });
 </script>
 
 <script>
+  document.addEventListener("DOMContentLoaded", function() {    
+  const descriptionCont = document.getElementById("descriptionContent");
 
-  document.addEventListener("DOMContentLoaded", function() {
+  const fields = [
+    { divId: 'titleDiv', inputId: 'editTitle', svgId: 'editSvgTitle', propertyName: 'title' },
+    { divId: 'priceDiv', inputId: 'editPrice', svgId: 'editSvgPrice', propertyName: 'price' },
+    { divId: 'stockDiv', inputId: 'editStock', svgId: 'editSvgStock', propertyName: 'stock' },
+    { divId: 'descriptionDiv', inputId: 'editDescription', svgId: 'editSvgDescription', propertyName: 'description' }
+  ];
 
-  const addToCartBtn = document.getElementById("addToCartBtn");
-  const addToCartMessage = document.getElementById("addToCartMessage");
-  const failAddToCartMessage = document.getElementById("failAddToCartMessage");
+  fields.forEach(({ divId, inputId, svgId, propertyName }) => {
+    const div = document.getElementById(divId);
+    const input = document.getElementById(inputId);
+    const svg = document.getElementById(svgId);   
 
-  if (addToCartBtn) {
-    addToCartBtn.addEventListener("click", async () => {
+    if (svg) {
+      svg.addEventListener("click", () => {
+        // Mostrar el valor actual en el input
+        if (propertyName === 'description') {
+          input.value = descriptionCont.innerText;
+        } else {
+          input.value = div.querySelector("p").innerText.replace(/Precio: \$/, '').replace(/STOCK: /, '');
+        }
+        div.classList.add("d-none");
+        input.style.display = "block";
+        input.nextElementSibling.style.display = "block";
+      });
+    }
+
+    input.nextElementSibling.addEventListener("click", async () => {
+      const value = input.value.trim();        
       const product_id = "{{productFound._id}}";
-      const buyer_id = "{{user_id}}";
-      const seller_id = "{{productFound.seller_id}}";
-      const quantity = 1;        
-      const response = await fetch("/api/cart-contact", {
-        method: "POST",
+
+      const response = await fetch(`/api/products/${product_id}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-          product_id,
-          buyer_id,
-          seller_id,
-          quantity
-        })
+        body: JSON.stringify({ [propertyName]: value })
       });
-      const responseData = await response.json();      
 
       if (response.ok) {
-        // El producto se agregó al carrito exitosamente
-        addToCartMessage.style.display = "block";
-        failAddToCartMessage.style.display = "none";
-      } else if (response.status === 400) {
-        // Mostrar mensaje de error si la respuesta es 400
-        failAddToCartMessage.style.display = "block";
-        addToCartMessage.style.display = "none";
+        if (propertyName === 'title') {
+          div.querySelector("p").innerText = value;
+        } else if (propertyName === 'price') {
+          div.querySelector("p").innerText = `Precio: $${value}`;
+        } else if (propertyName === 'stock') {
+          div.querySelector("p").innerText = `STOCK: ${value}`;
+        } else if (propertyName === 'description') {
+          descriptionCont.innerText = value;
+        }
+
+        input.style.display = "none";
+        input.nextElementSibling.style.display = "none";
+        div.classList.remove("d-none");
       } else {
-        // Manejar otros errores
-        failAddToCartMessage.style.display = "none";
-        addToCartMessage.style.display = "none";
+        console.error("Error al actualizar el producto");
       }
     });
-  }
+  });
 });
 </script>
 
