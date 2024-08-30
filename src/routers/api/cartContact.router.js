@@ -17,8 +17,8 @@ class CartContactRouter extends CustomRouter {
     this.read("/:cid", ["ADMIN"], readCartContactById);
     this.create("/", ["USER", "ADMIN"], sameBuyerAndSeller, createCartContact);
     this.update("/:cid", ["USER", "ADMIN"], updateCartContact);
-    this.destroy("/:cid", ["USER", "ADMIN"], deleteCartContact);
-    this.destroy("/all", ["USER", "ADMIN"], deleteAllCartContacts);
+    this.destroy("/", ["USER", "ADMIN"], deleteCartContact);
+    this.destroy("/all", ["ADMIN"], deleteAllCartContacts);
   }
 }
 

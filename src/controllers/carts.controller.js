@@ -95,8 +95,8 @@ class CartsController {
 
   createCartContact = async (req, res, next) => {
     try {
-      const data = req.body;   
-      const newCartContact = await createService(data);      
+      const data = req.body;
+      const newCartContact = await createService(data);
       res.status(201).json({
         statusCode: 201,
         response: newCartContact.id,
@@ -130,18 +130,25 @@ class CartsController {
 
   deleteCartContact = async (req, res, next) => {
     try {
-      const cartContactId = req.params.cid;
-      const deletedCartContact = await destroyService(cartContactId);
+      const ids = req.body.ids;
 
-      if (deletedCartContact) {
+      if (!Array.isArray(ids) || ids.length === 0) {
+        return res.status(400).json({ message: "No IDs provided." });
+      }
+
+      const deleteResult = await destroyService(ids);
+
+      if (deleteResult.deletedCount > 0) {
         res.status(200).json({
           statusCode: 200,
-          response: deletedCartContact,
+          message: "Selected cart contacts deleted successfully.",
+          deletedCount: deleteResult.deletedCount,
         });
       } else {
-        throw new Error(
-          `Failed to delete cart contact with ID ${cartContactId}.`
-        );
+        res.status(404).json({
+          statusCode: 404,
+          message: "No cart contacts found for deletion.",
+        });
       }
     } catch (error) {
       return next(error);
@@ -150,12 +157,13 @@ class CartsController {
 
   deleteAllCartContacts = async (req, res, next) => {
     try {
-      const deletedCartContacts = await destroyService("all");
+      const deleteResult = await destroyService("all");
 
-      if (deletedCartContacts) {
+      if (deleteResult.acknowledged && deleteResult.deletedCount > 0) {
         res.status(200).json({
           statusCode: 200,
           message: "All cart contacts deleted successfully.",
+          deletedCount: deleteResult.deletedCount,
         });
       } else {
         throw new Error("Failed to delete all cart contacts.");

@@ -60,19 +60,37 @@ class Manager {
       throw error;
     }
   }
-  async destroy(id = null) {
+  async destroy(ids = null) {
     try {
-      let result;
-      if (id === "all") {
-        result = await this.Model.deleteMany({});
+      let result;  
+      
+      if (ids === "all") {
+        // Elimina todos los documentos
+        const deleteResult = await this.Model.deleteMany({});
+        result = {
+          acknowledged: deleteResult.acknowledged,
+          deletedCount: deleteResult.deletedCount
+        };
+      } else if (Array.isArray(ids) && ids.length > 0) {
+        // Elimina los documentos que coincidan con los IDs proporcionados
+        const deleteResult = await this.Model.deleteMany({ _id: { $in: ids } });
+        result = {
+          acknowledged: deleteResult.acknowledged,
+          deletedCount: deleteResult.deletedCount
+        };
+      } else if (ids) {
+        // Elimina un único documento por ID
+        result = await this.Model.findByIdAndDelete(ids);
+        result = result ? { acknowledged: true, deletedCount: 1 } : { acknowledged: false, deletedCount: 0 };
       } else {
-        result = await this.Model.findByIdAndDelete(id);
+        throw new Error("Invalid input for destroy method");
       }
+  
       return result;
     } catch (error) {
       throw error;
     }
-  }
+  }  
 }
 
 export default Manager;

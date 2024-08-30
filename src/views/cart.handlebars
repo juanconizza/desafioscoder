@@ -10,7 +10,7 @@
               <p class="card-text">Precio: ${{product_id.price}}</p>
               <label for="quantity">Cantidad:</label>
               <input type="number" id="quantity" name="quantity" min="1" value="{{this.quantity}}" onchange="updateQuantity('{{this._id}}', this.value)">
-              <button class="btn btn-danger" onclick="removeFromCart('{{this._id}}')">Eliminar</button>
+<button class="btn btn-danger" onclick="removeFromCart('{{this._id}}')" data-cart-item-id="{{this._id}}">Eliminar</button>
             </div>
           </div>
         </div>
@@ -55,24 +55,27 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Función para eliminar un producto del carrito y recargar la página
   async function removeFromCart(cartItemId) {
-    try {
-      // Realizar una solicitud DELETE al endpoint correspondiente
-      const response = await fetch(`/api/cart-contact/${cartItemId}`, {
-        method: 'DELETE'
-      });
+  try {
+    // Realizar una solicitud DELETE al endpoint correspondiente
+    const response = await fetch('/api/cart-contact', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ ids: [cartItemId] }) // Enviar el ID en el cuerpo de la solicitud
+    });
 
-      if (response.ok) {
-        // Si la solicitud se realizó con éxito, recargar la página
-        location.reload();
-      } else {
-        // Si hubo un error en la solicitud, mostrar un mensaje de error
-        console.error('Error al eliminar el producto del carrito:', response.statusText);
-      }
-    } catch (error) {
-      console.error('Error al eliminar el producto del carrito:', error.message);
+    if (response.ok) {
+      // Si la solicitud se realizó con éxito, recargar la página
+      location.reload();
+    } else {
+      // Si hubo un error en la solicitud, mostrar un mensaje de error
+      console.error('Error al eliminar el producto del carrito:', response.statusText);
     }
+  } catch (error) {
+    console.error('Error al eliminar el producto del carrito:', error.message);
   }
-
+}
   // Función para procesar el pago y contactar al vendedor
  
   async function checkout() {
@@ -109,26 +112,33 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
   // Función para cancelar la compra y vaciar el carrito
-      async function clearCart() {
-    try {
-      const response = await fetch('/api/cart-contact/all', {
-        method: 'DELETE'
-      });
+     async function clearCart() {
+  try {
+    // Recopila todos los IDs del carrito a eliminar
+    const cartItemIds = Array.from(document.querySelectorAll('[data-cart-item-id]'))
+      .map(element => element.getAttribute('data-cart-item-id'));
 
-      responseData = response.json()
-
-      if (response.ok) {
-        // Si la solicitud se realizó con éxito, recargar la página o realizar otra acción
-        location.reload(); // Recargar la página para reflejar los cambios
-      } else {
-        console.error('Error al vaciar el carrito:', response.statusText);
-        // Mostrar un mensaje de error al usuario, si es necesario
-      }
-    } catch (error) {
-      console.error('Error al vaciar el carrito:', error.message);
-      // Manejar errores de red u otros errores
+    if (cartItemIds.length === 0) {      
+      return;
     }
+
+    const response = await fetch('/api/cart-contact', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ ids: cartItemIds }) 
+    });
+
+    if (response.ok) {
+      location.reload(); // Recargar la página para reflejar los cambios
+    } else {
+      console.error('Error al vaciar el carrito:', response.statusText);
+    }
+  } catch (error) {
+    console.error('Error al vaciar el carrito:', error.message);
   }
+}
 
   // Función para actualizar la cantidad de un producto en el carrito
 let timeout = null; // Variable para almacenar el temporizador
