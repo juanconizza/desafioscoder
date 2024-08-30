@@ -26,9 +26,9 @@ function ramdonCategory() {
 async function createData() {
   try {
     dbConnect();
-    for (let i = 1; i <= 998; i++) {
+    for (let i = 1; i <= 333; i++) {
       const product = {
-        seller_id: "66844dd865d892b5eeda530f", // Creado Manualmente
+        seller_id: "66bcc6d441ebba0f9b61761c", // Creamos 333 para un user admin y 666 entre dos users role 0
         title: faker.commerce.productName(),
         photo: "mock_img.png",
         category: ramdonCategory(),

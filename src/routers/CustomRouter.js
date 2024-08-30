@@ -71,7 +71,7 @@ class CustomRouter {
       } else {
         return res
           .status(403)
-          .json({ message: "Forbidden. Insufficient permissions" });
+          .json({statusCode: 403, message: "Forbidden. Insufficient permissions" });
       }
     } catch (error) {
       return res
