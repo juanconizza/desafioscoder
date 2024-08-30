@@ -1,0 +1,541 @@
+components:
+  schemas:
+    Purchase:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "64e37b2f7e7f0c001f3a5c6f"
+        buyer_id:
+          type: string
+          example: "64e37b2f7e7f0c001f3a5c6f"
+        sellers:
+          type: array
+          items:
+            type: object
+            properties:
+              seller_id:
+                type: string
+                example: "64e37b2f7e7f0c001f3a5c70"
+              products:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    product_id:
+                      type: string
+                      example: "64e37b2f7e7f0c001f3a5c71"
+                    quantity:
+                      type: integer
+                      example: 2
+        total_purchase:
+          type: number
+          format: float
+          example: 123.45
+        state:
+          type: string
+          enum: ['pending', 'connected', 'success', 'failed']
+          default: "success"
+          example: "success"
+        createdAt:
+          type: string
+          format: date-time
+          example: "2024-08-30T14:58:56.420Z"
+        updatedAt:
+          type: string
+          format: date-time
+          example: "2024-08-30T14:58:56.420Z"
+
+paths:
+  /api/purchase:
+    post:
+      tags:
+        - Purchases
+      summary: Crear una compra
+      description: Crea una nueva compra.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Purchase'
+      responses:
+        '200':
+          description: Compra creada exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+                  response:
+                    $ref: '#/components/schemas/Purchase'
+        '401':
+          description: Autenticación fallida
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 401
+                  message:
+                    type: string
+                    example: "Bad auth from policies!"
+        '500':
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+                    example: "Internal Server Error"
+
+    get:
+      tags:
+        - Purchases
+      summary: Obtener todas las compras
+      description: Recupera todas las compras.
+      responses:
+        '200':
+          description: Compras recuperadas exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+                  response:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Purchase'
+        '401':
+          description: Autenticación fallida
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 401
+                  message:
+                    type: string
+                    example: "Bad auth from policies!"
+        '403':
+          description: Acceso prohibido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Forbidden. Insufficient permissions"
+        '404':
+          description: No se encontraron compras
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 404
+                  response:
+                    type: "null"
+                  message:
+                    type: string
+                    example: "No purchases found."
+        '500':
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+                    example: "Internal Server Error"
+
+  /api/purchase/paginate:
+    get:
+      tags:
+        - Purchases
+      summary: Obtener compras paginadas
+      description: Recupera las compras paginadas.
+      responses:
+        '200':
+          description: Compras paginadas recuperadas exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+                  response:
+                    type: object
+                    properties:
+                      docs:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Purchase'
+                      totalDocs:
+                        type: integer
+                        example: 100
+                      limit:
+                        type: integer
+                        example: 10
+                      page:
+                        type: integer
+                        example: 1
+                      totalPages:
+                        type: integer
+                        example: 10
+        '401':
+          description: Autenticación fallida
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 401
+                  message:
+                    type: string
+                    example: "Bad auth from policies!"
+        '500':
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+                    example: "Internal Server Error"
+
+  /api/purchase/{pid}:
+    get:
+      tags:
+        - Purchases
+      summary: Obtener una compra por ID
+      description: Recupera una compra específica por su ID.
+      parameters:
+        - name: pid
+          in: path
+          description: ID de la compra
+          required: true
+          schema:
+            type: string
+            example: "64e37b2f7e7f0c001f3a5c6f"
+      responses:
+        '200':
+          description: Compra recuperada exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+                  response:
+                    $ref: '#/components/schemas/Purchase'
+        '401':
+          description: Autenticación fallida
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 401
+                  message:
+                    type: string
+                    example: "Bad auth from policies!"
+        '404':
+          description: Compra no encontrada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 404
+                  message:
+                    type: string
+                    example: "Purchase not found"
+        '500':
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+                    example: "Internal Server Error"
+
+    put:
+      tags:
+        - Purchases
+      summary: Actualizar una compra
+      description: Actualiza una compra específica por su ID.
+      parameters:
+        - name: pid
+          in: path
+          description: ID de la compra a actualizar
+          required: true
+          schema:
+            type: string
+            example: "64e37b2f7e7f0c001f3a5c6f"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Purchase'
+      responses:
+        '200':
+          description: Compra actualizada exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+                  response:
+                    $ref: '#/components/schemas/Purchase'
+        '401':
+          description: Autenticación fallida
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 401
+                  message:
+                    type: string
+                    example: "Bad auth from policies!"
+        '404':
+          description: Compra no encontrada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 404
+                  message:
+                    type: string
+                    example: "Purchase not found"
+        '500':
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+                    example: "Internal Server Error"
+
+    delete:
+      tags:
+        - Purchases
+      summary: Eliminar una compra
+      description: Elimina una compra específica por su ID.
+      parameters:
+        - name: pid
+          in: path
+          description: ID de la compra a eliminar
+          required: true
+          schema:
+            type: string
+            example: "64e37b2f7e7f0c001f3a5c6f"
+      responses:
+        '200':
+          description: Compra eliminada exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "Purchase deleted successfully."
+        '401':
+          description: Autenticación fallida
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 401
+                  message:
+                    type: string
+                    example: "Bad auth from policies!"
+        '404':
+          description: Compra no encontrada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 404
+                  message:
+                    type: string
+                    example: "Purchase not found"
+        '500':
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+                    example: "Internal Server Error"
+
+  /api/purchase/verify-payment:
+    post:
+      tags:
+        - Purchases
+      summary: Verificar pago y crear compra
+      description: Verifica el pago y crea una compra.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Purchase'
+      responses:
+        '200':
+          description: Compra creada exitosamente después de verificar el pago
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+                  response:
+                    $ref: '#/components/schemas/Purchase'
+        '401':
+          description: Autenticación fallida
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 401
+                  message:
+                    type: string
+                    example: "Bad auth from policies!"
+        '500':
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+                    example: "Internal Server Error"    
+
+  /api/purchase/all:
+    delete:
+      tags:
+        - Purchases
+      summary: Eliminar todas las compras
+      description: Elimina todas las compras.
+      responses:
+        '200':
+          description: Compras eliminadas exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "All purchases deleted successfully."
+        '401':
+          description: Autenticación fallida
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 401
+                  message:
+                    type: string
+                    example: "Bad auth from policies!"
+        '500':
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+                    example: "Internal Server Error"
+
