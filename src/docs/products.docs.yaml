@@ -325,7 +325,7 @@ components:
   /api/products:
     get:
       tags:
-        - Productos
+        - Products
       security:
         - cookieAuth: []
       summary: Obtiene una lista de productos
@@ -352,7 +352,7 @@ components:
           $ref: '#/components/responses/InternalServerError'
     post:
       tags:
-        - Productos
+        - Products
       security:
         - cookieAuth: []
       summary: Crea un nuevo producto
@@ -391,7 +391,7 @@ components:
   /api/products/paginate:
     get:
       tags:
-        - Productos
+        - Products
       security:
         - cookieAuth: []
       summary: Obtiene una lista de productos paginada
@@ -470,7 +470,7 @@ components:
   /api/products/{pid}:
     get:
       tags:
-        - Productos
+        - Products
       security:
         - cookieAuth: []
       summary: Obtiene un producto por ID
@@ -496,7 +496,7 @@ components:
           $ref: '#/components/responses/InternalServerError'
     put:
       tags:
-        - Productos
+        - Products
       security:
         - cookieAuth: []
       summary: Actualiza un producto por ID
@@ -545,7 +545,7 @@ components:
           $ref: '#/components/responses/InternalServerError'
     delete:
       tags:
-        - Productos
+        - Products
       security:
         - cookieAuth: []
       summary: Elimina un producto por ID
@@ -579,7 +579,7 @@ paths:
   /api/products:
     get:
       tags:
-        - Productos
+        - Products
       security:
         - cookieAuth: []
       summary: Obtiene una lista de productos
@@ -625,7 +625,7 @@ paths:
           $ref: '#/components/responses/InternalServerError'
     post:
       tags:
-        - Productos
+        - Products
       security:
         - cookieAuth: []
       summary: Crea un nuevo producto
@@ -664,7 +664,7 @@ paths:
   /api/products/paginate:
     get:
       tags:
-        - Productos
+        - Products
       security:
         - cookieAuth: []
       summary: Obtiene una lista de productos paginada
@@ -767,7 +767,7 @@ paths:
   /api/products/{pid}:
     get:
       tags:
-        - Productos
+        - Products
       security:
         - cookieAuth: []
       summary: Obtiene un producto por ID
@@ -818,7 +818,7 @@ paths:
           $ref: '#/components/responses/InternalServerError'
     put:
       tags:
-        - Productos
+        - Products
       security:
         - cookieAuth: []
       summary: Actualiza un producto por ID
@@ -870,7 +870,7 @@ paths:
           $ref: '#/components/responses/InternalServerError'
     delete:
       tags:
-        - Productos
+        - Products
       security:
         - cookieAuth: []
       summary: Elimina un producto por ID

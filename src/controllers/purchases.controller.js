@@ -78,7 +78,7 @@ import {
     // Leer una compra específica por ID
     readPurchaseById = async (req, res, next) => {
       try {
-        const purchaseId = req.params.cid;
+        const purchaseId = req.params.pid;
         const purchase = await readOneService(purchaseId);
   
         if (purchase) {
@@ -118,7 +118,7 @@ import {
     // Actualizar una compra existente por ID
     updatePurchase = async (req, res, next) => {
       try {
-        const purchaseId = req.params.cid;
+        const purchaseId = req.params.pid;
         const newData = req.body;
         const updatedPurchase = await updateService(purchaseId, newData);
   
@@ -138,7 +138,7 @@ import {
     // Eliminar una compra por ID
     deletePurchase = async (req, res, next) => {
       try {
-        const purchaseId = req.params.cid;
+        const purchaseId = req.params.pid;
         const deletedPurchase = await destroyService(purchaseId);
   
         if (deletedPurchase) {
@@ -158,12 +158,14 @@ import {
     // Eliminar todas las compras
     deleteAllPurchases = async (req, res, next) => {
       try {
-        const deletedPurchases = await destroyService("all");
+        console.log("Se dispara delete All Purchases")
+        const deleteResult = await destroyService("all");    
   
-        if (deletedPurchases) {
+        if (deleteResult.acknowledged && deleteResult.deletedCount > 0) {
           res.status(200).json({
             statusCode: 200,
             message: "All purchases deleted successfully.",
+            deletedCount: deleteResult.deletedCount,
           });
         } else {
           throw new Error("Failed to delete all purchases.");
@@ -171,7 +173,7 @@ import {
       } catch (error) {
         return next(error);
       }
-    };
+    };    
   }
   
   const purchasesController = new PurchasesController();

@@ -33,6 +33,8 @@
             if (data.success) {
                 // Mostrar el mensaje de confirmación
                 document.getElementById('confirmationMessage').style.display = 'block';
+                // Mostrar el botón para continuar comprando
+                document.getElementById('continueShoppingBtn').style.display = 'block';
 
                 // Llamar al endpoint para eliminar el carrito del usuario
                 return fetch('/api/cart-contact/all', {
@@ -44,9 +46,7 @@
             } else {
                 // Mostrar el mensaje de error
                 document.getElementById('errorMessage').innerText = data.message || 'Hubo un error al verificar tu pedido. Por favor, contacta al soporte.';
-                document.getElementById('errorMessage').style.display = 'block';
-                // Mostrar el botón para continuar comprando
-                document.getElementById('continueShoppingBtn').style.display = 'block';
+                document.getElementById('errorMessage').style.display = 'block';                
             }
         })        
         .catch(error => {

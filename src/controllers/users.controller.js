@@ -91,13 +91,17 @@ class UsersController {
     try {
       const { uid } = req.params;
       const deletedUser = await destroyService(uid);
+      
       if (deletedUser) {
         res.status(200).json({
           statusCode: 200,
           response: deletedUser,
         });
-      } else {
-        throw new Error(`Failed to delete user with ID ${uid}.`);
+      } else {        
+        res.status(404).json({
+          statusCode: 404,
+          message: `User with ID ${uid} not found.`,
+        });
       }
     } catch (error) {
       return next(error);

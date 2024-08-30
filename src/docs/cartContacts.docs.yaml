@@ -1,0 +1,648 @@
+components:
+  schemas:
+    CartContact:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "64e37b2f7e7f0c001f3a5c6e"
+        buyer_id:
+          type: object
+          properties:
+            _id:
+              type: string
+              example: "64e37b2f7e7f0c001f3a5c6f"
+            name:
+              type: string
+              example: "Juan"
+            lastName:
+              type: string
+              example: "Pérez"
+            blockAndLot:
+              type: string
+              example: "1234"
+        seller_id:
+          type: object
+          properties:
+            _id:
+              type: string
+              example: "64e37b2f7e7f0c001f3a5c70"
+            name:
+              type: string
+              example: "Ana"
+            lastName:
+              type: string
+              example: "García"
+            blockAndLot:
+              type: string
+              example: "5678"
+        product_id:
+          type: object
+          properties:
+            _id:
+              type: string
+              example: "64e37b2f7e7f0c001f3a5c71"
+            title:
+              type: string
+              example: "Producto Ejemplo"
+            photo:
+              type: string
+              example: "http://example.com/photo.jpg"
+            price:
+              type: number
+              format: float
+              example: 99.99
+            stock:
+              type: number
+              example: 10
+        quantity:
+          type: integer
+          example: 2
+        state:
+          type: string
+          enum: ['pending', 'connected', 'success', 'failed']
+          default: 'pending'
+        createdAt:
+          type: string
+          format: date-time
+          example: "2024-08-29T16:04:17.915Z"
+        updatedAt:
+          type: string
+          format: date-time
+          example: "2024-08-29T16:04:17.915Z"
+
+paths:
+  /api/cart-contact:
+    get:
+      tags:
+        - CartContacts
+      summary: Obtener todos los contactos de carrito
+      description: Obtiene una lista de todos los contactos de carrito. Puede filtrar por estado usando el parámetro de consulta `state`.
+      parameters:
+        - name: state
+          in: query
+          description: Filtro opcional para el estado del contacto de carrito.
+          required: false
+          schema:
+            type: string
+            enum: ['pending', 'connected', 'success', 'failed']
+            example: 'pending'
+      responses:
+        '200':
+          description: Lista de contactos de carrito obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+                  totalCartContacts:
+                    type: integer
+                    example: 5
+                  response:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CartContact'
+        '401':
+          description: Autenticación fallida
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 401
+                  message:
+                    type: string
+                    example: "Bad auth from policies!"
+        '403':
+          description: Permisos insuficientes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Forbidden. Insufficient permissions"
+        '404':
+          description: No hay contactos de carrito para mostrar
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 404
+                  response:
+                    type: null
+                  message:
+                    type: string
+                    example: "No Carts Contacts for Display"
+        '500':
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+                    example: "Internal Server Error"
+
+    post:
+      tags:
+        - CartContacts
+      summary: Crear un nuevo contacto de carrito
+      description: Crea un nuevo contacto de carrito en el sistema.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                buyer_id:
+                  type: string
+                  example: "64e37b2f7e7f0c001f3a5c6f"
+                seller_id:
+                  type: string
+                  example: "64e37b2f7e7f0c001f3a5c70"
+                product_id:
+                  type: string
+                  example: "64e37b2f7e7f0c001f3a5c71"
+                quantity:
+                  type: integer
+                  example: 2
+      responses:
+        '201':
+          description: Contacto de carrito creado exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 201
+                  response:
+                    type: string
+                    example: "64e37b2f7e7f0c001f3a5c6e"
+                  message:
+                    type: string
+                    example: "Cart contact created successfully!"
+        '400':
+          description: Error en la solicitud. Sucede cuando el comprador intenta comprar su propio producto.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "No puedes comprar tu propio producto."
+        '401':
+          description: Autenticación fallida
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 401
+                  message:
+                    type: string
+                    example: "Bad auth from policies!"
+        '500':
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+                    example: "Internal Server Error"
+
+    delete:
+      tags:
+        - CartContacts
+      summary: Eliminar uno o más contactos de carrito
+      description: Elimina uno o más contactos de carrito existentes por sus IDs. Los IDs deben ser enviados en el cuerpo de la solicitud.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ids:
+                  type: array
+                  items:
+                    type: string
+                  example: ["64e37b2f7e7f0c001f3a5c6e", "64e37b2f7e7f0c001f3a5c6f"]
+      responses:
+        '200':
+          description: Contactos de carrito eliminados exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "Selected cart contacts deleted successfully."
+                  deletedCount:
+                    type: integer
+                    example: 1
+        '401':
+          description: Autenticación fallida
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 401
+                  message:
+                    type: string
+                    example: "Bad auth from policies!"
+        '404':
+          description: No hay contactos de carrito encontrados para eliminación
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 404
+                  message:
+                    type: string
+                    example: "No cart contacts found for deletion."
+        '500':
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+                    example: "Internal Server Error"    
+
+  /api/cart-contact/paginate:
+    get:
+      tags:
+        - CartContacts
+      summary: Obtener contactos de carrito paginados
+      description: Obtiene una lista paginada de contactos de carrito con la posibilidad de filtrar por `buyer_id`.
+      parameters:
+        - name: limit
+          in: query
+          description: Límite de resultados por página.
+          required: false
+          schema:
+            type: integer
+            example: 10
+        - name: page
+          in: query
+          description: Número de página a obtener.
+          required: false
+          schema:
+            type: integer
+            example: 1
+        - name: buyer_id
+          in: query
+          description: Filtrar por ID del comprador.
+          required: false
+          schema:
+            type: string
+            example: "64e37b2f7e7f0c001f3a5c6f"
+      responses:
+        '200':
+          description: Lista de contactos de carrito paginada obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+                  response:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CartContact'
+                  info:
+                    type: object
+                    properties:
+                      page:
+                        type: integer
+                        example: 1
+                      limit:
+                        type: integer
+                        example: 10
+                      prevPage:
+                        type: integer
+                        example: null
+                      nextPage:
+                        type: integer
+                        example: 2
+                      totalPages:
+                        type: integer
+                        example: 5
+        '401':
+          description: Autenticación fallida
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 401
+                  message:
+                    type: string
+                    example: "Bad auth from policies!"
+        '403':
+          description: Permisos insuficientes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Forbidden. Insufficient permissions"
+        '500':
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+                    example: "Internal Server Error"
+
+  /api/cart-contact/{cid}:
+    get:
+      tags:
+        - CartContacts
+      summary: Obtener un contacto de carrito por ID
+      description: Obtiene un contacto de carrito por su ID.
+      parameters:
+        - name: cid
+          in: path
+          description: ID del contacto de carrito.
+          required: true
+          schema:
+            type: string
+            example: "64e37b2f7e7f0c001f3a5c6e"
+      responses:
+        '200':
+          description: Contacto de carrito obtenido exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+                  response:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        example: "66d1de307b091e861b20a8b2"
+                      buyer_id:
+                        type: string
+                        example: "64e37b2f7e7f0c001f3a5c6f"
+                      seller_id:
+                        type: string
+                        example: "64e37b2f7e7f0c001f3a5c70"
+                      product_id:
+                        type: string
+                        example: "64e37b2f7e7f0c001f3a5c71"
+                      quantity:
+                        type: integer
+                        example: 2
+                      state:
+                        type: string
+                        example: "pending"
+                      createdAt:
+                        type: string
+                        format: date-time
+                        example: "2024-08-30T14:58:56.420Z"
+                      updatedAt:
+                        type: string
+                        format: date-time
+                        example: "2024-08-30T14:58:56.420Z"
+                      __v:
+                        type: integer
+                        example: 0
+        '401':
+          description: Autenticación fallida o permisos insuficientes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 401
+                  message:
+                    type: string
+                    example: "Bad auth from policies!"
+        '403':
+          description: Permisos insuficientes para acceder a este recurso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Forbidden. Insufficient permissions"
+        '404':
+          description: Contacto de carrito no encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 404
+                  response:
+                    type: null
+                  message:
+                    type: string
+                    example: "Did NOT find the cart contact with ID 64e37b2f7e7f0c001f3a5c6e."
+        '500':
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+                    example: "Internal Server Error"
+
+    put:
+      tags:
+        - CartContacts
+      summary: Actualizar un contacto de carrito
+      description: Actualiza un contacto de carrito existente por su ID.
+      parameters:
+        - name: cid
+          in: path
+          description: ID del contacto de carrito a actualizar.
+          required: true
+          schema:
+            type: string
+            example: "64e37b2f7e7f0c001f3a5c6e"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quantity:
+                  type: integer
+                  example: 3
+                state:
+                  type: string
+                  enum: ['pending', 'connected', 'success', 'failed']
+                  example: 'connected'
+      responses:
+        '200':
+          description: Contacto de carrito actualizado exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+                  response:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        example: "66d1de947b091e861b20a8df"
+                      buyer_id:
+                        type: string
+                        example: "66c4b893c5fc601d015fa00a"
+                      seller_id:
+                        type: string
+                        example: "66bcc6d441ebba0f9b61761c"
+                      product_id:
+                        type: string
+                        example: "66cf4b820fb9481e546af3e8"
+                      quantity:
+                        type: integer
+                        example: 3
+                      state:
+                        type: string
+                        example: "connected"
+                      createdAt:
+                        type: string
+                        format: date-time
+                        example: "2024-08-30T15:00:36.859Z"
+                      updatedAt:
+                        type: string
+                        format: date-time
+                        example: "2024-08-30T15:15:22.109Z"
+                      __v:
+                        type: integer
+                        example: 0
+        '401':
+          description: Autenticación fallida o permisos insuficientes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 401
+                  message:
+                    type: string
+                    example: "Bad auth from policies!"
+        '500':
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+                    example: "Internal Server Error"    
+
+  /api/cart-contact/all:
+    delete:
+      tags:
+        - CartContacts
+      summary: Eliminar todos los contactos de carrito
+      description: Elimina todos los contactos de carrito del sistema.
+      responses:
+        '200':
+          description: Todos los contactos de carrito eliminados exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "All cart contacts deleted successfully."
+        '500':
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+                    example: "Internal Server Error"
