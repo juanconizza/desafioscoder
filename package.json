@@ -4,7 +4,8 @@
   "description": "En este desafío armamos dos Clases constructuras para crear un array de Usuarios y de Productos para nuestro Backend. Tambien un método de read (lectura) para leer dicho array y mostrarlo por consola.",
   "main": "server.js",
   "type": "module",
-  "scripts": {    
+  "scripts": {
+    "start": "node ./server.js -p 9000",
     "dev": "nodemon ./server.js -p 8080 --env=dev  --persistence mongo",
     "prod": "nodemon ./server.js -p 8082 --env=prod --persistence mongo",
     "memory": "nodemon ./server.js -p 8081 --env=prod --persistence memory",

@@ -7,3 +7,4 @@
 2024-07-31 15:13:13 [33mERROR[39m: 500 - carts_contact validation failed: seller_id: Cast to ObjectId failed for value "" (type string) at path "seller_id" because of "BSONError" - /api/cart-contact - POST - ::1
 2024-07-31 15:13:16 [33mERROR[39m: 500 - carts_contact validation failed: seller_id: Cast to ObjectId failed for value "" (type string) at path "seller_id" because of "BSONError" - /api/cart-contact - POST - ::1
 2024-07-31 15:13:17 [33mERROR[39m: 500 - carts_contact validation failed: seller_id: Cast to ObjectId failed for value "" (type string) at path "seller_id" because of "BSONError" - /api/cart-contact - POST - ::1
+2024-08-30 17:25:35 [33mERROR[39m: 400 - Validation error: "Teléfono" debe ser un número de 10 dígitos. - /api/sessions/register - POST - ::1
