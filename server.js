@@ -68,7 +68,7 @@ app.set("views", __dirname + "/src/views");
 app.use(cookieParser(environment.SECRET_COOKIE));
 
 //Carpeta Public de Imagenes
-app.use(express.static(join(__dirname, "public/img")));
+app.use(express.static(join(__dirname, "public/images")));
 
 // Inicializamos Morgan
 //©app.use(morgan("dev"));

@@ -5,7 +5,7 @@ import __dirname from "../../pathhandler.js";
 // Configuración de Multer
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "public/img/products"));
+    cb(null, path.join(__dirname, "public/images/product"));
   },
   filename: (req, file, cb) => {
     // Obtener la extensión del archivo
